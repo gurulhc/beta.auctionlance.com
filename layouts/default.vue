@@ -53,3 +53,21 @@ html {
   background-color: #35495e;
 }
 </style>
+
+<script>
+export default {
+  head() {
+    return {
+      title: '%s | Auctionlance',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'Find the best freelance developers and designers and pay them using Waves '
+        }
+      ]
+    }
+  }
+}
+</script>

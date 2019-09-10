@@ -28,6 +28,11 @@
 import Logo from '~/components/Logo.vue'
 
 export default {
+  head() {
+    return {
+      title: 'Hire and pay freelancers with WAVES'
+    }
+  },
   components: {
     Logo
   }
