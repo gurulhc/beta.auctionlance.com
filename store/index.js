@@ -1,9 +1,15 @@
 export const state = () => ({
-  counter: 0
+  isLoading: false
 })
 
 export const mutations = {
-  INCREMENT(state) {
-    state.counter++
+  UPDATE_LOADING_STATUS(state) {
+    state.isLoading = !state.isLoading
+  }
+}
+
+export const actions = {
+  updateLoadingStatus({ commit }) {
+    commit('UPDATE_LOADING_STATUS')
   }
 }

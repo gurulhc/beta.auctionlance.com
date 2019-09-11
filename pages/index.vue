@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   head() {
     return {
@@ -91,6 +92,12 @@ export default {
         'Content Editors'
       ]
     }
+  },
+  methods: {
+    ...mapActions('auth', ['performWavesKeeperAuth'])
+  },
+  mounted() {
+    this.performWavesKeeperAuth()
   }
 }
 </script>
