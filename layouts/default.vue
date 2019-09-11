@@ -276,35 +276,34 @@ body {
   }
 }
 
-@media (min-width: 34em) {
-  .before-footer {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 6'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 0.3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23d73f2e' stroke-width='2' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
-    background-position: 0 100%;
-    background-size: auto 6px;
-    height: 30vh;
-  }
+.before-footer {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 6'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 0.3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23d73f2e' stroke-width='2' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+  background-position: 0 100%;
+  background-size: auto 6px;
+  height: 30vh;
+}
 
-  .footer-top ul {
-    list-style: none;
-    margin: 0;
-    display: flex;
-    justify-content: space-around;
-  }
+.footer-top ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+}
 
-  .footer-top ul a > svg {
-    fill: #c4c4c4;
-    transition: all 300ms;
-  }
-  .footer-top ul a > svg:hover {
-    fill: #d73f2e;
-    transform: scale(1.2);
-  }
+.footer-top ul a > svg {
+  fill: #c4c4c4;
+  transition: all 300ms;
+}
+.footer-top ul a > svg:hover {
+  fill: #d73f2e;
+  transform: scale(1.2);
+}
 
-  .footer-bottom {
-    text-align: center;
-    font-size: 0.8em;
-    margin-top: 2em;
-    color: #c4c4c4;
-  }
+.footer-bottom {
+  text-align: center;
+  font-size: 0.8em;
+  margin-top: 2em;
+  color: #c4c4c4;
 }
 </style>
