@@ -130,6 +130,60 @@ export default {
           name: 'description',
           content:
             'Find the best freelance developers and designers and pay them using Waves '
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: ''
+        },
+        {
+          hid: 'author',
+          name: 'author',
+          content: 'Auctionlance Platform'
+        },
+        // Facebook
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Auctionlance Platform'
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content:
+            'Find the best freelance developers, designers, content writers and lots more and pay them with Waves'
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          content: 'http://auctionlance.com/aucttoken.svg'
+        },
+        {
+          hid: 'og:url',
+          name: 'og:url',
+          content: 'http://auctionlance.com'
+        },
+        // Twitter
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Auctionlance Platform'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content:
+            'Find the best freelance developers, designers, content writers and lots more and pay them with Waves'
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content: 'http://auctionlance.com/aucttoken.svg'
+        },
+        {
+          hid: 'twitter:card',
+          name: 'twitter:card',
+          content: 'http://auctionlance.com/aucttoken.svg'
         }
       ]
     }

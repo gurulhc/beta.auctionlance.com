@@ -3,6 +3,7 @@
     <main class="hero">
       <h1 class="big">
         Hire
+        <span class="mobile">easily</span>
         <vue-typer
           class="typed"
           :text="typerList"
@@ -229,15 +230,27 @@ h3.caption {
   }
 }
 
-/* Vue typer related styles starts here */
-.vue-typer .custom.char.typed {
-  color: #b93829;
+.vue-typer {
+  display: none;
 }
 
-.vue-typer .custom.char.selected {
-  background-color: #b93829;
-  color: #fff;
-}
+@media (min-width: 34em) {
+  .mobile {
+    display: none;
+  }
+  .vue-typer {
+    display: inline;
+  }
+  /* Vue typer related styles starts here */
+  .vue-typer .custom.char.typed {
+    color: #b93829;
+  }
 
-/* Vue typer related styles ends here */
+  .vue-typer .custom.char.selected {
+    background-color: #b93829;
+    color: #fff;
+  }
+
+  /* Vue typer related styles ends here */
+}
 </style>
