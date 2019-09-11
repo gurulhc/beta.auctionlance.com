@@ -1,12 +1,25 @@
 <template>
   <section>
     <main class="hero">
-      <h1 class="big">Hire easily</h1>
+      <h1 class="big">
+        Hire
+        <vue-typer
+          class="typed"
+          :text="typerList"
+          initial-action="erasing"
+          :repeat="Infinity"
+          :shuffle="true"
+          :erase-delay="250"
+          erase-style="select-all"
+          caret-animation="smooth"
+        />
+      </h1>
       <p class="subtitle">
         Our platform makes it easy to hire top notch
         <span class="highlight">freelancers</span> and pay in Crypto
       </p>
       <a href="#" class="btn btn-primary">Hire now</a>
+      <div class="squiggle-block"></div>
     </main>
     <section class="container about-wrapper">
       <p class="about-auctionlance">
@@ -61,6 +74,22 @@ export default {
     return {
       title: 'Hire and pay freelancers with WAVES'
     }
+  },
+  data() {
+    return {
+      typerList: [
+        'Blockchain Developers',
+        'Web Developers',
+        'Programmers',
+        'Graphics Designers',
+        'UI/UX Designers',
+        'iOS Developers',
+        'Android Developers',
+        'Web Designers',
+        'Content Writers',
+        'Content Editors'
+      ]
+    }
   }
 }
 </script>
@@ -69,6 +98,10 @@ export default {
 .hero,
 .container {
   padding: 0.5em 1em;
+}
+
+.squiggle-block {
+  display: none;
 }
 
 @media (min-width: 34em) {
@@ -80,13 +113,27 @@ export default {
   .hero {
     padding: 1em 6em;
   }
+
+  .squiggle-block {
+    display: block;
+    position: absolute;
+    height: 200px;
+    width: 2vw;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 6'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 0.3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23d73f2e' stroke-width='2' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+    background-position: 0 100%;
+    background-size: auto 6px;
+    width: 20vw;
+    height: 30vh;
+    right: 0;
+    top: 18em;
+  }
 }
 
 .container {
   margin-top: 1em;
 }
 h1.big {
-  font-size: 4em;
+  font-size: 3.5em;
   margin: 0;
 }
 
@@ -124,6 +171,8 @@ a.btn {
   text-decoration: none;
   font-size: 1.5em;
   padding: 0.5em 1.5em;
+  border-radius: 4px;
+  transition: all 300ms ease-out;
 }
 
 a.btn.btn-primary {
@@ -133,7 +182,12 @@ a.btn.btn-primary {
 
 @media (min-width: 34em) {
   a.btn {
-    font-size: 1.2em;
+    font-size: 1em;
+  }
+
+  a.btn.btn-primary:hover {
+    background-color: #b93829;
+    box-shadow: 20px 10px 4px 0px rgba(0, 0, 0, 0.3);
   }
 }
 .section-heading {
@@ -174,4 +228,16 @@ h3.caption {
     grid-column-gap: 1.5em;
   }
 }
+
+/* Vue typer related styles starts here */
+.vue-typer .custom.char.typed {
+  color: #b93829;
+}
+
+.vue-typer .custom.char.selected {
+  background-color: #b93829;
+  color: #fff;
+}
+
+/* Vue typer related styles ends here */
 </style>
