@@ -12,9 +12,13 @@
         </button>
         <section class="menu-pop-up">
           <ul class="nav-menu">
-            <li><nuxt-link to="/freelancers">Freelancers</nuxt-link></li>
-            <li><nuxt-link to="/jobs">Jobs</nuxt-link></li>
-            <li><a href="#">Blog</a></li>
+            <li>
+              <nuxt-link to="/freelancers/featured">Freelancers</nuxt-link>
+            </li>
+            <li><nuxt-link to="/jobs/featured">Jobs</nuxt-link></li>
+            <li>
+              <a href="https://medium.com/@aucttoken" target="_blank">Blog</a>
+            </li>
             <li><nuxt-link to="/about">About</nuxt-link></li>
           </ul>
         </section>
@@ -359,5 +363,19 @@ body {
   font-size: 0.8em;
   margin-top: 2em;
   color: #c4c4c4;
+}
+
+.cards {
+  margin: 2em 3em 4em 3em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 1em;
+}
+
+@media (min-width: 34em) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 1em;
+  }
 }
 </style>
