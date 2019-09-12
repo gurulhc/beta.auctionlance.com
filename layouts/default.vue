@@ -20,6 +20,15 @@
               <a href="https://medium.com/@aucttoken" target="_blank">Blog</a>
             </li>
             <li><nuxt-link to="/about">About</nuxt-link></li>
+
+            <li v-if="user">
+              <nuxt-link to="/" class="user"
+                ><img
+                  :src="`${user.avatar_url}`"
+                  :alt="user.name"
+                  class="avatar"
+              /></nuxt-link>
+            </li>
           </ul>
         </section>
       </nav>
@@ -124,6 +133,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   head() {
     return {
@@ -192,7 +202,20 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState('auth', ['user'])
+  },
+  mounted() {
+    const userPublicKey = JSON.parse(localStorage.getItem('userPublicKey'))
+
+    if (!userPublicKey) {
+      this.performWavesKeeperAuth()
+    } else {
+      this.logIn(userPublicKey)
+    }
+  },
   methods: {
+    ...mapActions('auth', ['performWavesKeeperAuth', 'logIn']),
     getFullYear() {
       const currentDate = new Date()
 
@@ -290,7 +313,6 @@ body {
   .nav-menu {
     display: flex;
     justify-content: space-around;
-    align-items: flex-end;
     list-style: none;
     margin: 0;
     text-align: center;
@@ -309,6 +331,20 @@ body {
     background-size: auto 6px;
     border-bottom: 0;
     padding-bottom: 0.3em;
+  }
+
+  .nav-menu li > a.user {
+    border-bottom: none;
+    text-transform: capitalize;
+  }
+  .nav-menu li > a.user:hover {
+    background-image: none;
+  }
+  .nav-menu li > a.user .avatar {
+    width: 30px;
+    height: 30px;
+    margin-right: 14px;
+    border-radius: 50%;
   }
 }
 
@@ -338,7 +374,7 @@ body {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 6'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 0.3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23d73f2e' stroke-width='2' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
   background-position: 0 100%;
   background-size: auto 6px;
-  height: 30vh;
+  height: 5vh;
 }
 
 .footer-top ul {

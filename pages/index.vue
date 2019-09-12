@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { TweenMax } from 'gsap'
 export default {
   head() {
     return {
@@ -93,11 +93,13 @@ export default {
       ]
     }
   },
-  methods: {
-    ...mapActions('auth', ['performWavesKeeperAuth'])
-  },
   mounted() {
-    this.performWavesKeeperAuth()
+    this.wavy()
+  },
+  methods: {
+    wavy() {
+      TweenMax.from('.squiggle-block', 2, { x: 300, delay: 2 })
+    }
   }
 }
 </script>

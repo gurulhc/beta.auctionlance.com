@@ -13,6 +13,7 @@
 import PageNav from '@/components/PageNav.vue'
 import AuctCard from '@/components/AuctCard.vue'
 export default {
+  middleware: 'isAuthenticated',
   head() {
     return {
       title: 'Top Notch Freelancers'
