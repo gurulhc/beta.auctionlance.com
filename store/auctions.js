@@ -1,6 +1,6 @@
 export const state = () => ({
   pageNav: {
-    parent: 'jobs',
+    parent: 'auctions',
     navs: ['featured', 'all', 'completed']
   }
 })

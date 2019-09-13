@@ -44,7 +44,7 @@ export default {
 
 <style scoped>
 .card {
-  min-width: 10em;
+  min-width: 12em;
   border: 1px solid #c4c4c4;
   border-radius: 0.2em;
   padding: 1em 2em;

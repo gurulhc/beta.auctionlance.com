@@ -4,13 +4,16 @@
     <section class="cards">
       <auct-card
         title="Create a mobile app"
-        subtitle="Ventures Platform | 50 Waves"
+        subtitle="Ventures Platform | Starting at 50 Waves"
       />
       <auct-card
         title="Create a smart contract"
-        subtitle="Ventuary | 2000 Waves"
+        subtitle="Ventuary | Starting at 2000 Waves"
       />
-      <auct-card title="Create an iOS app" subtitle="MTN | 100 Waves" />
+      <auct-card
+        title="Create an iOS app"
+        subtitle="MTN | Starting at 100 Waves"
+      />
     </section>
   </section>
 </template>
@@ -21,7 +24,7 @@ export default {
   middleware: 'isAuthenticated',
   head() {
     return {
-      title: 'Jobs currently being auctioned'
+      title: 'Auctions'
     }
   },
   components: {
@@ -30,7 +33,7 @@ export default {
   },
   computed: {
     pageNav() {
-      return this.$store.state.jobs.pageNav
+      return this.$store.state.auctions.pageNav
     }
   }
 }

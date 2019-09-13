@@ -15,7 +15,7 @@
             <li>
               <nuxt-link to="/freelancers/featured">Freelancers</nuxt-link>
             </li>
-            <li><nuxt-link to="/jobs/featured">Jobs</nuxt-link></li>
+            <li><nuxt-link to="/auctions/featured">Auctions</nuxt-link></li>
             <li>
               <a href="https://medium.com/@aucttoken" target="_blank">Blog</a>
             </li>
@@ -402,7 +402,7 @@ body {
 }
 
 .cards {
-  margin: 2em 3em 4em 3em;
+  margin: 2em 1em 4em 1em;
   display: grid;
   grid-template-columns: 1fr;
   grid-row-gap: 1em;
