@@ -20,7 +20,6 @@
             <li>Ride</li>
             <li>Vue/Nuxt</li>
             <li>Ride</li>
-            <li>Vue/Nuxt</li>
           </ul>
         </div>
         <nuxt-link to="/freelancer/7899" class="freelancer-btn"
@@ -199,8 +198,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .freelancer-card {
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-  padding: 1em 2em;
+  box-shadow: 0 1px 6px rgba(57, 73, 76, 0.35);
+  padding: 1em 1em;
+  border-radius: 4px;
   p,
   h4 {
     padding: 0;
@@ -219,6 +219,10 @@ export default {
       }
     }
     .bio {
+      h4 {
+        color: #d73f2e;
+        font-size: 0.7em;
+      }
       .description,
       .location {
         font-size: 0.6em;
@@ -233,14 +237,14 @@ export default {
       font-size: 0.6em;
       list-style: none;
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
+      flex-wrap: wrap;
 
       li {
         background-color: rgb(247, 241, 241);
-        margin-right: 1em;
+        margin-right: 0.5em;
         border-radius: 4px;
-        padding: 0.5em 1.5em;
+        padding: 0.5em 1em;
         margin-bottom: 1em;
       }
     }
@@ -263,8 +267,7 @@ export default {
 
 .freelancer-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 1em;
 }
 </style>
