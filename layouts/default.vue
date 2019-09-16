@@ -13,16 +13,16 @@
         <section class="menu-pop-up">
           <ul class="nav-menu">
             <li>
-              <nuxt-link to="/freelancers/featured">Freelancers</nuxt-link>
+              <nuxt-link to="/freelancers">Freelancers</nuxt-link>
             </li>
-            <li><nuxt-link to="/auctions/featured">Auctions</nuxt-link></li>
+            <li><nuxt-link to="/jobs">Browse Jobs</nuxt-link></li>
             <li>
               <a href="https://medium.com/@aucttoken" target="_blank">Blog</a>
             </li>
             <li><nuxt-link to="/about">About</nuxt-link></li>
 
             <li v-if="user">
-              <nuxt-link to="/" class="user"
+              <nuxt-link to="/auctoboard/overview" class="user"
                 ><img
                   :src="`${user.avatar_url}`"
                   :alt="user.name"
@@ -225,7 +225,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 :root {
   box-sizing: border-box;
   font-size: calc(1vw + 0.6em);
@@ -412,6 +412,52 @@ body {
   .cards {
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 1em;
+  }
+}
+
+@media (min-width: 34em) {
+  .jobs-card {
+    h3 {
+      color: #d73f2e;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      p {
+        margin: 0;
+        padding: 0;
+        line-height: normal;
+        font-size: 0.7em;
+      }
+      p.budget-label,
+      p.duration-label {
+        font-size: 0.6em;
+        margin-top: 1em;
+        color: #6e6c6b;
+      }
+    }
+    .description {
+      font-size: 0.7em;
+      p {
+        line-height: 1.3;
+        color: #6e6c6b;
+      }
+    }
+    .bid-btn {
+      text-decoration: none;
+      font-size: 0.6em;
+      border-radius: 4px;
+      border: 2px solid #d73f2e;
+      transition: all 300ms;
+      color: #000;
+      padding: 0.5em 1em;
+
+      &:hover {
+        background-color: #d73f2e;
+        color: #fff;
+      }
+    }
   }
 }
 </style>
