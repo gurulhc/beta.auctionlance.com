@@ -33,7 +33,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/vueTyper.js', ssr: false }],
+  plugins: [
+    { src: '~/plugins/vueTyper.js', ssr: false },
+    { src: '~/plugins/vueTagsInput.js', ssr: false },
+    { src: '~/plugins/cloudinary.js', ssr: false }
+  ],
   /*
    ** Nuxt.js dev-modules
    */

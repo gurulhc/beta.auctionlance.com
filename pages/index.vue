@@ -121,7 +121,7 @@ export default {
   }
 
   .hero {
-    padding: 1em 6em;
+    padding: 4.5em 6em;
   }
 
   .squiggle-block {
@@ -135,7 +135,7 @@ export default {
     width: 20vw;
     height: 30vh;
     right: 0;
-    top: 18em;
+    top: 20em;
   }
 }
 

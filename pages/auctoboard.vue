@@ -130,7 +130,6 @@ export default {}
           padding: 0;
           list-style: none;
           display: flex;
-          justify-content: flex-end;
           padding-right: 1em;
 
           li {
@@ -180,7 +179,7 @@ export default {}
     }
   }
   main {
-    padding: 2em 0 2em 4em;
+    padding: 2em 0 2em 0em;
   }
 }
 </style>
