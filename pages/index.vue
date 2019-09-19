@@ -3,6 +3,7 @@
     <main class="hero">
       <h1 class="big">
         Hire
+        <font-awesome-icon icon="dollar-sign" style="font-size: 30px" />
         <span class="mobile">easily</span>
         <vue-typer
           class="typed"
@@ -19,7 +20,7 @@
         Our platform makes it easy to hire top notch
         <span class="highlight">freelancers</span> and pay in Crypto
       </p>
-      <a href="#" class="btn btn-primary">Hire now</a>
+      <nuxt-link to="/freelancers" class="btn btn--primary">Hire now</nuxt-link>
       <div class="squiggle-block"></div>
     </main>
     <section class="container about-wrapper">
@@ -45,9 +46,7 @@
           <h3 class="caption">AuctoNode Profit Passive Income</h3>
           <p class="content">
             By helping sustain the Auctionlance platform, AuctoNode owners share
-            50% profit generated on Auctionlance platform. Simply own an
-            AuctoNode and you will receive a share of platform profits in
-            proportion to the amount you hold
+            50% profit generated on Auctionlance platform.
           </p>
         </div>
         <div class="why-card">
@@ -66,16 +65,61 @@
         </div>
       </div>
     </section>
+    <section class="freelancer">
+      <div>
+        <h2>Bid on projects on Auctionlance</h2>
+        <nuxt-link to="/jobs" class="btn btn--secondary">Bid Now</nuxt-link>
+      </div>
+      <freelancer />
+    </section>
+    <section class="container why how">
+      <h2 class="section-heading">
+        How it <span class="highlight">Works</span>
+      </h2>
+      <div class="why-cards">
+        <div class="why-card">
+          <h3 class="caption">Post A Job</h3>
+          <p class="content">
+            Post a job, describe your job. Client gets matched smartly with
+            qualified freelancers.
+          </p>
+        </div>
+        <div class="why-card">
+          <h3 class="caption">Find &amp; Pick</h3>
+          <p class="content">
+            Browse profiles, gigs freelancers, compare reviews &amp; pick
+            freelancer suit for you.
+          </p>
+        </div>
+        <div class="why-card">
+          <h3 class="caption">Award &amp; Deposit</h3>
+          <p class="content">
+            Pick any freelancer of choice &amp; enjoy 100% secured escrow system
+          </p>
+        </div>
+        <div class="why-card">
+          <h3 class="caption">Work &amp; Approve</h3>
+          <p class="content">
+            Chat with freelancer, share files &amp; collaborate with freelancer.
+            Approve payment once satisfied.
+          </p>
+        </div>
+      </div>
+    </section>
   </section>
 </template>
 
 <script>
 import { TweenMax } from 'gsap'
+import Freelancer from '~/components/Freelancer'
 export default {
   head() {
     return {
       title: 'Hire and pay freelancers with WAVES'
     }
+  },
+  components: {
+    Freelancer
   },
   data() {
     return {
@@ -185,9 +229,13 @@ a.btn {
   transition: all 300ms ease-out;
 }
 
-a.btn.btn-primary {
+a.btn.btn--primary {
   color: #fff;
   background-color: #d73f2e;
+}
+a.btn.btn--secondary {
+  color: #d73f2e;
+  background-color: #fff;
 }
 
 @media (min-width: 34em) {
@@ -195,8 +243,12 @@ a.btn.btn-primary {
     font-size: 1em;
   }
 
-  a.btn.btn-primary:hover {
+  a.btn.btn--primary:hover {
     background-color: #b93829;
+    box-shadow: 20px 10px 4px 0px rgba(0, 0, 0, 0.3);
+  }
+  a.btn.btn--secondary:hover {
+    background-color: darken(#fff, 50%);
     box-shadow: 20px 10px 4px 0px rgba(0, 0, 0, 0.3);
   }
 }
@@ -261,5 +313,23 @@ h3.caption {
   }
 
   /* Vue typer related styles ends here */
+}
+
+.freelancer {
+  height: 400px;
+  background-color: #b93829;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  color: #fff;
+  margin-bottom: 3em;
+  background: url(../assets/chat-background.svg) no-repeat top;
+  background-size: cover;
+}
+
+.how h2,
+.how h3 {
+  text-align: center;
 }
 </style>

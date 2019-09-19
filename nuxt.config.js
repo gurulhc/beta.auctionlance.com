@@ -36,7 +36,11 @@ export default {
   plugins: [
     { src: '~/plugins/vueTyper.js', ssr: false },
     { src: '~/plugins/vueTagsInput.js', ssr: false },
-    { src: '~/plugins/cloudinary.js', ssr: false }
+    { src: '~/plugins/cloudinary.js', ssr: false },
+    {
+      src: '~plugins/vue-scrollmagic.js',
+      ssr: false
+    }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -51,8 +55,24 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/toast',
+    '@nuxtjs/font-awesome'
   ],
+
+  toast: {
+    position: 'top-center',
+    register: [
+      // Register custom toasts
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error'
+        }
+      }
+    ]
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options

@@ -1,63 +1,87 @@
 <template>
   <div class="container">
     <section class="register">
-      <img src="http://auctionlance.com/aucttoken.svg" class="logo" />
-      <form action="" @submit.prevent="register">
-        <div class="input">
-          <input
-            id="name"
-            v-model="info.name"
-            placeholder="John Doe"
-            type="text"
-            name="name"
-            required
-          />
-        </div>
-        <div class="input">
-          <input
-            id="description"
-            v-model="info.description"
-            placeholder="A short description about you"
-            type="text"
-            name="description"
-            required
-          />
-        </div>
-        <div class="input">
-          <vue-tags-input
-            id="vue-tags"
-            v-model="tag"
-            :tags="tags"
-            :avoid-adding-duplicates="true"
-            :delete-on-backspace="true"
-            :max-tags="5"
-            placeholder="Add a maximum of 5 tags"
-            @tags-changed="(newTags) => (tags = newTags)"
-          />
-        </div>
-        <div class="input">
-          <input
-            id="country"
-            v-model="info.country"
-            placeholder="Location"
-            type="text"
-            name="location"
-            required
-          />
-        </div>
-        <div class="input">
-          <button
-            id="upload_widget"
-            class="cloudinary-button"
-            @click="openCloudinaryWidget"
-          >
-            Upload Avatar
-          </button>
-        </div>
-        <div class="input">
-          <input type="submit" value="Join Auctionlance" />
-        </div>
-      </form>
+      <section class="form-wrapper">
+        <span>
+          <nuxt-link to="/">
+            <img src="http://auctionlance.com/aucttoken.svg" class="logo" />
+          </nuxt-link>
+        </span>
+        <form action="" @submit.prevent="register">
+          <div class="input">
+            <input
+              id="name"
+              v-model="info.name"
+              placeholder="John Doe"
+              type="text"
+              name="name"
+              required
+            />
+          </div>
+          <div class="input">
+            <input
+              id="description"
+              v-model="info.description"
+              placeholder="A short description about you"
+              type="text"
+              name="description"
+              required
+            />
+          </div>
+          <div class="input">
+            <vue-tags-input
+              id="vue-tags"
+              v-model="tag"
+              :tags="tags"
+              :avoid-adding-duplicates="true"
+              :delete-on-backspace="true"
+              :max-tags="5"
+              placeholder="Add a maximum of 5 tags"
+              @tags-changed="(newTags) => (tags = newTags)"
+            />
+          </div>
+          <div class="input">
+            <select v-model="info.userType">
+              <option disabled value="" selected
+                >Purpose for using Auctionlance</option
+              >
+              <option value="client">Looking for freelancers</option>
+              <option value="freelancer">I am a freelancer</option>
+            </select>
+          </div>
+          <div class="input">
+            <input
+              id="country"
+              v-model="info.country"
+              placeholder="Location"
+              type="text"
+              name="location"
+              required
+            />
+          </div>
+          <div class="input">
+            <button
+              id="upload_widget"
+              class="form-button form-button--secondary"
+              @click="openCloudinaryWidget"
+            >
+              Upload Avatar
+            </button>
+          </div>
+          <div class="input">
+            <input
+              type="submit"
+              value="Join Auctionlance"
+              class="form-button form-button--primary"
+            />
+          </div>
+        </form>
+      </section>
+      <img
+        src="~/assets/login-illustration.svg"
+        alt=""
+        class="login-illustraton"
+      />
     </section>
   </div>
 </template>
@@ -84,6 +108,7 @@ export default {
         tags: [],
         address: '',
         public_key: '',
+        userType: '',
         avatar: {}
       }
     }
@@ -180,25 +205,24 @@ export default {
 .container {
   display: flex;
   justify-content: center;
-  min-height: 80vh;
-  /* background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 6'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23d73f2e' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
-  background-position: 0 100%;
-  background-size: auto 6px; */
+  min-height: 100vh;
   margin-bottom: 2em;
+  margin-top: 0;
 }
 .register {
   width: 90vw;
   background: #fff;
   border: 1px solid #f1f6f2;
-  /* box-shadow: 0 0 30px rgba(0, 0, 0, 0.8); */
-  border-radius: 3px;
+  border-radius: 6px;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.3);
   padding: 6em 2em;
   text-align: center;
+  display: flex;
+  flex-direction: row-reverse;
 
   .logo {
     width: 80px;
     height: 80px;
-    border-radius: 50%;
     margin-bottom: 1em;
   }
   /* height: 5vh; */
@@ -207,50 +231,82 @@ export default {
 .register form {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: min-content;
   grid-column-gap: 2em;
-  grid-row-gap: 0.3em;
+  grid-row-gap: 1em;
 }
 
-.input {
-  margin-bottom: 1em;
-}
 .input input,
+.input select,
 .vue-tags-input {
   width: 100%;
-  border-radius: 0.2em;
+  border: none;
 }
 
 .input input[type='text'],
-.vue-tags-input {
-  padding: 1em 2em;
+.vue-tags-input,
+.input select {
+  min-height: 52px;
+  line-height: 20px;
+  padding: 0 15px;
   font-size: 0.9em;
-  border: 1px solid #5f615f;
+  border: 1px solid rgba(36, 28, 21, 0.3);
+  border-radius: 4px;
+  transition: all 300ms;
+}
+.input select {
+  height: 52px;
+}
+.input input[type='text']:focus,
+.vue-tags-input:focus,
+.input select:focus {
+  outline: transparent;
+  border: 1px solid #d73f2e !important;
+}
+.form-button {
+  width: 100%;
+  margin: auto;
+  cursor: pointer;
+  padding: 10px 0;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 4px 8px 0 #cfdfff, 0 6px 20px 0 #cfdfff;
+  box-shadow: 0 4px 8px 0 #cfdfff, 0 6px 20px 0 #cfdfff;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 30px rgba(12, 112, 23, 0.1);
+  font-size: 0.6em !important;
+  transition: background-color 300ms;
 }
 
-.input input[type='text']:focus,
-.vue-tags-input:focus {
-  outline: transparent;
+.form-button.form-button--primary {
+  color: #fff !important;
+  background-color: #d73f2e !important;
+}
+.form-button.form-button--secondary {
   border: 1px solid #d73f2e;
+  color: #000;
 }
-.input input[type='submit'] {
-  padding: 1em 2em;
+
+.form-button--primary:hover {
+  background-color: darken(#d73f2e, 10%);
+}
+.form-button--secondary:hover {
+  background-color: darken(#d73f2e, 10%);
   color: #fff;
-  background-color: #d73f2e;
-  box-shadow: 0 0 30px rgba(12, 112, 23, 0.1);
-  font-size: 0.9em;
 }
+
 @media (min-width: 34em) {
   .register {
-    width: 40vw;
-    padding: 3em 4em;
+    width: 60vw;
+    padding: 3em 3em;
   }
-
-  .input {
-    margin-bottom: 1em;
+  .form-wrapper {
+    flex-grow: 2;
+    margin-left: 2em;
   }
 
   .input input[type='text'],
+  .input select,
   .vue-tags-input {
     font-size: 0.6em !important;
   }

@@ -10,7 +10,8 @@ export default {}
 
 <style scoped>
 div {
-  background: rgba(215, 63, 47, 1) url(../assets/register.svg) top;
+  background: url(../assets/login-background.svg) no-repeat center center fixed;
+  background-size: cover;
   height: 100vh;
 }
 </style>
