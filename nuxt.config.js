@@ -1,5 +1,5 @@
 export default {
-  mode: 'universal',
+  mode: 'spa',
   /*
    ** Headers of the page
    */
@@ -26,6 +26,10 @@ export default {
    ** Customize the progress-bar color
    */
   loading: { color: '#b93829' },
+  env: {
+    Comet_Chat_App_ID: '83945cf299dfa3',
+    Comet_Chat_API_Key: 'cdb021b70eca80a1f59e790d735bd0053e2fc474'
+  },
   /*
    ** Global CSS
    */
@@ -34,12 +38,16 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '~/plugins/vueTyper.js', ssr: false },
-    { src: '~/plugins/vueTagsInput.js', ssr: false },
-    { src: '~/plugins/cloudinary.js', ssr: false },
+    { src: '~/plugins/vueTyper.js', mode: 'client' },
+    { src: '~/plugins/vueTagsInput.js', mode: 'client' },
+    { src: '~/plugins/cloudinary.js', mode: 'client' },
     {
-      src: '~plugins/vue-scrollmagic.js',
-      ssr: false
+      src: '~/plugins/vue-scrollmagic.js',
+      mode: 'client'
+    },
+    {
+      src: '~/plugins/cometChat.js',
+      mode: 'client'
     }
   ],
   /*

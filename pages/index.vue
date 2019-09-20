@@ -3,7 +3,6 @@
     <main class="hero">
       <h1 class="big">
         Hire
-        <font-awesome-icon icon="dollar-sign" style="font-size: 30px" />
         <span class="mobile">easily</span>
         <vue-typer
           class="typed"
@@ -111,11 +110,13 @@
 
 <script>
 import { TweenMax } from 'gsap'
+import CometChat from '~/plugins/cometChat'
+
 import Freelancer from '~/components/Freelancer'
 export default {
   head() {
     return {
-      title: 'Hire and pay freelancers with WAVES'
+      title: '👋, Hire and pay freelancers with WAVES'
     }
   },
   components: {
@@ -139,10 +140,24 @@ export default {
   },
   mounted() {
     this.wavy()
+    this.loginToCometChat()
   },
   methods: {
     wavy() {
       TweenMax.from('.squiggle-block', 2, { x: 300, delay: 2 })
+    },
+    loginToCometChat() {
+      const apiKey = process.env.Comet_Chat_API_Key
+      this.loggingIn = true
+      CometChat.login('superhero1', apiKey)
+        .then(() => {
+          this.loggingIn = false
+          console.log('success')
+        })
+        .catch((error) => {
+          this.loggingIn = false
+          console.log(error)
+        })
     }
   }
 }
