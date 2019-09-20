@@ -64,22 +64,12 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    '@nuxtjs/toast',
-    '@nuxtjs/font-awesome'
+    '@nuxtjs/toast'
   ],
 
   toast: {
     position: 'top-center',
-    register: [
-      // Register custom toasts
-      {
-        name: 'my-error',
-        message: 'Oops...Something went wrong',
-        options: {
-          type: 'error'
-        }
-      }
-    ]
+    duration: 5000
   },
   /*
    ** Axios module configuration

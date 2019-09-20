@@ -1,13 +1,13 @@
 <template>
   <div>
     <section class="auctoboard-card">
-      <div class="header">Waves Address:</div>
+      <div class="header">Waves Address: {{ user.address }}</div>
       <div class="body">
         <section class="wallet-balances">
           <div class="waves">
             <h4 class="caption">Waves Balance</h4>
             <div class="balance">
-              <p>340</p>
+              <p>{{ accountDetails.balance.available }}</p>
               <a href="" class="waves">Top up</a>
             </div>
           </div>
@@ -36,7 +36,40 @@
 </template>
 
 <script>
-export default {}
+import { mapState } from 'vuex'
+export default {
+  data() {
+    return {
+      accountDetails: {
+        balance: {
+          available: 0.0
+        }
+      }
+    }
+  },
+  computed: {
+    ...mapState('auth', ['user'])
+  },
+  created() {
+    this.getWavesBalance()
+  },
+  methods: {
+    getWavesBalance() {
+      // eslint-disable-next-line no-undef
+      WavesKeeper.publicState()
+        .then((state) => {
+          console.log(state) // displaying the result in the console
+          this.accountDetails = state.account
+          this.accountDetails.balance.available =
+            this.accountDetails.balance.available / 100000000
+        })
+        .catch((error) => {
+          console.error(error) // displaying the result in the console
+          /* ...processing errors */
+        })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

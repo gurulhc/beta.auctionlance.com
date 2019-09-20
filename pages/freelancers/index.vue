@@ -6,205 +6,37 @@
     </section>
     <section class="container">
       <section class="freelancer-cards">
-        <div class="freelancer-card">
+        <div
+          v-for="freelancer in freelancers"
+          :key="freelancer.address"
+          class="freelancer-card"
+        >
           <div class="card-top">
             <div class="avatar">
               <img
-                src="http://auctionlance.com/aucttoken.svg"
-                alt="freelancer"
+                v-if="freelancer.avatar"
+                :src="freelancer.avatar.secure_url"
+                :alt="freelancer.name"
               />
+              <img v-else :src="freelancer.avatar_url" :alt="freelancer.name" />
             </div>
             <div class="bio">
-              <h4>Kelvin Omereshone</h4>
-              <p class="description">fullstack web developer</p>
-              <p class="location">Delta, Nigeria</p>
+              <h4>{{ freelancer.name }}</h4>
+              <p class="description">{{ freelancer.description }}</p>
+              <p class="location">{{ freelancer.location }}</p>
               <div class="rating"></div>
             </div>
           </div>
           <div class="tags">
             <ul>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
+              <li v-for="(tag, index) in freelancer.tags" :key="index">
+                {{ tag }}
+              </li>
             </ul>
           </div>
-          <nuxt-link to="/freelancer/7899" class="freelancer-btn"
-            >Hire freelancer</nuxt-link
-          >
-        </div>
-        <div class="freelancer-card">
-          <div class="card-top">
-            <div class="avatar">
-              <img
-                src="http://auctionlance.com/aucttoken.svg"
-                alt="freelancer"
-              />
-            </div>
-            <div class="bio">
-              <h4>Kelvin Omereshone</h4>
-              <p class="description">fullstack web developer</p>
-              <p class="location">Delta, Nigeria</p>
-              <div class="rating"></div>
-            </div>
-          </div>
-          <div class="tags">
-            <ul>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-            </ul>
-          </div>
-          <nuxt-link to="/freelancer/7899" class="freelancer-btn"
-            >Hire freelancer</nuxt-link
-          >
-        </div>
-        <div class="freelancer-card">
-          <div class="card-top">
-            <div class="avatar">
-              <img
-                src="http://auctionlance.com/aucttoken.svg"
-                alt="freelancer"
-              />
-            </div>
-            <div class="bio">
-              <h4>Kelvin Omereshone</h4>
-              <p class="description">fullstack web developer</p>
-              <p class="location">Delta, Nigeria</p>
-              <div class="rating"></div>
-            </div>
-          </div>
-          <div class="tags">
-            <ul>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-            </ul>
-          </div>
-          <nuxt-link to="/freelancer/7899" class="freelancer-btn"
-            >Hire freelancer</nuxt-link
-          >
-        </div>
-        <div class="freelancer-card">
-          <div class="card-top">
-            <div class="avatar">
-              <img
-                src="http://auctionlance.com/aucttoken.svg"
-                alt="freelancer"
-              />
-            </div>
-            <div class="bio">
-              <h4>Kelvin Omereshone</h4>
-              <p class="description">fullstack web developer</p>
-              <p class="location">Delta, Nigeria</p>
-              <div class="rating"></div>
-            </div>
-          </div>
-          <div class="tags">
-            <ul>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-            </ul>
-          </div>
-          <nuxt-link to="/freelancer/7899" class="freelancer-btn"
-            >Hire freelancer</nuxt-link
-          >
-        </div>
-        <div class="freelancer-card">
-          <div class="card-top">
-            <div class="avatar">
-              <img
-                src="http://auctionlance.com/aucttoken.svg"
-                alt="freelancer"
-              />
-            </div>
-            <div class="bio">
-              <h4>Kelvin Omereshone</h4>
-              <p class="description">fullstack web developer</p>
-              <p class="location">Delta, Nigeria</p>
-              <div class="rating"></div>
-            </div>
-          </div>
-          <div class="tags">
-            <ul>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-            </ul>
-          </div>
-          <nuxt-link to="/freelancer/7899" class="freelancer-btn"
-            >Hire freelancer</nuxt-link
-          >
-        </div>
-        <div class="freelancer-card">
-          <div class="card-top">
-            <div class="avatar">
-              <img
-                src="http://auctionlance.com/aucttoken.svg"
-                alt="freelancer"
-              />
-            </div>
-            <div class="bio">
-              <h4>Kelvin Omereshone</h4>
-              <p class="description">fullstack web developer</p>
-              <p class="location">Delta, Nigeria</p>
-              <div class="rating"></div>
-            </div>
-          </div>
-          <div class="tags">
-            <ul>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-            </ul>
-          </div>
-          <nuxt-link to="/freelancer/7899" class="freelancer-btn"
-            >Hire freelancer</nuxt-link
-          >
-        </div>
-        <div class="freelancer-card">
-          <div class="card-top">
-            <div class="avatar">
-              <img
-                src="http://auctionlance.com/aucttoken.svg"
-                alt="freelancer"
-              />
-            </div>
-            <div class="bio">
-              <h4>Kelvin Omereshone</h4>
-              <p class="description">fullstack web developer</p>
-              <p class="location">Delta, Nigeria</p>
-              <div class="rating"></div>
-            </div>
-          </div>
-          <div class="tags">
-            <ul>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-              <li>Ride</li>
-              <li>Vue/Nuxt</li>
-            </ul>
-          </div>
-          <nuxt-link to="/freelancer/7899" class="freelancer-btn"
+          <nuxt-link
+            :to="`/freelancers/${freelancer.publicKey}`"
+            class="freelancer-btn"
             >Hire freelancer</nuxt-link
           >
         </div>
@@ -214,16 +46,26 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import FemaleDeveloper from '~/components/FemaleDeveloper'
 export default {
   middleware: 'isAuthenticated',
+  components: {
+    FemaleDeveloper
+  },
+  computed: {
+    ...mapState('freelancers', ['freelancers']),
+    ...mapState('auth', ['users'])
+  },
   head() {
     return {
       title: 'Top Notch Freelancers'
     }
   },
-  components: {
-    FemaleDeveloper
+  mounted() {
+    console.log('In freelancers')
+    console.log(this.users)
+    this.$store.commit('freelancers/LOAD_FREELANCERS', this.users)
   }
 }
 </script>

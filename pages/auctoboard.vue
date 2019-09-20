@@ -2,27 +2,18 @@
   <div class="auctoboard">
     <div class="auctoboard__sidebar">
       <section class="avatar-container">
-        <img
-          src="https://auctionlance.com/aucttoken.svg"
-          alt=""
-          class="avatar"
-        />
+        <img :src="user.avatar.secure_url" alt="" class="avatar" />
       </section>
       <section class="textual-content">
-        <h3 class="name">Kelvin Omereshone</h3>
+        <h3 class="name">{{ user.name }}</h3>
         <p class="description">
-          Full stack software developer, iOS/Swift, Android/Kotlin
+          {{ user.description }}
         </p>
-        <p class="location">Delta, Nigeria</p>
+        <p class="location">{{ user.location }}</p>
         <p v-if="false" class="rating">Implement later</p>
         <section class="tags">
           <ul>
-            <li>JavaScript</li>
-            <li>PHP</li>
-            <li>Ride</li>
-            <li>JavaScript</li>
-            <li>PHP</li>
-            <li>Ride</li>
+            <li v-for="tag in user.tags" :key="tag">{{ tag }}</li>
           </ul>
         </section>
       </section>
@@ -55,7 +46,13 @@
 </template>
 
 <script>
-export default {}
+import { mapState } from 'vuex'
+export default {
+  middleware: 'isAuthenticated',
+  computed: {
+    ...mapState('auth', ['user'])
+  }
+}
 </script>
 
 <style lang="scss">
@@ -169,6 +166,7 @@ export default {}
       border-radius: inherit;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+      font-size: 0.7em;
     }
     .body {
       padding: 0.5em 1em 1em 1em;

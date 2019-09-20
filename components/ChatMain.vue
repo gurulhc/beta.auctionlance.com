@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import CometChat from '~/plugins/cometChat'
+import { CometChat } from '@cometchat-pro/chat'
 import Spinner from '@/components/Spinner.vue'
 import ChatMessages from '@/components/ChatMessages.vue'
 export default {
@@ -121,22 +121,24 @@ export default {
     },
     loadMessages() {
       this.loadingMessages = true
-      const messagesRequest = new CometChat.MessagesRequestBuilder()
-        .setUID(this.activeContact.uid)
-        .build()
-      messagesRequest
-        .fetchPrevious()
-        .then((messages) => {
-          this.messages = messages
-          this.loadingMessages = false
-          this.$nextTick(() => {
-            this.scrollToBottom()
+      if (this.activeContact.uid) {
+        const messagesRequest = new CometChat.MessagesRequestBuilder()
+          .setUID(this.activeContact.uid)
+          .build()
+        messagesRequest
+          .fetchPrevious()
+          .then((messages) => {
+            this.messages = messages
+            this.loadingMessages = false
+            this.$nextTick(() => {
+              this.scrollToBottom()
+            })
           })
-        })
-        .catch((error) => {
-          console.log('error', error)
-          this.loadingMessages = false
-        })
+          .catch((error) => {
+            console.log('error', error)
+            this.loadingMessages = false
+          })
+      }
     },
     scrollToBottom() {
       const messagesContainer = this.$refs.messagesContainer

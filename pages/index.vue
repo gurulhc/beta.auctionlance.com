@@ -110,8 +110,7 @@
 
 <script>
 import { TweenMax } from 'gsap'
-import CometChat from '~/plugins/cometChat'
-
+import { mapState } from 'vuex'
 import Freelancer from '~/components/Freelancer'
 export default {
   head() {
@@ -138,25 +137,83 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState('auth', ['wavesKeeperData, user']),
+    ...mapState(['dAppAddress'])
+  },
+  fetch({ store, $axios }) {
+    // eslint-disable-next-line no-undef
+    return $axios
+      .$get(
+        'https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_Registered$'
+      )
+      .then((data) => {
+        const users = data
+        console.log(typeof users)
+        const preparedUsers = users.map((user) => JSON.parse(user.value))
+        store.commit('auth/LOAD_USERS', preparedUsers)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
   mounted() {
     this.wavy()
-    this.loginToCometChat()
+  },
+  created() {
+    if (!this.$store.state.loggedIn) {
+      this.performWavesKeeperAuth()
+    }
   },
   methods: {
     wavy() {
       TweenMax.from('.squiggle-block', 2, { x: 300, delay: 2 })
     },
-    loginToCometChat() {
-      const apiKey = process.env.Comet_Chat_API_Key
-      this.loggingIn = true
-      CometChat.login('superhero1', apiKey)
-        .then(() => {
-          this.loggingIn = false
-          console.log('success')
+    performWavesKeeperAuth() {
+      const authData = {
+        data: 'Auctionlance Platform',
+        name: 'Auctionlance Platform',
+        icon: 'http://auctionlance.com/aucttoken.svg',
+        referrer: '/',
+        successPath: '/'
+      }
+      // eslint-disable-next-line no-undef
+      WavesKeeper.auth(authData)
+        .then((data) => {
+          console.log(data)
+          this.$store.commit('auth/GET_WAVES_KEEPER_DATA', data)
+          this.logIn(data.publicKey)
         })
         .catch((error) => {
-          this.loggingIn = false
+          this.$toast.info('Something went wrong. Try reloading the page')
           console.log(error)
+        })
+    },
+    logIn(dataKey) {
+      this.$axios
+        .$get(
+          `https://nodes-testnet.wavesnodes.com/addresses/data/${this.dAppAddress}/${dataKey}_Registered`
+        )
+        .then((res) => {
+          console.log(JSON.parse(res.value))
+          const { name } = JSON.parse(res.value)
+          this.$toast.success(`👋 Welcome back ${name}`)
+          this.$store.commit('auth/LOG_IN', JSON.parse(res.value))
+          this.$store.commit('UPDATE_LOGGED_IN_STATUS')
+        })
+        .catch((error) => {
+          if (error.response && error.response.data.error === 304) {
+            console.log("You don't have an account on Auctionlance")
+
+            this.$router.push({
+              path: '/register'
+            })
+
+            this.$toast.error("You don't have an account on Auctionlance")
+
+            return
+          }
+          console.log(error.response && error.response.data.message)
         })
     }
   }

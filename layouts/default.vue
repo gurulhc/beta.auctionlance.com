@@ -24,7 +24,7 @@
             <li v-if="user">
               <nuxt-link to="/auctoboard/overview" class="user"
                 ><img
-                  :src="`${user.avatar_url}`"
+                  :src="`${user.avatar.secure_url}`"
                   :alt="user.name"
                   class="avatar"
               /></nuxt-link>
@@ -133,7 +133,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
+import { CometChat } from '@cometchat-pro/chat'
 export default {
   head() {
     return {
@@ -206,20 +207,33 @@ export default {
     ...mapState('auth', ['user'])
   },
   mounted() {
-    const userPublicKey = JSON.parse(localStorage.getItem('userPublicKey'))
-
-    if (!userPublicKey) {
-      this.performWavesKeeperAuth()
-    } else {
-      this.logIn(userPublicKey)
-    }
+    this.loginToCometChat()
   },
   methods: {
-    ...mapActions('auth', ['performWavesKeeperAuth', 'logIn']),
     getFullYear() {
       const currentDate = new Date()
 
-      return currentDate.getFullYear()
+      return currentDate.getFullYear() // 83945cf299dfa3
+    },
+    loginToCometChat() {
+      CometChat.init('83945cf299dfa3')
+        .then(() => {
+          console.log('CometChat was initialized successfully!')
+        })
+        .catch(() => {
+          console.log('An error occured while initializing CometChat')
+        })
+      const apiKey = 'cdb021b70eca80a1f59e790d735bd0053e2fc474'
+      this.loggingIn = true
+      CometChat.login('superhero1', apiKey)
+        .then(() => {
+          this.loggingIn = false
+          console.log('success')
+        })
+        .catch((error) => {
+          this.loggingIn = false
+          console.log(error)
+        })
     }
   }
 }

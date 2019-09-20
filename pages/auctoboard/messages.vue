@@ -5,13 +5,13 @@
       :active-contact-id="activeContactUid"
       @select-contact="setActiveContactUid"
     />
-    <chat-main :activeContact="activeContact" />
+    <chat-main :active-contact="activeContact" />
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import CometChat from '~/plugins/cometChat'
+import { CometChat } from '@cometchat-pro/chat'
 import ChatSidebar from '@/components/ChatSidebar.vue'
 import ChatMain from '@/components/ChatMain.vue'
 export default {

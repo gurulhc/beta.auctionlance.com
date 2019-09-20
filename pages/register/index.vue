@@ -52,7 +52,7 @@
           <div class="input">
             <input
               id="country"
-              v-model="info.country"
+              v-model="info.location"
               placeholder="Location"
               type="text"
               name="location"
@@ -62,6 +62,7 @@
           <div class="input">
             <button
               id="upload_widget"
+              type="button"
               class="form-button form-button--secondary"
               @click="openCloudinaryWidget"
             >
@@ -114,10 +115,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress'])
+    ...mapState(['dAppAddress']),
+    ...mapState('auth', ['wavesKeeperData'])
   },
   mounted() {
     console.log(this.dAppAddress)
+    console.log(this.wavesKeeperData)
   },
   methods: {
     createCloudinaryWidget() {
@@ -151,6 +154,10 @@ export default {
       widget.open()
     },
     register() {
+      this.info.address = this.wavesKeeperData.address
+
+      this.info.publicKey = this.wavesKeeperData.publicKey
+
       const payload = JSON.stringify(this.info)
 
       const tags = this.tags.map((tag) => tag.text)
@@ -158,44 +165,36 @@ export default {
       this.info.tags = [...tags]
 
       console.log(this.info)
-      // const tx = invokeScript(
-      //   {
-      //     dAppAddress: this.dAppAddress,
-      //     call: {
-      //       function: 'signUp',
-      //       args: [{ type: 'string', value: payload }]
-      //     },
-      //     payment: []
-      //   },
-      //   JSON.parse(localStorage.getItem('userPublicKey'))
-      // )
-
-      if (typeof window !== 'undefined') {
-        // eslint-disable-next-line no-undef
-        WavesKeeper.signAndPublishTransaction({
-          type: 16,
-          data: {
-            fee: {},
-            dApp: this.dAppAdress,
-            call: {
-              function: 'signUp',
-              args: [
-                {
-                  type: 'string',
-                  value: payload
-                }
-              ]
-            },
-            payment: []
+      const tx = {
+        type: 16,
+        data: {
+          dApp: this.dAppAddress,
+          call: {
+            function:
+              this.info.userType === 'freelancer'
+                ? 'freelancerSignUp'
+                : 'clientSignUp',
+            args: [{ type: 'string', value: payload }]
+          },
+          payment: [],
+          fee: {
+            assetId: 'WAVES',
+            amount: 500000
           }
-        })
-          .then((tx) => {
-            console.log(tx)
-          })
-          .catch((error) => {
-            console.error(error)
-          })
+        }
       }
+
+      // eslint-disable-next-line no-undef
+      WavesKeeper.signAndPublishTransaction(tx)
+        .then((data) => {
+          console.log(tx)
+          this.$router.push({
+            path: '/auctoboard/overiew'
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   }
 }

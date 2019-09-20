@@ -1,6 +1,12 @@
+/* eslint-disable no-console */
+
 export const state = () => ({
-  pageNav: {
-    parent: 'freelancers',
-    navs: ['featured', 'all']
-  }
+  freelancers: []
 })
+
+export const mutations = {
+  LOAD_FREELANCERS(state, data) {
+    const freelancers = data.filter((datum) => datum.userType === 'freelancer')
+    state.freelancers = freelancers
+  }
+}

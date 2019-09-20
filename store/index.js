@@ -1,4 +1,5 @@
 export const state = () => ({
+  loggedIn: false,
   isLoading: false,
   dAppAddress: '3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2',
   wavesNode: {
@@ -7,13 +8,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-  UPDATE_LOADING_STATUS(state) {
-    state.isLoading = !state.isLoading
-  }
-}
-
-export const actions = {
-  updateLoadingStatus({ commit }) {
-    commit('UPDATE_LOADING_STATUS')
+  UPDATE_LOGGED_IN_STATUS(state) {
+    state.loggedIn = true
   }
 }
