@@ -122,7 +122,7 @@ export default {
   middleware: 'isAuthenticated',
   head() {
     return {
-      title: 'Auctions'
+      title: '💼 Auctions'
     }
   },
   computed: {}

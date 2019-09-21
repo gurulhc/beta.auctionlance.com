@@ -21,7 +21,13 @@
             </li>
             <li><nuxt-link to="/about">About</nuxt-link></li>
 
-            <li v-if="user">
+            <li v-if="isClient">
+              <nuxt-link to="/jobs/new" class="nav-button"
+                >Create Auction</nuxt-link
+              >
+            </li>
+
+            <li>
               <nuxt-link to="/auctoboard/overview" class="user"
                 ><img
                   :src="`${user.avatar.secure_url}`"
@@ -204,7 +210,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
+    isClient() {
+      return this.user.userType === 'client'
+    }
   },
   mounted() {
     this.loginToCometChat()
@@ -317,7 +326,7 @@ body {
   margin: 0;
 }
 
-@media (min-width: 35em) {
+@media (min-width: 34em) {
   .menu-pop-up {
     display: block;
     position: relative;
@@ -472,6 +481,20 @@ body {
         color: #fff;
       }
     }
+  }
+}
+.nav-button {
+  color: #fff !important;
+  background-color: #d73f2e;
+  border-bottom: none;
+  padding: 0.5em 1em;
+  font-size: 0.6em;
+  text-transform: lowercase;
+  border-radius: 4px;
+  transition: all 300ms;
+
+  &:hover {
+    background-image: none !important;
   }
 }
 </style>

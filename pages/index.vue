@@ -115,7 +115,7 @@ import Freelancer from '~/components/Freelancer'
 export default {
   head() {
     return {
-      title: '👋, Hire and pay freelancers with WAVES'
+      title: '👋 Hire and pay freelancers with WAVES'
     }
   },
   components: {
@@ -192,13 +192,13 @@ export default {
     logIn(dataKey) {
       this.$axios
         .$get(
-          `https://nodes-testnet.wavesnodes.com/addresses/data/${this.dAppAddress}/${dataKey}_Registered`
+          `https://nodes-testnet.wavesnodes.com/addresses/data/${this.dAppAddress}?matches=.*?${dataKey}(_Registered|_Client)$`
         )
         .then((res) => {
-          console.log(JSON.parse(res.value))
-          const { name } = JSON.parse(res.value)
+          console.log(JSON.parse(res[0].value))
+          const { name } = JSON.parse(res[0].value)
           this.$toast.success(`👋 Welcome back ${name}`)
-          this.$store.commit('auth/LOG_IN', JSON.parse(res.value))
+          this.$store.commit('auth/LOG_IN', JSON.parse(res[0].value))
           this.$store.commit('UPDATE_LOGGED_IN_STATUS')
         })
         .catch((error) => {

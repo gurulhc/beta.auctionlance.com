@@ -1,5 +1,5 @@
 <template>
-  <div class="spinner">
+  <span class="spinner">
     <!-- By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL -->
     <svg
       :width="size"
@@ -24,7 +24,7 @@
         </g>
       </g>
     </svg>
-  </div>
+  </span>
 </template>
 <script>
 export default {

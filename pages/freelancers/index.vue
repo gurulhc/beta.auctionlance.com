@@ -13,17 +13,12 @@
         >
           <div class="card-top">
             <div class="avatar">
-              <img
-                v-if="freelancer.avatar"
-                :src="freelancer.avatar.secure_url"
-                :alt="freelancer.name"
-              />
-              <img v-else :src="freelancer.avatar_url" :alt="freelancer.name" />
+              <img :src="freelancer.avatar.secure_url" :alt="freelancer.name" />
             </div>
             <div class="bio">
               <h4>{{ freelancer.name }}</h4>
               <p class="description">{{ freelancer.description }}</p>
-              <p class="location">{{ freelancer.location }}</p>
+              <p class="location">📍{{ freelancer.location }}</p>
               <div class="rating"></div>
             </div>
           </div>
@@ -35,9 +30,9 @@
             </ul>
           </div>
           <nuxt-link
-            :to="`/freelancers/${freelancer.publicKey}`"
+            :to="`/freelancers/${freelancer.publicKey}/profile`"
             class="freelancer-btn"
-            >Hire freelancer</nuxt-link
+            >See profile</nuxt-link
           >
         </div>
       </section>
@@ -59,7 +54,7 @@ export default {
   },
   head() {
     return {
-      title: 'Top Notch Freelancers'
+      title: '😎 Top Notch Freelancers'
     }
   },
   mounted() {

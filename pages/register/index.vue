@@ -62,19 +62,23 @@
           <div class="input">
             <button
               id="upload_widget"
+              ref="upload"
               type="button"
               class="form-button form-button--secondary"
+              :disabled="hasUploaded"
+              :class="{ uploaded: hasUploaded }"
               @click="openCloudinaryWidget"
             >
-              Upload Avatar
+              <spinner v-if="isOpeningCloudinary" :size="15" />
+              <span v-else-if="hasUploaded">Avatar Uploaded Successfully</span>
+              <span v-else>Upload Avatar</span>
             </button>
           </div>
           <div class="input">
-            <input
-              type="submit"
-              value="Join Auctionlance"
-              class="form-button form-button--primary"
-            />
+            <button type="submit" class="form-button form-button--primary">
+              <spinner v-if="isRegistering" :size="15" />
+              <span v-else>Join Auctionlance</span>
+            </button>
           </div>
         </form>
       </section>
@@ -89,6 +93,7 @@
 <script>
 /* eslint-disable camelcase */
 import { mapState } from 'vuex'
+import Spinner from '@/components/Spinner.vue'
 export default {
   layout: 'register',
   head() {
@@ -100,6 +105,9 @@ export default {
   middleware: 'canRegister',
   data() {
     return {
+      isOpeningCloudinary: false,
+      isRegistering: false,
+      hasUploaded: false,
       tag: '',
       tags: [],
       info: {
@@ -122,6 +130,9 @@ export default {
     console.log(this.dAppAddress)
     console.log(this.wavesKeeperData)
   },
+  components: {
+    Spinner
+  },
   methods: {
     createCloudinaryWidget() {
       // eslint-disable-next-line no-undef
@@ -137,7 +148,9 @@ export default {
           clientAllowedFormats: ['png', 'gif', 'jpeg']
         },
         (error, result) => {
+          this.isOpeningCloudinary = false
           if (!error && result && result.event === 'success') {
+            this.hasUploaded = true
             const { secure_url, url, public_id, thumbnail_url } = result.info
             this.info.avatar.secure_url = secure_url
             this.info.avatar.url = url
@@ -149,11 +162,13 @@ export default {
       return newWidget
     },
     openCloudinaryWidget() {
+      this.isOpeningCloudinary = true
       const widget = this.createCloudinaryWidget()
 
       widget.open()
     },
     register() {
+      this.isRegistering = true
       this.info.address = this.wavesKeeperData.address
 
       this.info.publicKey = this.wavesKeeperData.publicKey
@@ -188,8 +203,9 @@ export default {
       WavesKeeper.signAndPublishTransaction(tx)
         .then((data) => {
           console.log(tx)
+          this.isRegistering = false
           this.$router.push({
-            path: '/auctoboard/overiew'
+            path: '/auctoboard/overview'
           })
         })
         .catch((error) => {
@@ -237,27 +253,25 @@ export default {
 
 .input input,
 .input select,
-.vue-tags-input {
+.ti-input {
   width: 100%;
-  border: none;
 }
 
 .input input[type='text'],
-.vue-tags-input,
+ti-input,
 .input select {
-  min-height: 52px;
   line-height: 20px;
-  padding: 0 15px;
+  padding: 0.5em 1em;
   font-size: 0.9em;
   border: 1px solid rgba(36, 28, 21, 0.3);
   border-radius: 4px;
   transition: all 300ms;
 }
 .input select {
-  height: 52px;
+  height: 2.5em;
 }
 .input input[type='text']:focus,
-.vue-tags-input:focus,
+ti-input:focus,
 .input select:focus {
   outline: transparent;
   border: 1px solid #d73f2e !important;
@@ -280,10 +294,20 @@ export default {
 .form-button.form-button--primary {
   color: #fff !important;
   background-color: #d73f2e !important;
+
+  &:disabled {
+    color: lighten(#000, 50%);
+    background-color: lighten(#d73f2e, 50%);
+    cursor: not-allowed;
+  }
 }
 .form-button.form-button--secondary {
   border: 1px solid #d73f2e;
   color: #000;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .form-button--primary:hover {
@@ -306,7 +330,7 @@ export default {
 
   .input input[type='text'],
   .input select,
-  .vue-tags-input {
+  .ti-input {
     font-size: 0.6em !important;
   }
 
@@ -314,10 +338,9 @@ export default {
     font-size: 0.6em;
   }
 }
-
-.vue-tags-input {
-  .ti-input {
-    border: transparent !important;
-  }
+.uploaded {
+  border-color: hsl(149, 41%, 53%) !important;
+  background-color: hsl(149, 41%, 53%) !important;
+  color: #fff !important;
 }
 </style>

@@ -75,7 +75,7 @@ export default {
     'activeContact.id': {
       immediate: true,
       handler() {
-        this.loadMessages()
+        // this.loadMessages()
       }
     }
   },

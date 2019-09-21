@@ -9,7 +9,7 @@
         <p class="description">
           {{ user.description }}
         </p>
-        <p class="location">{{ user.location }}</p>
+        <p class="location">📍{{ user.location }}</p>
         <p v-if="false" class="rating">Implement later</p>
         <section class="tags">
           <ul>
