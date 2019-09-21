@@ -35,6 +35,7 @@
 
 <script>
 export default {
+  scrollToTop: true,
   data() {},
   asyncData({ $axios, params }) {
     return $axios

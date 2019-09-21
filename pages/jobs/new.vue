@@ -47,7 +47,7 @@
       <section class="form-group">
         <label>₿ Select Token </label>
 
-        <select v-model="assetId">
+        <select v-model="selectedAssetId">
           <option disabled selected>Choose payment token</option>
           <option v-for="asset in assets" :key="asset.id" :value="asset.id"
             >{{ asset.name }}
@@ -97,7 +97,7 @@
         </label>
       </section>
       <button type="submit" class="create-button" :disabled="!hasAgreed">
-        <spinner v-if="creatingAuction"></spinner>
+        <spinner v-if="creatingAuction" :size="15"></spinner>
         <span v-else>👍 Create Auction</span>
       </button>
     </form>
@@ -133,7 +133,8 @@ export default {
   },
   computed: {
     ...mapState({
-      assets: 'acceptedAssets'
+      assets: 'acceptedAssets',
+      dAppAddress: 'dAppAddress'
     }),
     total() {
       let amount = Number(this.auction.amount)
@@ -146,20 +147,33 @@ export default {
   methods: {
     createAuction() {
       this.creatingAuction = true
-      const payload = JSON.parse(this.info)
-      // const jobDuration = Number(this.info.jobExecution)
+
+      const tags = this.tags.map((tag) => tag.text)
+
+      this.auction.tags = [...tags]
+
+      const payload = JSON.stringify(this.auction)
+
       const tx = {
         type: 16,
         data: {
           dApp: this.dAppAddress,
           call: {
             function: 'createAuction',
-            args: [{ type: 'string', value: payload }]
+            args: [
+              { type: 'string', value: payload },
+              { type: 'number', value: Number(this.auction.amount) },
+              { type: 'number', value: Number(this.auction.auctionDuration) }
+            ]
           },
           payment: [
-            { amount: this.info.amount, assedId: this.selectedAssetId }
+            {
+              tokens: Number(this.auction.amount),
+              assetId: this.selectedAssetId
+            }
           ],
           fee: {
+            assetId: 'WAVES',
             amount: 500000
           }
         }
@@ -170,16 +184,17 @@ export default {
         .then((data) => {
           console.log(data)
           this.creatingAuction = false
-          this.$toast.show('👍 Auction created successfully')
+          this.$toast.success('👍 Auction created successfully')
           this.$router.push({
             path: `/jobs/${data.id}`
           })
         })
         .catch((error) => {
           console.log(error)
-          this.$toast.show(
+          this.$toast.error(
             '😰 Oops this is embarrasing something went wrong. Try again'
           )
+          this.creatingAuction = false
         })
     }
   }
