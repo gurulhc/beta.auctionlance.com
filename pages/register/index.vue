@@ -103,6 +103,9 @@ export default {
     }
   },
   middleware: 'canRegister',
+  components: {
+    Spinner
+  },
   data() {
     return {
       isOpeningCloudinary: false,
@@ -123,15 +126,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress']),
+    ...mapState(['dAppAddress', 'wavesNode']),
     ...mapState('auth', ['wavesKeeperData'])
   },
   mounted() {
     console.log(this.dAppAddress)
     console.log(this.wavesKeeperData)
-  },
-  components: {
-    Spinner
   },
   methods: {
     createCloudinaryWidget() {

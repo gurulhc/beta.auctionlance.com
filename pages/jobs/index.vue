@@ -9,7 +9,7 @@
         class="search"
       />
       <div class="wrapper">
-        <p>150 jobs found</p>
+        <p>{{ jobs.length }} jobs found</p>
         <div class="filter-section">
           <select id="filter" name="filter">
             <option value="newest">Newest</option>
@@ -18,106 +18,39 @@
       </div>
     </section>
     <section class="container jobs">
-      <div class="job">
+      <div v-for="job in jobs" :key="job.key" class="job">
         <div class="jobs-card">
-          <h3>Wordpress developer needed</h3>
+          <h3>{{ job.info.title }}</h3>
           <div class="summary">
             <div class="duration">
-              <p>3 Days</p>
+              <p>
+                {{ job.info.auctionDuration }} Day<span
+                  v-if="job.info.auctionDuration > 1"
+                  >s</span
+                >
+              </p>
               <p class="duration-label">Duration</p>
             </div>
             <div class="budget">
-              <p>$1000</p>
-              <p class="budget-label">Budget</p>
+              <p>{{ job.info.amount }} Waves</p>
+              <p class="budget-label">Starting Amount</p>
             </div>
           </div>
           <div class="description">
             <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta
-              atque incidunt impedit perspiciatis totam, tempora quibusdam
-              cumque, eaque pariatur dignissimos quam doloremque nisi, voluptate
-              ea et culpa corrupti ipsam voluptates.
+              {{ job.info.description }}
             </p>
           </div>
-          <nuxt-link to="/" class="bid-btn">Bid now</nuxt-link>
-        </div>
-      </div>
-      <div class="job">
-        <div class="jobs-card">
-          <h3>Wordpress developer needed</h3>
-          <div class="summary">
-            <div class="duration">
-              <p>3 Days</p>
-              <p class="duration-label">Duration</p>
-            </div>
-            <div class="budget">
-              <p>$1000</p>
-              <p class="budget-label">Budget</p>
-            </div>
-          </div>
-          <div class="description">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta
-              atque incidunt impedit perspiciatis totam, tempora quibusdam
-              cumque, eaque pariatur dignissimos quam doloremque nisi, voluptate
-              ea et culpa corrupti ipsam voluptates.
-            </p>
-          </div>
-          <nuxt-link to="/" class="bid-btn">Bid now</nuxt-link>
-        </div>
-      </div>
-      <div class="job">
-        <div class="jobs-card">
-          <h3>Wordpress developer needed</h3>
-          <div class="summary">
-            <div class="duration">
-              <p>3 Days</p>
-              <p class="duration-label">Duration</p>
-            </div>
-            <div class="budget">
-              <p>$1000</p>
-              <p class="budget-label">Budget</p>
-            </div>
-          </div>
-          <div class="description">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta
-              atque incidunt impedit perspiciatis totam, tempora quibusdam
-              cumque, eaque pariatur dignissimos quam doloremque nisi, voluptate
-              ea et culpa corrupti ipsam voluptates.
-            </p>
-          </div>
-          <nuxt-link to="/" class="bid-btn">Bid now</nuxt-link>
-        </div>
-      </div>
-      <div class="job">
-        <div class="jobs-card">
-          <h3>Wordpress developer needed</h3>
-          <div class="summary">
-            <div class="duration">
-              <p>3 Days</p>
-              <p class="duration-label">Duration</p>
-            </div>
-            <div class="budget">
-              <p>$1000</p>
-              <p class="budget-label">Budget</p>
-            </div>
-          </div>
-          <div class="description">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta
-              atque incidunt impedit perspiciatis totam, tempora quibusdam
-              cumque, eaque pariatur dignissimos quam doloremque nisi, voluptate
-              ea et culpa corrupti ipsam voluptates.
-            </p>
-          </div>
-          <nuxt-link to="/" class="bid-btn">Bid now</nuxt-link>
+          <nuxt-link :to="`/jobs/${job.key}/bids`" class="bid-btn"
+            >Bid now</nuxt-link
+          >
         </div>
       </div>
     </section>
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   middleware: 'isAuthenticated',
   head() {
@@ -125,7 +58,13 @@ export default {
       title: '💼 Auctions'
     }
   },
-  computed: {}
+  computed: {
+    ...mapState(['dAppAddress', 'wavesNode', 'jobs'])
+  },
+  fetch({ store }) {
+    // eslint-disable-next-line no-undef
+    store.dispatch('loadJobs')
+  }
 }
 </script>
 <style lang="scss" scoped>

@@ -2,54 +2,30 @@
   <div>
     <div class="auctoboard-card">
       <div class="header">
-        <strong>15</strong> Jobs Opening available for you
+        <strong>{{ this.freelancerJobs.length }}</strong> Jobs Opening available
+        for you
       </div>
-      <div class="body">
+      <div v-for="job in freelancerJobs" :key="job.id" class="body">
         <div class="jobs-card">
-          <h3>Wordpress developer needed</h3>
+          <h3>{{ job.info.title }}</h3>
           <div class="summary">
             <div class="duration">
-              <p>3 Days</p>
+              <p>{{ job.info.auctionDuration }} Days</p>
               <p class="duration-label">Duration</p>
             </div>
             <div class="budget">
-              <p>$1000</p>
-              <p class="budget-label">Budget</p>
+              <p>{{ job.info.amount }} Waves</p>
+              <p class="budget-label">Starting At</p>
             </div>
           </div>
           <div class="description">
             <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta
-              atque incidunt impedit perspiciatis totam, tempora quibusdam
-              cumque, eaque pariatur dignissimos quam doloremque nisi, voluptate
-              ea et culpa corrupti ipsam voluptates.
+              {{ job.info.description }}
             </p>
           </div>
-          <nuxt-link to="/" class="bid-btn">Bid now</nuxt-link>
-        </div>
-      </div>
-      <div class="body">
-        <div class="jobs-card">
-          <h3>Wordpress developer needed</h3>
-          <div class="summary">
-            <div class="duration">
-              <p>3 Days</p>
-              <p class="duration-label">Duration</p>
-            </div>
-            <div class="budget">
-              <p>$1000</p>
-              <p class="budget-label">Budget</p>
-            </div>
-          </div>
-          <div class="description">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta
-              atque incidunt impedit perspiciatis totam, tempora quibusdam
-              cumque, eaque pariatur dignissimos quam doloremque nisi, voluptate
-              ea et culpa corrupti ipsam voluptates.
-            </p>
-          </div>
-          <nuxt-link to="/" class="bid-btn">Bid now</nuxt-link>
+          <nuxt-link :to="`/jobs/${job.key}/bids`" class="bid-btn"
+            >Bid now</nuxt-link
+          >
         </div>
       </div>
     </div>
@@ -57,7 +33,36 @@
 </template>
 
 <script>
-export default {}
+import { mapState } from 'vuex'
+export default {
+  middleware: ['isAuthenticated'],
+  fetch({ store }) {
+    // eslint-disable-next-line no-undef
+    store.dispatch('loadJobs')
+  },
+  computed: {
+    ...mapState(['jobs']),
+    ...mapState('auth', ['user']),
+    freelancerJobs() {
+      /**
+       * Using the some higher order function of Array.prototype, I get all tags belonging to a user then use them as input for the includes function to test if
+       */
+      // const freelancerJobs = this.user.tags.some((tag) =>
+      //   this.jobs.filter((job) => job.info.tags.includes(tag))
+      // )
+      const freelancerJobs = this.jobs.filter((job) => {
+        return this.user.tags.some((tag) => job.info.tags.includes(tag))
+      })
+
+      return freelancerJobs
+    }
+  },
+  mounted() {
+    console.log(this.freelancerJobs)
+    console.log(this.jobs)
+    console.log(this.user)
+  }
+}
 </script>
 
 <style scoped lang="scss"></style>

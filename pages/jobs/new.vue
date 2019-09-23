@@ -14,7 +14,11 @@
       <section class="form-group">
         <label class="required">Auction title</label>
 
-        <input type="text" placeholder="Auction title" />
+        <input
+          v-model="auction.title"
+          type="text"
+          placeholder="Auction title"
+        />
 
         <p class="form-suggestion">
           Great auction name are short and memorable. Need inspiration? How
@@ -28,7 +32,11 @@
       <section class="form-group">
         <label class="required">Description</label>
 
-        <input type="text" placeholder="description" />
+        <input
+          v-model="auction.description"
+          type="text"
+          placeholder="description"
+        />
       </section>
 
       <section class="form-group">
@@ -48,8 +56,12 @@
         <label>₿ Select Token </label>
 
         <select v-model="selectedAssetId">
-          <option disabled selected>Choose payment token</option>
-          <option v-for="asset in assets" :key="asset.id" :value="asset.id"
+          <option disabled>Choose payment token</option>
+          <option
+            v-for="asset in assets"
+            :key="asset.id"
+            :value="asset.id"
+            selected
             >{{ asset.name }}
           </option>
         </select>
@@ -114,6 +126,9 @@ export default {
       title: '📌 Create a New Auction'
     }
   },
+  components: {
+    Spinner
+  },
   data() {
     return {
       tag: '',
@@ -122,12 +137,12 @@ export default {
       hasAgreed: false,
       creatingAuction: false,
       auction: {
-        title: '',
-        description: '',
-        amount: '',
-        auctionDuration: '',
-        jobExecution: '',
-        tags: []
+        title: 'Full Stack Developer wanted',
+        description: 'Urgently in Need of a full stack developer',
+        amount: '1',
+        auctionDuration: '1',
+        jobExecution: '1',
+        tags: ['Adonis']
       }
     }
   },
@@ -141,9 +156,6 @@ export default {
       return (amount += amount * 0.3)
     }
   },
-  components: {
-    Spinner
-  },
   methods: {
     createAuction() {
       this.creatingAuction = true
@@ -153,7 +165,10 @@ export default {
       this.auction.tags = [...tags]
 
       const payload = JSON.stringify(this.auction)
-
+      const jobExecution = Number(this.auction.jobExecution)
+      const auctionDuration = Number(this.auction.auctionDuration)
+      console.log(typeof this.selectedAssetId)
+      const auctionAmount = Number(this.auction.amount) * 100000000
       const tx = {
         type: 16,
         data: {
@@ -161,20 +176,20 @@ export default {
           call: {
             function: 'createAuction',
             args: [
-              { type: 'string', value: payload },
-              { type: 'number', value: Number(this.auction.amount) },
-              { type: 'number', value: Number(this.auction.auctionDuration) }
+              { type: 'integer', value: jobExecution },
+              { type: 'integer', value: auctionDuration },
+              { type: 'string', value: payload }
             ]
           },
           payment: [
             {
-              tokens: Number(this.auction.amount),
-              assetId: this.selectedAssetId
+              assetId: this.selectedAssetId,
+              amount: auctionAmount
             }
           ],
           fee: {
             assetId: 'WAVES',
-            amount: 500000
+            amount: '500000'
           }
         }
       }
@@ -183,10 +198,11 @@ export default {
       WavesKeeper.signAndPublishTransaction(tx)
         .then((data) => {
           console.log(data)
+          const result = JSON.parse(data)
           this.creatingAuction = false
           this.$toast.success('👍 Auction created successfully')
           this.$router.push({
-            path: `/jobs/${data.id}`
+            path: `/jobs/${result.id}_AuctionInfo`
           })
         })
         .catch((error) => {
@@ -211,7 +227,7 @@ p {
 }
 @media (min-width: 34em) {
   .create-new {
-    width: 50vw;
+    width: 45vw;
     margin: 1em auto;
 
     a {

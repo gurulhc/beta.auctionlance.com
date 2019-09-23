@@ -6,10 +6,10 @@
       :height="size"
       viewBox="0 0 38 38"
       xmlns="http://www.w3.org/2000/svg"
-      stroke="#003"
+      :stroke="color"
     >
       <g fill="none" fill-rule="evenodd">
-        <g transform="translate(1 1)" stroke-width="2">
+        <g transform="translate(1 1)" :stroke-width="strokeWidth">
           <circle stroke-opacity=".5" cx="18" cy="18" r="18" />
           <path d="M36 18c0-9.94-8.06-18-18-18">
             <animateTransform
@@ -32,6 +32,14 @@ export default {
     size: {
       type: Number,
       default: 60
+    },
+    color: {
+      type: String,
+      default: '#fff'
+    },
+    strokeWidth: {
+      type: Number,
+      default: 5
     }
   }
 }

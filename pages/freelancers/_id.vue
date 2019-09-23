@@ -36,6 +36,11 @@
 <script>
 export default {
   scrollToTop: true,
+  head() {
+    return {
+      title: this.freelancer.name
+    }
+  },
   data() {},
   asyncData({ $axios, params }) {
     return $axios
