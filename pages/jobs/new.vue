@@ -109,7 +109,7 @@
         </label>
       </section>
       <button type="submit" class="create-button" :disabled="!hasAgreed">
-        <spinner v-if="creatingAuction" :size="15"></spinner>
+        <spinner v-if="creatingAuction"></spinner>
         <span v-else>👍 Create Auction</span>
       </button>
     </form>
@@ -315,24 +315,6 @@ p {
         font-size: 14px !important;
         color: #586069;
         flex: 1 100%;
-      }
-
-      .create-button {
-        justify-self: flex-start;
-        background-color: #d73f2e;
-        color: #fff;
-        padding: 0.5em 2em;
-        border-radius: 4px;
-        border: 1px solid darken(#d73f2e, 10%);
-        font-size: 0.6em;
-        cursor: pointer;
-        transition: all 300ms;
-        &:disabled {
-          cursor: not-allowed;
-          background: lighten(#d73f2e, 30%);
-          border-color: lighten(#d73f2e, 20%);
-          color: lighten(#000, 70%);
-        }
       }
     }
   }

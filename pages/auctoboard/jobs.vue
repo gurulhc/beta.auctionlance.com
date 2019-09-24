@@ -23,7 +23,7 @@
               {{ job.info.description }}
             </p>
           </div>
-          <nuxt-link :to="`/jobs/${job.key}/bids`" class="bid-btn"
+          <nuxt-link :to="`/jobs/${job.key}/details`" class="bid-btn"
             >Bid now</nuxt-link
           >
         </div>
@@ -45,11 +45,8 @@ export default {
     ...mapState('auth', ['user']),
     freelancerJobs() {
       /**
-       * Using the some higher order function of Array.prototype, I get all tags belonging to a user then use them as input for the includes function to test if
+       * Using the some higher order function of Array.prototype, I get all tags belonging to a user then use them as input for the includes function to test if at least some of the usesr tags are in the job tags thereby updating the jobs feed. Pretty smart eh, I know
        */
-      // const freelancerJobs = this.user.tags.some((tag) =>
-      //   this.jobs.filter((job) => job.info.tags.includes(tag))
-      // )
       const freelancerJobs = this.jobs.filter((job) => {
         return this.user.tags.some((tag) => job.info.tags.includes(tag))
       })

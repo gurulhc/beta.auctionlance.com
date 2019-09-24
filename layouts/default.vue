@@ -374,6 +374,7 @@ body {
     height: 30px;
     margin-right: 14px;
     border-radius: 50%;
+    object-fit: cover;
   }
 }
 
@@ -502,5 +503,28 @@ body {
   &:hover {
     background-image: none !important;
   }
+}
+
+.create-button {
+  justify-self: flex-start;
+  background-color: #d73f2e;
+  color: #fff;
+  padding: 0.5em 2em;
+  border-radius: 4px;
+  border: 1px solid darken(#d73f2e, 10%);
+  font-size: 0.6em;
+  cursor: pointer;
+  transition: all 300ms;
+  &:disabled {
+    cursor: not-allowed;
+    background: lighten(#d73f2e, 30%);
+    border-color: lighten(#d73f2e, 20%);
+    color: lighten(#000, 70%);
+  }
+}
+
+input[type='text']:focus {
+  border: 1px solid #d73f2e;
+  outline: transparent;
 }
 </style>

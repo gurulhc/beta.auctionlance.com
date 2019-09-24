@@ -45,7 +45,7 @@ export default {
   asyncData({ $axios, params }) {
     return $axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${params.id}_Registered`
+        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${params.id}_Freelancer`
       )
       .then((res) => {
         return { freelancer: JSON.parse(res.value) }
@@ -76,6 +76,7 @@ p {
       width: 128px;
       height: 128px;
       justify-self: center;
+      object-fit: cover;
     }
 
     .description {

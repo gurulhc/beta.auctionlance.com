@@ -145,12 +145,13 @@ export default {
     // eslint-disable-next-line no-undef
     return $axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_Registered$`
+        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?(_Freelancer|_Client)$`
       )
       .then((data) => {
         const users = data
         console.log(typeof users)
         const preparedUsers = users.map((user) => JSON.parse(user.value))
+        console.log(preparedUsers)
         store.commit('auth/LOAD_USERS', preparedUsers)
       })
       .catch((error) => {
@@ -192,9 +193,18 @@ export default {
     logIn(dataKey) {
       this.$axios
         .$get(
-          `${this.wavesNode.test}/addresses/data/${this.dAppAddress}?matches=.*?${dataKey}(_Registered|_Client)$`
+          `${this.wavesNode.test}/addresses/data/${this.dAppAddress}?matches=.*?${dataKey}(_Freelancer|_Client)$`
         )
         .then((res) => {
+          if (res.length === 0) {
+            this.$router.push({
+              path: '/register'
+            })
+
+            this.$toast.error("You don't have an account on Auctionlance")
+
+            return
+          }
           console.log(JSON.parse(res[0].value))
           const { name } = JSON.parse(res[0].value)
           this.$toast.success(`👋 Welcome back ${name}`)

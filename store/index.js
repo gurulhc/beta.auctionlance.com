@@ -48,7 +48,11 @@ export const actions = {
       )
       .then((data) => {
         const jobs = data
-        const preparedJobs = jobs.map((job) => {
+        console.log(jobs)
+        const filteredJobs = jobs.filter(
+          (job) => job.value !== 'newAuctiondata'
+        )
+        const preparedJobs = filteredJobs.map((job) => {
           return {
             info: JSON.parse(job.value),
             key: job.key

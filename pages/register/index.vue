@@ -69,14 +69,14 @@
               :class="{ uploaded: hasUploaded }"
               @click="openCloudinaryWidget"
             >
-              <spinner v-if="isOpeningCloudinary" :size="15" />
+              <spinner v-if="isOpeningCloudinary" />
               <span v-else-if="hasUploaded">Avatar Uploaded Successfully</span>
               <span v-else>Upload Avatar</span>
             </button>
           </div>
           <div class="input">
             <button type="submit" class="form-button form-button--primary">
-              <spinner v-if="isRegistering" :size="15" />
+              <spinner v-if="isRegistering" />
               <span v-else>Join Auctionlance</span>
             </button>
           </div>
@@ -106,6 +106,7 @@ export default {
   components: {
     Spinner
   },
+
   data() {
     return {
       isOpeningCloudinary: false,

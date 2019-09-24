@@ -3,23 +3,25 @@
     <section class="heading">
       <div class="textual">
         <h1 class="title">{{ job.info.title }}</h1>
+        <p class="subtitle">Skills Required:</p>
         <ul class="tags">
           <li v-for="tag in job.info.tags" :key="tag">{{ tag }}</li>
         </ul>
+      </div>
+      <div class="status-container">
+        <span class="status">Open</span>
       </div>
     </section>
     <section class="content">
       <ul class="nav">
         <li>
-          <nuxt-link :to="`/jobs/${job.key}/description`"
-            >Description</nuxt-link
-          >
+          <nuxt-link :to="`/jobs/${job.key}/details`">Details</nuxt-link>
         </li>
         <li>
           <nuxt-link :to="`/jobs/${job.key}/bids`"> Bids</nuxt-link>
         </li>
       </ul>
-      <nuxt-child />
+      <nuxt-child :job="job" />
     </section>
   </main>
 </template>
@@ -32,7 +34,6 @@ export default {
       title: this.job.info.title
     }
   },
-  data() {},
   asyncData({ $axios, params }) {
     return $axios
       .$get(
@@ -78,9 +79,10 @@ p {
       font-size: 0.7em;
     }
 
-    .location {
-      font-size: 0.6em;
-      color: rgba(0, 0, 0, 0.54);
+    .subtitle {
+      margin-top: 1em;
+      font-size: 0.8em;
+      color: #000;
     }
 
     .tags {
@@ -94,10 +96,11 @@ p {
 
       li {
         margin-right: 0.6em;
-        background-color: rgba(173, 169, 169, 0.54);
+        background-color: transparent;
         padding: 0.3em 1em;
+        border: 1px solid #d73f2e;
         border-radius: 4px;
-        color: rgb(83, 80, 80);
+        color: #d73f2e;
       }
     }
   }
@@ -123,5 +126,17 @@ p {
       }
     }
   }
+}
+
+.status-container {
+  justify-self: flex-end;
+}
+.status {
+  border: 1px solid hsl(128, 45%, 56%);
+  padding: 0.2em 0.6em;
+  text-transform: uppercase;
+  background-color: transparent;
+  border-radius: 4px;
+  font-size: 0.6em;
 }
 </style>

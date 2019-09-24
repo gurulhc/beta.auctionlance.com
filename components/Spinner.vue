@@ -31,7 +31,7 @@ export default {
   props: {
     size: {
       type: Number,
-      default: 60
+      default: 15
     },
     color: {
       type: String,
