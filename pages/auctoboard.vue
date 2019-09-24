@@ -49,6 +49,11 @@
 import { mapState } from 'vuex'
 export default {
   middleware: 'isAuthenticated',
+  head() {
+    return {
+      title: `${this.user.name}'s Auctoboard`
+    }
+  },
   computed: {
     ...mapState('auth', ['user'])
   }

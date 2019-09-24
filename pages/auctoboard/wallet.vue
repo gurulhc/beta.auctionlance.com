@@ -38,6 +38,11 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  head() {
+    return {
+      title: `Current Waves Balance: ${this.accountDetails.balance.available}`
+    }
+  },
   data() {
     return {
       accountDetails: {

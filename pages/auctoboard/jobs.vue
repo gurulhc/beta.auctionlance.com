@@ -36,6 +36,11 @@
 import { mapState } from 'vuex'
 export default {
   middleware: ['isAuthenticated'],
+  head() {
+    return {
+      title: 'Jobs Feed'
+    }
+  },
   fetch({ store }) {
     // eslint-disable-next-line no-undef
     store.dispatch('loadJobs')
