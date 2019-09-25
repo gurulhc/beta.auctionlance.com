@@ -14,6 +14,18 @@
       </div>
       <div class="bid-section">
         💰 {{ bid.bidDetails.value | amount }} Waves
+        <button
+          v-if="isAuctionClient && auctionStatus === 'open'"
+          class="hire-button"
+          :disabled="!isAuctionClient"
+          @click="chooseFreelancer(bid.bidKey, bid.freelancerKey)"
+        >
+          <spinner
+            v-if="choosingFreelancer && bid.freelancerKey === chosenFreelancer"
+            color="#000"
+          />
+          <span v-else>Hire</span>
+        </button>
       </div>
     </div>
   </div>
@@ -23,24 +35,41 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import Spinner from '@/components/Spinner.vue'
 export default {
+  middleware: 'isAuthenticated',
   filters: {
     amount(value) {
       return value / 100000000
     }
+  },
+  components: {
+    Spinner
   },
   props: {
     job: {
       type: Object,
       default() {
         return {}
+      },
+      isAuctionClient: {
+        type: Boolean
+      },
+      auctionStatus: {
+        type: String
       }
     }
   },
   data() {
     return {
-      bids: []
+      bids: [],
+      choosingFreelancer: false,
+      chosenFreelancer: ''
     }
+  },
+  computed: {
+    ...mapState(['dAppAddress', 'currentAuctionData'])
   },
   mounted() {
     this.getBids()
@@ -65,11 +94,54 @@ export default {
                 const bids = {
                   bidDetails: bid,
                   freelancer: JSON.parse(freelancer.value),
-                  freelancerKey: freelancer.key.split('_')[0]
+                  freelancerKey: freelancer.key.split('_')[0],
+                  bidKey: bidKeyArray[0]
                 }
                 this.bids.push(bids)
               })
           })
+        })
+    },
+    chooseFreelancer(bidKey, freelancerKey) {
+      if (!this.isAuctionClient) {
+        this.$toast.info(
+          'Oops only the Auction client can hire a freelancer for this project'
+        )
+        return
+      }
+      this.choosingFreelancer = true
+      this.chosenFreelancer = freelancerKey
+      const tx = {
+        type: 16,
+        data: {
+          dApp: this.dAppAddress,
+          call: {
+            function: 'chooseFreelancer',
+            args: [
+              { type: 'string', value: bidKey },
+              { type: 'string', value: freelancerKey }
+            ]
+          },
+          payment: [],
+          fee: {
+            assetId: 'WAVES',
+            amount: 500000
+          }
+        }
+      }
+      // eslint-disable-next-line no-undef
+      WavesKeeper.signAndPublishTransaction(tx)
+        .then((data) => {
+          console.log(tx)
+          this.choosingFreelancer = false
+          this.$toast.success('😍 Freelancer choosen successfully')
+        })
+        .catch((error) => {
+          this.choosingFreelancer = false
+          this.$toast.error(
+            '🙁 Something went wrong in choosing this freelancer. Try again'
+          )
+          console.log(error)
         })
     }
   }
@@ -87,6 +159,7 @@ export default {
   padding: 0.5em 1em;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
   border-radius: 3px;
+  margin-bottom: 0.7em;
 
   h3 {
     font-size: 0.8em;
@@ -118,5 +191,25 @@ export default {
   align-items: center;
   font-size: 0.6em;
   height: 30vh;
+}
+
+.bid-section {
+  display: flex;
+  flex-direction: column;
+
+  .hire-button {
+    border: 1px solid #d73f2e;
+    padding: 0.2em 0.7em;
+    border-radius: 3px;
+    justify-self: baseline;
+    align-self: flex-end;
+    cursor: pointer;
+    transition: all 300ms;
+
+    &:hover {
+      color: #fff;
+      background-color: #d73f2e;
+    }
+  }
 }
 </style>

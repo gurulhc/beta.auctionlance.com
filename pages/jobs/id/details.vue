@@ -6,7 +6,9 @@
           <h3>Auction Details</h3>
         </section>
         <section class="other-info">
-          <p class="info-major">💰 {{ job.info.amount }} Waves</p>
+          <p class="info-major">
+            💰 {{ job.info.amount }} {{ currentAuctionData[6] }}
+          </p>
           <p class="info-minor">
             Auction closes in {{ job.info.auctionDuration | day }}
           </p>
@@ -19,16 +21,18 @@
         <p class="description">{{ job.info.description }}</p>
       </section>
     </section>
-    <section class="description-card">
+    <section class="description-card" v-if="!isAuctionClient">
       <section class="heading">
         <section class="title">
           <h3>Place a bid on this Auction</h3>
         </section>
       </section>
       <section class="body">
-        <form @submit.prevent="makeBid">
+        <form v-if="auctionStatus == 'open'" @submit.prevent="makeBid">
           <div class="form-group">
-            <label for="bidAmount">Bid Amount(WAVES)</label>
+            <label for="bidAmount"
+              >Bid Amount({{ currentAuctionData[6] }})</label
+            >
             <input
               v-model="amount"
               type="text"
@@ -40,6 +44,13 @@
             <span v-else>🤓 Make Bid</span>
           </button>
         </form>
+        <p
+          v-else-if="!isAuctionClient && auctionStatus !== 'open'"
+          class="auction-won"
+        >
+          🤭 This auction has been won already. Try
+          <nuxt-link to="/jobs">another</nuxt-link> one
+        </p>
       </section>
     </section>
   </div>
@@ -62,6 +73,12 @@ export default {
     job: {
       type: Object,
       required: true
+    },
+    auctionStatus: {
+      type: String
+    },
+    isAuctionClient: {
+      type: Boolean
     }
   },
   data() {
@@ -71,7 +88,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress'])
+    ...mapState(['dAppAddress', 'currentAuctionData'])
   },
   methods: {
     makeBid() {

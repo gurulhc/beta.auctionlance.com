@@ -28,7 +28,9 @@ export const state = () => ({
   wavesNode: {
     test: 'https://nodes-testnet.wavesnodes.com'
   },
-  jobs: []
+  jobs: [],
+  currentUserKey: '',
+  currentAuctionData: []
 })
 
 export const mutations = {
@@ -37,6 +39,12 @@ export const mutations = {
   },
   LOAD_JOBS(state, data) {
     state.jobs = data
+  },
+  UPDATE_CURRENT_USER_KEY(state, data) {
+    state.currentUserKey = data
+  },
+  UPDATE_CURRENT_AUCTION_DATA(state, data) {
+    state.currentAuctionData = data
   }
 }
 

@@ -210,6 +210,10 @@ export default {
           this.$toast.success(`👋 Welcome back ${name}`)
           this.$store.commit('auth/LOG_IN', JSON.parse(res[0].value))
           this.$store.commit('UPDATE_LOGGED_IN_STATUS')
+          this.$store.commit(
+            'UPDATE_CURRENT_USER_KEY',
+            res[0].key.split('_')[0]
+          )
         })
         .catch((error) => {
           if (error.response && error.response.data.error === 304) {

@@ -9,7 +9,15 @@
         </ul>
       </div>
       <div class="status-container">
-        <span class="status">Open</span>
+        <span
+          v-if="
+            isAuctionClient ||
+              auctionStatus === 'Suggested' ||
+              auctionStatus === 'Opened'
+          "
+          class="status"
+          >{{ auctionStatus }}</span
+        >
       </div>
     </section>
     <section class="content">
@@ -21,17 +29,57 @@
           <nuxt-link :to="`/jobs/${job.key}/bids`"> Bids</nuxt-link>
         </li>
       </ul>
-      <nuxt-child :job="job" />
+      <nuxt-child
+        :job="job"
+        :is-auction-client="isAuctionClient"
+        :auction-status="auctionStatus"
+      />
     </section>
   </main>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-  scrollToTop: true,
+  scrollToTop: false,
+  middleware: 'isAuthenticated',
   head() {
     return {
       title: this.job.info.title
+    }
+  },
+  computed: {
+    ...mapState(['currentUserKey', 'currentAuctionData']),
+    isAuctionClient() {
+      return this.currentUserKey === this.currentAuctionData[2]
+    },
+    auctionStatus() {
+      let status = ''
+      switch (this.currentAuctionData[0]) {
+        case 'Suggested':
+        case 'Opened':
+          status = 'open'
+          break
+        case 'InProgress':
+          status = 'on going'
+          break
+        case 'Canceled':
+          status = 'canceled'
+          break
+        case 'WaitForConfirmation':
+          status = 'delivered'
+          break
+        case 'Completed':
+          status = 'completed'
+          break
+        case 'Dispute':
+          status = 'in dispute'
+          break
+        case 'DisputeResolved':
+          status = 'dispute resolved'
+          break
+      }
+      return status
     }
   },
   asyncData({ $axios, params }) {
@@ -47,6 +95,23 @@ export default {
           }
         }
       })
+  },
+  created() {
+    this.getCurrentAuctionData()
+  },
+  methods: {
+    getCurrentAuctionData() {
+      this.$axios
+        .$get(
+          `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
+            this.job.key.split('_')[0]
+          }_AuctionData`
+        )
+        .then((res) => {
+          const currentAuctionData = res.value.split('_')
+          this.$store.commit('UPDATE_CURRENT_AUCTION_DATA', currentAuctionData)
+        })
+    }
   }
 }
 </script>
