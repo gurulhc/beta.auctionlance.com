@@ -153,7 +153,8 @@ export default {
         let preparedUsers = users.filter((user) => {
           return (
             user.value !== 'CwvAbkxauC3uK4GN8Bv5qo324RMe9UB12iPaxqXp4ZEu' &&
-            user.value !== '123'
+            user.value !== '123' &&
+            user.value !== '3VoeFDfvirm2C7rBy2inpbpCtgT9m2569GhCTxefENcn'
           )
         })
         console.log(preparedUsers)

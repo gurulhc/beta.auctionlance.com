@@ -7,7 +7,7 @@
         </section>
         <section class="other-info">
           <p class="info-major">
-            💰 {{ job.info.amount }} {{ currentAuctionData[6] }}
+            💰 {{ auctionPrice.value | amount }} {{ auctionAssetName.value }}
           </p>
           <p class="info-minor">
             Auction closes in {{ job.info.auctionDuration | day }}
@@ -31,7 +31,7 @@
         <form v-if="auctionStatus == 'open'" @submit.prevent="makeBid">
           <div class="form-group">
             <label for="bidAmount"
-              >Bid Amount({{ currentAuctionData[6] }})</label
+              >Bid Amount({{ auctionAssetName.value }})</label
             >
             <input
               v-model="amount"
@@ -64,6 +64,9 @@ export default {
   filters: {
     day(value) {
       return value > 1 ? `${value} days` : `${value} day`
+    },
+    amount(value) {
+      return value / 100000000
     }
   },
   components: {
@@ -79,6 +82,12 @@ export default {
     },
     isAuctionClient: {
       type: Boolean
+    },
+    auctionPrice: {
+      type: Object
+    },
+    auctionAssetName: {
+      type: Object
     }
   },
   data() {
@@ -200,5 +209,9 @@ p {
       width: 60%;
     }
   }
+}
+.winner {
+  text-align: center;
+  color: green;
 }
 </style>

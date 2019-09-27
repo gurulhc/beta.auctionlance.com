@@ -41,7 +41,9 @@
               {{ job.info.description }}
             </p>
           </div>
-          <nuxt-link :to="`/jobs/${job.key}/details`" class="bid-btn"
+          <nuxt-link
+            :to="`/jobs/${job.key.split('_')[0]}/details`"
+            class="bid-btn"
             >Bid now</nuxt-link
           >
         </div>

@@ -52,7 +52,7 @@ export const actions = {
   loadJobs(context) {
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_AuctionInfo$`
+        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_Info$`
       )
       .then((data) => {
         const jobs = data

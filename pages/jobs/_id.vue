@@ -18,28 +18,55 @@
           class="status"
           >{{ auctionStatus }}</span
         >
+        <button
+          v-if="
+            currentUserKey === winningFreelancer.value &&
+              auctionStatus === 'on going'
+          "
+          @click="deliverJob"
+        >
+          <spinner v-if="isDelivering" />
+          <span v-else>🚚 Deliver</span>
+        </button>
+        <button
+          v-else-if="auctionStatus === 'delivered' && isAuctionClient"
+          class="accept"
+          @click="acceptWork"
+        >
+          <spinner v-if="isAcceptingWork" />
+          <span v-else>👍 Accept and Pay</span>
+        </button>
       </div>
     </section>
     <section class="content">
       <ul class="nav">
         <li>
-          <nuxt-link :to="`/jobs/${job.key}/details`">Details</nuxt-link>
+          <nuxt-link :to="`/jobs/${job.key.split('_')[0]}/details`"
+            >Details</nuxt-link
+          >
         </li>
         <li>
-          <nuxt-link :to="`/jobs/${job.key}/bids`"> Bids</nuxt-link>
+          <nuxt-link :to="`/jobs/${job.key.split('_')[0]}/bids`">
+            Bids</nuxt-link
+          >
         </li>
       </ul>
       <nuxt-child
         :job="job"
         :is-auction-client="isAuctionClient"
         :auction-status="auctionStatus"
+        :auction-price="auctionStartingPrice"
+        :auction-asset-name="auctionAssetName"
+        :winning-freelancer="winningFreelancer"
       />
     </section>
   </main>
 </template>
 
 <script>
+/* eslint-disable unicorn/prefer-starts-ends-with */
 import { mapState } from 'vuex'
+import Spinner from '@/components/Spinner.vue'
 export default {
   scrollToTop: false,
   middleware: 'isAuthenticated',
@@ -48,14 +75,65 @@ export default {
       title: this.job.info.title
     }
   },
+  components: {
+    Spinner
+  },
   computed: {
-    ...mapState(['currentUserKey', 'currentAuctionData']),
+    ...mapState(['currentUserKey', 'currentAuctionData', 'dAppAddress']),
+    job() {
+      console.log(this.currentAuctionData)
+      const info = this.currentAuctionData.filter(
+        (info) => info.key.endsWith('_Info') && info.value !== 'newAuctiondata'
+      )
+      const [auction] = info
+      console.log(auction)
+      return {
+        key: auction.key,
+        info: JSON.parse(auction.value)
+      }
+    },
+    status() {
+      const status = this.currentAuctionData.filter((status) =>
+        status.key.endsWith('_State')
+      )
+      const [auctionStatus] = status
+      return auctionStatus
+    },
+    auctionClient() {
+      const client = this.currentAuctionData.filter((client) =>
+        client.key.endsWith('_Client')
+      )
+      const [auctionClient] = client
+      return auctionClient
+    },
+    auctionStartingPrice() {
+      const auctionStartingPrice = this.currentAuctionData.filter((price) =>
+        price.key.endsWith('_Price')
+      )
+      const [price] = auctionStartingPrice
+      return price
+    },
+    auctionAssetName() {
+      const assetName = this.currentAuctionData.filter((assetName) =>
+        assetName.key.endsWith('_AssetName')
+      )
+      const [asset] = assetName
+      return asset
+    },
+    winningFreelancer() {
+      const freelancer = this.currentAuctionData.filter((freelancer) =>
+        freelancer.key.endsWith('_Freelancer')
+      )
+      const [winningFreelancer] = freelancer
+
+      return winningFreelancer || {}
+    },
     isAuctionClient() {
-      return this.currentUserKey === this.currentAuctionData[2]
+      return this.currentUserKey === this.auctionClient.value
     },
     auctionStatus() {
       let status = ''
-      switch (this.currentAuctionData[0]) {
+      switch (this.status.value) {
         case 'Suggested':
         case 'Opened':
           status = 'open'
@@ -82,34 +160,86 @@ export default {
       return status
     }
   },
-  asyncData({ $axios, params }) {
+  fetch({ store, $axios, params }) {
     return $axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${params.id}`
+        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=^${params.id}.*$`
       )
       .then((res) => {
-        return {
-          job: {
-            info: JSON.parse(res.value),
-            key: res.key
-          }
-        }
+        store.commit('UPDATE_CURRENT_AUCTION_DATA', res)
       })
   },
-  created() {
-    this.getCurrentAuctionData()
+  data() {
+    return {
+      isDelivering: false,
+      isAcceptingWork: false
+    }
   },
   methods: {
-    getCurrentAuctionData() {
-      this.$axios
-        .$get(
-          `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
-            this.job.key.split('_')[0]
-          }_AuctionData`
-        )
-        .then((res) => {
-          const currentAuctionData = res.value.split('_')
-          this.$store.commit('UPDATE_CURRENT_AUCTION_DATA', currentAuctionData)
+    deliverJob() {
+      this.isDelivering = true
+      const auctionId = this.job.key.split('_')[0]
+      const tx = {
+        type: 16,
+        data: {
+          dApp: this.dAppAddress,
+          call: {
+            function: 'workHandOver',
+            args: [{ type: 'string', value: auctionId }]
+          },
+          payment: [],
+          fee: {
+            assetId: 'WAVES',
+            amount: 500000
+          }
+        }
+      }
+      // eslint-disable-next-line no-undef
+      WavesKeeper.signAndPublishTransaction(tx)
+        .then((data) => {
+          console.log(tx)
+          this.isDelivering = false
+          this.$toast.success('🔥 Successfully delivered')
+        })
+        .catch((error) => {
+          this.isDelivering = false
+          this.$toast.error(
+            '🙁 Something went wrong in delivering this project. Try again'
+          )
+          console.log(error)
+        })
+    },
+    acceptWork() {
+      this.isAcceptingWork = true
+      const auctionId = this.job.key.split('_')[0]
+      const tx = {
+        type: 16,
+        data: {
+          dApp: this.dAppAddress,
+          call: {
+            function: 'acceptWork',
+            args: [{ type: 'string', value: auctionId }]
+          },
+          payment: [],
+          fee: {
+            assetId: 'WAVES',
+            amount: 500000
+          }
+        }
+      }
+      // eslint-disable-next-line no-undef
+      WavesKeeper.signAndPublishTransaction(tx)
+        .then((data) => {
+          console.log(tx)
+          this.isAcceptingWork = false
+          this.$toast.success('🤑 Work Accepted Successfully')
+        })
+        .catch((error) => {
+          this.isAcceptingWork = false
+          this.$toast.error(
+            '🙁 Something went wrong in accepting this project. Try again'
+          )
+          console.log(error)
         })
     }
   }
@@ -195,6 +325,30 @@ p {
 
 .status-container {
   justify-self: flex-end;
+  display: flex;
+  // justify-content: flex-start;
+  // align-items: flex-start;
+  flex-direction: column;
+  button {
+    padding: 0.5em 2em;
+    margin-top: 3rem;
+    border-radius: 3px;
+    border: 1px solid #d73f2e;
+    background-color: #d73f2e;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 300ms;
+
+    &:hover {
+      background-color: transparent;
+      color: #000;
+    }
+  }
+  button.accept {
+    background-color: green;
+    border: 1px solid green;
+  }
 }
 .status {
   border: 1px solid hsl(128, 45%, 56%);

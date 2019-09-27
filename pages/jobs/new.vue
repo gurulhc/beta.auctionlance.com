@@ -202,7 +202,7 @@ export default {
           this.creatingAuction = false
           this.$toast.success('👍 Auction created successfully')
           this.$router.push({
-            path: `/jobs/${result.id}_AuctionInfo`
+            path: `/jobs/${result.id}`
           })
         })
         .catch((error) => {

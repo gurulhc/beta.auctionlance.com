@@ -31,6 +31,9 @@
             <nuxt-link to="/auctoboard/jobs">Jobs</nuxt-link>
           </li>
           <li>
+            <nuxt-link to="/auctoboard/bids">Bids</nuxt-link>
+          </li>
+          <li>
             <nuxt-link to="/auctoboard/messages">Messages</nuxt-link>
           </li>
           <li>

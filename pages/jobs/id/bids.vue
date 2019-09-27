@@ -26,6 +26,13 @@
           />
           <span v-else>Hire</span>
         </button>
+        <span
+          v-if="
+            isAuctionClient && bid.freelancerKey === winningFreelancer.value
+          "
+          class="winner"
+          >🥇Winner</span
+        >
       </div>
     </div>
   </div>
@@ -52,13 +59,16 @@ export default {
       type: Object,
       default() {
         return {}
-      },
-      isAuctionClient: {
-        type: Boolean
-      },
-      auctionStatus: {
-        type: String
       }
+    },
+    isAuctionClient: {
+      type: Boolean
+    },
+    auctionStatus: {
+      type: String
+    },
+    winningFreelancer: {
+      type: Object
     }
   },
   data() {
@@ -199,12 +209,13 @@ export default {
 
   .hire-button {
     border: 1px solid #d73f2e;
-    padding: 0.2em 0.7em;
+    padding: 0.5em 0.7em;
     border-radius: 3px;
     justify-self: baseline;
-    align-self: flex-end;
     cursor: pointer;
     transition: all 300ms;
+    font-size: 0.7em;
+    margin-top: 0.4em;
 
     &:hover {
       color: #fff;
