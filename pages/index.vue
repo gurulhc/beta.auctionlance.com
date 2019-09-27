@@ -150,8 +150,14 @@ export default {
       .then((data) => {
         const users = data
         console.log(typeof users)
-        const preparedUsers = users.map((user) => JSON.parse(user.value))
+        let preparedUsers = users.filter((user) => {
+          return (
+            user.value !== 'CwvAbkxauC3uK4GN8Bv5qo324RMe9UB12iPaxqXp4ZEu' &&
+            user.value !== '123'
+          )
+        })
         console.log(preparedUsers)
+        preparedUsers = preparedUsers.map((user) => JSON.parse(user.value))
         store.commit('auth/LOAD_USERS', preparedUsers)
       })
       .catch((error) => {

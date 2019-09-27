@@ -21,7 +21,7 @@
         <p class="description">{{ job.info.description }}</p>
       </section>
     </section>
-    <section class="description-card" v-if="!isAuctionClient">
+    <section v-if="!isAuctionClient" class="description-card">
       <section class="heading">
         <section class="title">
           <h3>Place a bid on this Auction</h3>
