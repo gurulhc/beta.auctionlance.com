@@ -146,7 +146,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { CometChat } from '@cometchat-pro/chat'
 export default {
   head() {
     return {
@@ -221,34 +220,11 @@ export default {
       return this.user.userType === 'client'
     }
   },
-  mounted() {
-    this.loginToCometChat()
-  },
   methods: {
     getFullYear() {
       const currentDate = new Date()
 
       return currentDate.getFullYear() // 83945cf299dfa3
-    },
-    loginToCometChat() {
-      CometChat.init('83945cf299dfa3')
-        .then(() => {
-          console.log('CometChat was initialized successfully!')
-        })
-        .catch(() => {
-          console.log('An error occured while initializing CometChat')
-        })
-      const apiKey = 'cdb021b70eca80a1f59e790d735bd0053e2fc474'
-      this.loggingIn = true
-      CometChat.login('superhero1', apiKey)
-        .then(() => {
-          this.loggingIn = false
-          console.log('success')
-        })
-        .catch((error) => {
-          this.loggingIn = false
-          console.log(error)
-        })
     }
   }
 }

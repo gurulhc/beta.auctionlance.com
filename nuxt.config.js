@@ -27,8 +27,9 @@ export default {
    */
   loading: { color: '#b93829' },
   env: {
-    Comet_Chat_App_ID: '83945cf299dfa3',
-    Comet_Chat_API_Key: 'cdb021b70eca80a1f59e790d735bd0053e2fc474'
+    Comet_Chat_App_ID: '53555',
+    Comet_Chat_Auth_Key: '114b4b78f88850ae6789d886ade0acc5',
+    Comet_Chat_API_Key: '53555x4097322627c103b5daf1d5f3b2f8a31c'
   },
   /*
    ** Global CSS

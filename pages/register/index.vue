@@ -203,6 +203,32 @@ export default {
       // eslint-disable-next-line no-undef
       WavesKeeper.signAndPublishTransaction(tx)
         .then((data) => {
+          const formData = new FormData()
+
+          formData.append('UID', `AUCTIONLANCER${this.info.publicKey}`)
+          formData.append('name', this.info.name)
+          formData.append('avatarURL', this.info.avatar.secure_url)
+          formData.append('role', this.info.userType)
+
+          const config = {
+            headers: {
+              'api-key': process.env.Comet_Chat_API_Key
+            }
+          }
+
+          this.$axios
+            .$post(
+              'https://api.cometondemand.net/api/v2/createUser',
+              formData,
+              config
+            )
+            .then((data) => {
+              console.log(data)
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+
           console.log(tx)
           this.isRegistering = false
           this.$router.push({

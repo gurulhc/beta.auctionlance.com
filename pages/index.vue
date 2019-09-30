@@ -109,6 +109,7 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
 import { TweenMax } from 'gsap'
 import { mapState } from 'vuex'
 import Freelancer from '~/components/Freelancer'
@@ -154,7 +155,9 @@ export default {
           return (
             user.value !== 'CwvAbkxauC3uK4GN8Bv5qo324RMe9UB12iPaxqXp4ZEu' &&
             user.value !== '123' &&
-            user.value !== '3VoeFDfvirm2C7rBy2inpbpCtgT9m2569GhCTxefENcn'
+            user.value !== '3VoeFDfvirm2C7rBy2inpbpCtgT9m2569GhCTxefENcn' &&
+            user.value !== 'E7Zd12PRfXSQgBuHWjoo4s9daeAV7cxaXevno5AwAdEM' &&
+            user.value !== 'PxkZaFAZx5YzhE7wdGf5ZJQeMh594mM3YYPP9qk4KxW'
           )
         })
         console.log(preparedUsers)
@@ -213,7 +216,18 @@ export default {
             return
           }
           console.log(JSON.parse(res[0].value))
-          const { name } = JSON.parse(res[0].value)
+          const user = JSON.parse(res[0].value)
+          const { name } = user
+          const { publicKey } = user
+          const { secure_url } = user.avatar
+
+          // Comet chat log in
+          window.chat_id = `AUCTIONLANCER${publicKey}`
+          window.chat_name = name
+          window.chat_avatar = secure_url
+          window.chat_link = 'USER_PROFILELINK'
+          window.jqcc.cometchat.init()
+
           this.$toast.success(`👋 Welcome back ${name}`)
           this.$store.commit('auth/LOG_IN', JSON.parse(res[0].value))
           this.$store.commit('UPDATE_LOGGED_IN_STATUS')
