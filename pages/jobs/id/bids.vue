@@ -79,7 +79,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress', 'currentAuctionData'])
+    ...mapState(['dAppAddress', 'currentAuctionData', 'currentUserKey'])
   },
   mounted() {
     this.getBids()
@@ -145,6 +145,31 @@ export default {
           console.log(tx)
           this.choosingFreelancer = false
           this.$toast.success('😍 Freelancer choosen successfully')
+
+          // Creating chat connection
+          const formData = new FormData()
+          formData.append('UID', `AUCTIONLANCER${this.currentUserKey}`)
+          formData.append('friendsUID', `AUCTIONLANCER${this.freelancerKey}`)
+
+          const config = {
+            headers: {
+              'api-key': process.env.Comet_Chat_API_Key
+            }
+          }
+
+          this.$axios
+            .$post(
+              'https://api.cometondemand.net/api/v2/addFriends',
+              formData,
+              config
+            )
+            .then((data) => {
+              console.log(data)
+              this.$toast.success('😍 Client can now chat with you')
+            })
+            .catch((error) => {
+              console.log(error)
+            })
         })
         .catch((error) => {
           this.choosingFreelancer = false

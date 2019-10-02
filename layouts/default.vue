@@ -231,6 +231,8 @@ export default {
 </script>
 
 <style lang="scss">
+$primary-color: #e4432d;
+
 :root {
   box-sizing: border-box;
   font-size: calc(1vw + 0.6em);
@@ -327,10 +329,10 @@ body {
     text-decoration: none;
     text-transform: uppercase;
     color: #000;
-    border-bottom: 2px solid #d73f2e;
+    border-bottom: 2px solid $primary-color;
   }
   .nav-menu li > a:hover {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 6'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 0.3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23d73f2e' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 6'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 0.3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23e4432d' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
     background-repeat: repeat-x;
     background-position: 0 100%;
     background-size: auto 6px;
@@ -396,7 +398,7 @@ body {
   transition: all 300ms;
 }
 .footer-top ul a > svg:hover {
-  fill: #d73f2e;
+  fill: $primary-color;
   transform: scale(1.2);
 }
 
@@ -424,7 +426,7 @@ body {
 @media (min-width: 34em) {
   .jobs-card {
     h3 {
-      color: #d73f2e;
+      color: $primary-color;
     }
     .summary {
       display: grid;
@@ -454,13 +456,13 @@ body {
       text-decoration: none;
       font-size: 0.6em;
       border-radius: 4px;
-      border: 2px solid #d73f2e;
+      border: 2px solid $primary-color;
       transition: all 300ms;
       color: #000;
       padding: 0.5em 1em;
 
       &:hover {
-        background-color: #d73f2e;
+        background-color: $primary-color;
         color: #fff;
       }
     }
@@ -468,7 +470,7 @@ body {
 }
 .nav-button {
   color: #fff !important;
-  background-color: #d73f2e;
+  background-color: $primary-color;
   border-bottom: none;
   padding: 0.5em 1em;
   font-size: 0.6em;
@@ -483,24 +485,24 @@ body {
 
 .create-button {
   justify-self: flex-start;
-  background-color: #d73f2e;
+  background-color: $primary-color;
   color: #fff;
   padding: 0.5em 2em;
   border-radius: 4px;
-  border: 1px solid darken(#d73f2e, 10%);
+  border: 1px solid darken($primary-color, 10%);
   font-size: 0.6em;
   cursor: pointer;
   transition: all 300ms;
   &:disabled {
     cursor: not-allowed;
-    background: lighten(#d73f2e, 30%);
-    border-color: lighten(#d73f2e, 20%);
+    background: lighten($primary-color, 30%);
+    border-color: lighten($primary-color, 20%);
     color: lighten(#000, 70%);
   }
 }
 
 input[type='text']:focus {
-  border: 1px solid #d73f2e;
+  border: 1px solid $primary-color;
   outline: transparent;
 }
 </style>

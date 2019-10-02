@@ -170,15 +170,16 @@ export default {
     },
     register() {
       this.isRegistering = true
+
       this.info.address = this.wavesKeeperData.address
 
       this.info.publicKey = this.wavesKeeperData.publicKey
 
-      const payload = JSON.stringify(this.info)
-
       const tags = this.tags.map((tag) => tag.text)
 
       this.info.tags = [...tags]
+
+      const payload = JSON.stringify(this.info)
 
       console.log(this.info)
       const tx = {

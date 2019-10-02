@@ -198,11 +198,10 @@ export default {
       WavesKeeper.signAndPublishTransaction(tx)
         .then((data) => {
           console.log(data)
-          const result = JSON.parse(data)
           this.creatingAuction = false
           this.$toast.success('👍 Auction created successfully')
           this.$router.push({
-            path: `/jobs/${result.id}`
+            path: '/jobs'
           })
         })
         .catch((error) => {

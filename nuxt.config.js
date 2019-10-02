@@ -25,7 +25,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#b93829' },
+  loading: { color: '#e4432d' },
   env: {
     Comet_Chat_App_ID: '53555',
     Comet_Chat_Auth_Key: '114b4b78f88850ae6789d886ade0acc5',
