@@ -69,6 +69,10 @@ export default {
     },
     winningFreelancer: {
       type: Object
+    },
+    updateJob: {
+      type: Function,
+      required: true
     }
   },
   data() {
@@ -145,7 +149,7 @@ export default {
           console.log(tx)
           this.choosingFreelancer = false
           this.$toast.success('😍 Freelancer choosen successfully')
-
+          this.updateJob()
           // Creating chat connection
           const formData = new FormData()
           formData.append('UID', `AUCTIONLANCER${this.currentUserKey}`)

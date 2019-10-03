@@ -9,7 +9,8 @@ export const state = () => ({
     tags: [],
     location: '',
     address: '',
-    publicKey: ''
+    publicKey: '',
+    userType: ''
   },
   users: []
 })

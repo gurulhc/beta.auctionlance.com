@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Spinner from '@/components/Spinner.vue'
 export default {
   middleware: ['isAuthenticated', 'isClient'],
@@ -157,6 +157,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['loadJobs']),
     createAuction() {
       this.creatingAuction = true
 
@@ -200,6 +201,7 @@ export default {
           console.log(data)
           this.creatingAuction = false
           this.$toast.success('👍 Auction created successfully')
+          this.loadJobs()
           this.$router.push({
             path: '/jobs'
           })

@@ -12,6 +12,7 @@
         <span
           v-if="
             isAuctionClient ||
+              winningFreelancer.value === currentUserKey ||
               auctionStatus === 'Suggested' ||
               auctionStatus === 'Opened'
           "
@@ -58,6 +59,7 @@
         :auction-price="auctionStartingPrice"
         :auction-asset-name="auctionAssetName"
         :winning-freelancer="winningFreelancer"
+        :update-job="updateJob"
       />
     </section>
   </main>
@@ -100,8 +102,10 @@ export default {
       return auctionStatus
     },
     auctionClient() {
-      const client = this.currentAuctionData.filter((client) =>
-        client.key.endsWith('_Client')
+      const client = this.currentAuctionData.filter(
+        (client) =>
+          client.key.endsWith('_AuctionClient') ||
+          client.key.endsWith('_Client')
       )
       const [auctionClient] = client
       return auctionClient
@@ -122,7 +126,7 @@ export default {
     },
     winningFreelancer() {
       const freelancer = this.currentAuctionData.filter((freelancer) =>
-        freelancer.key.endsWith('_Freelancer')
+        freelancer.key.endsWith('_HiredFreelancer')
       )
       const [winningFreelancer] = freelancer
 
@@ -176,6 +180,15 @@ export default {
     }
   },
   methods: {
+    updateJob() {
+      this.$axios
+        .$get(
+          `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=^${this.$route.params.id}.*$`
+        )
+        .then((res) => {
+          this.$store.commit('UPDATE_CURRENT_AUCTION_DATA', res)
+        })
+    },
     deliverJob() {
       this.isDelivering = true
       const auctionId = this.job.key.split('_')[0]
@@ -200,6 +213,7 @@ export default {
           console.log(tx)
           this.isDelivering = false
           this.$toast.success('🔥 Successfully delivered')
+          this.updateJob()
         })
         .catch((error) => {
           this.isDelivering = false
@@ -233,6 +247,7 @@ export default {
           console.log(tx)
           this.isAcceptingWork = false
           this.$toast.success('🤑 Work Accepted Successfully')
+          this.updateJob()
         })
         .catch((error) => {
           this.isAcceptingWork = false
@@ -357,5 +372,6 @@ p {
   background-color: transparent;
   border-radius: 4px;
   font-size: 0.6em;
+  text-align: center;
 }
 </style>

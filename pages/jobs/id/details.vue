@@ -21,7 +21,13 @@
         <p class="description">{{ job.info.description }}</p>
       </section>
     </section>
-    <section v-if="!isAuctionClient" class="description-card">
+    <section
+      v-if="
+        user.userType === 'freelancer' &&
+          winningFreelancer.value !== currentUserKey
+      "
+      class="description-card"
+    >
       <section class="heading">
         <section class="title">
           <h3>Place a bid on this Auction</h3>
@@ -73,6 +79,9 @@ export default {
     Spinner
   },
   props: {
+    winningFreelancer: {
+      type: Object
+    },
     job: {
       type: Object,
       required: true
@@ -88,6 +97,10 @@ export default {
     },
     auctionAssetName: {
       type: Object
+    },
+    updateJob: {
+      type: Function,
+      required: true
     }
   },
   data() {
@@ -97,49 +110,55 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress', 'currentAuctionData'])
+    ...mapState(['dAppAddress', 'currentAuctionData', 'currentUserKey']),
+    ...mapState('auth', ['user'])
   },
   methods: {
     makeBid() {
-      this.makingBid = true
-      if (typeof Number(this.amount) !== 'number' || this.amount === '') {
-        this.$toast.error('😬 hey, enter an amount. It should be a number')
-        this.makingBid = false
-      } else {
-        const auctionId = this.job.key.split('_')[0]
-        console.log(auctionId)
-        const tx = {
-          type: 16,
-          data: {
-            dApp: this.dAppAddress,
-            call: {
-              function: 'makeBid',
-              args: [
-                { type: 'string', value: auctionId },
-                { type: 'integer', value: Number(this.amount * 100000000) }
-              ]
-            },
-            payment: [],
-            fee: {
-              assetId: 'WAVES',
-              amount: 500000
+      if (this.user.userType === 'freelancer') {
+        this.makingBid = true
+        if (typeof Number(this.amount) !== 'number' || this.amount === '') {
+          this.$toast.error('😬 hey, enter an amount. It should be a number')
+          this.makingBid = false
+        } else {
+          const auctionId = this.job.key.split('_')[0]
+          console.log(auctionId)
+          const tx = {
+            type: 16,
+            data: {
+              dApp: this.dAppAddress,
+              call: {
+                function: 'makeBid',
+                args: [
+                  { type: 'string', value: auctionId },
+                  { type: 'integer', value: Number(this.amount * 100000000) }
+                ]
+              },
+              payment: [],
+              fee: {
+                assetId: 'WAVES',
+                amount: 500000
+              }
             }
           }
+          // eslint-disable-next-line no-undef
+          WavesKeeper.signAndPublishTransaction(tx)
+            .then((data) => {
+              console.log(tx)
+              this.makingBid = false
+              this.$toast.success('😍 Bid made successfully')
+              this.updateJob()
+            })
+            .catch((error) => {
+              this.makingBid = false
+              this.$toast.error(
+                '🙁 Something went wrong in making your bid. Try again'
+              )
+              console.log(error)
+            })
         }
-        // eslint-disable-next-line no-undef
-        WavesKeeper.signAndPublishTransaction(tx)
-          .then((data) => {
-            console.log(tx)
-            this.makingBid = false
-            this.$toast.success('😍 Bid made successfully')
-          })
-          .catch((error) => {
-            this.makingBid = false
-            this.$toast.error(
-              '🙁 Something went wrong in making your bid. Try again'
-            )
-            console.log(error)
-          })
+      } else {
+        this.$toast('Only freelancers can bid on an auction')
       }
     }
   }

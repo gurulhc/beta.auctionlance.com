@@ -3,7 +3,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      freelancerJobs: []
+    }
+  },
+  mounted() {}
+}
 </script>
 
 <style scoped></style>

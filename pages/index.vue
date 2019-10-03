@@ -179,6 +179,14 @@ export default {
   },
   fetch({ store, $axios }) {
     // eslint-disable-next-line no-undef
+    function isJson(str) {
+      try {
+        JSON.parse(str)
+      } catch (e) {
+        return false
+      }
+      return true
+    }
     return $axios
       .$get(
         `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?(_Freelancer|_Client)$`
@@ -186,16 +194,7 @@ export default {
       .then((data) => {
         const users = data
         console.log(typeof users)
-        let preparedUsers = users.filter((user) => {
-          return (
-            user.value !== 'CwvAbkxauC3uK4GN8Bv5qo324RMe9UB12iPaxqXp4ZEu' &&
-            user.value !== '123' &&
-            user.value !== '3VoeFDfvirm2C7rBy2inpbpCtgT9m2569GhCTxefENcn' &&
-            user.value !== 'E7Zd12PRfXSQgBuHWjoo4s9daeAV7cxaXevno5AwAdEM' &&
-            user.value !== 'PxkZaFAZx5YzhE7wdGf5ZJQeMh594mM3YYPP9qk4KxW' &&
-            user.value !== '8SXZDw3xsaRn6NAn3fo8mzt1Ln13cEoZ3MX7iGtRwU7K'
-          )
-        })
+        let preparedUsers = users.filter((user) => isJson(user.value))
         console.log(preparedUsers)
         preparedUsers = preparedUsers.map((user) => JSON.parse(user.value))
         store.commit('auth/LOAD_USERS', preparedUsers)

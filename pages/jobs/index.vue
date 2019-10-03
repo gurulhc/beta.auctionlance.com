@@ -44,7 +44,8 @@
           <nuxt-link
             :to="`/jobs/${job.key.split('_')[0]}/details`"
             class="bid-btn"
-            >Bid now</nuxt-link
+            ><span v-if="user.userType === 'freelancer'">Bid now</span>
+            <span v-else>View</span></nuxt-link
           >
         </div>
       </div>
@@ -62,7 +63,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress', 'wavesNode', 'jobs'])
+    ...mapState(['dAppAddress', 'wavesNode', 'jobs']),
+    ...mapState('auth', ['user'])
   },
   fetch({ store }) {
     // eslint-disable-next-line no-undef
