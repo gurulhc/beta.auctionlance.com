@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div
-      v-if="user.userType === 'freelancer' && freelancerJobs.length > 0"
-      class="auctoboard-card"
-    >
+    <div v-if="user.userType === 'freelancer'" class="auctoboard-card">
       <div class="header">
         <strong>Projects you are working on</strong>
       </div>
@@ -111,7 +108,7 @@ export default {
     store.dispatch('loadJobs')
   },
   computed: {
-    ...mapState(['jobs']),
+    ...mapState(['jobs', 'currentUserKey']),
     ...mapState('auth', ['user']),
     freelancerAuctionSuggestions() {
       /**
@@ -148,22 +145,24 @@ export default {
             `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_HiredFreelancer$`
           )
           .then((data) => {
-            data.map((datum) => {
-              this.$axios
-                .$get(
-                  `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
-                    datum.key.split('_')[0]
-                  }_Info`
-                )
-                .then((data) => {
-                  if (!this.isJson(data.value)) return
-                  const job = {
-                    info: JSON.parse(data.value),
-                    key: data.key
-                  }
-                  this.freelancerJobs.push(job)
-                })
-            })
+            data
+              .filter((datum) => datum.value === this.currentUserKey)
+              .map((datum) => {
+                this.$axios
+                  .$get(
+                    `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
+                      datum.key.split('_')[0]
+                    }_Info`
+                  )
+                  .then((data) => {
+                    if (!this.isJson(data.value)) return
+                    const job = {
+                      info: JSON.parse(data.value),
+                      key: data.key
+                    }
+                    this.freelancerJobs.push(job)
+                  })
+              })
           })
       } else {
         this.$axios
@@ -171,22 +170,24 @@ export default {
             `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_AuctionClient$`
           )
           .then((data) => {
-            data.map((datum) => {
-              this.$axios
-                .$get(
-                  `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
-                    datum.key.split('_')[0]
-                  }_Info`
-                )
-                .then((data) => {
-                  if (!this.isJson(data.value)) return
-                  const job = {
-                    info: JSON.parse(data.value),
-                    key: data.key
-                  }
-                  this.clientJobs.push(job)
-                })
-            })
+            data
+              .filter((datum) => datum.value === this.currentUserKey)
+              .map((datum) => {
+                this.$axios
+                  .$get(
+                    `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
+                      datum.key.split('_')[0]
+                    }_Info`
+                  )
+                  .then((data) => {
+                    if (!this.isJson(data.value)) return
+                    const job = {
+                      info: JSON.parse(data.value),
+                      key: data.key
+                    }
+                    this.clientJobs.push(job)
+                  })
+              })
           })
       }
     }

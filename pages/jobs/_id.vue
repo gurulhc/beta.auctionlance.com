@@ -80,6 +80,11 @@ export default {
   components: {
     Spinner
   },
+  mounted() {
+    if (this.auctionStatus === 'completed') {
+      this.$toast.info('This Job has been completed')
+    }
+  },
   computed: {
     ...mapState(['currentUserKey', 'currentAuctionData', 'dAppAddress']),
     job() {
@@ -262,6 +267,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$primary-color: #e4432d;
 h1,
 h2,
 h3,
@@ -308,9 +314,9 @@ p {
         margin-right: 0.6em;
         background-color: transparent;
         padding: 0.3em 1em;
-        border: 1px solid #d73f2e;
+        border: 1px solid $primary-color;
         border-radius: 4px;
-        color: #d73f2e;
+        color: $primary-color;
       }
     }
   }
@@ -348,8 +354,8 @@ p {
     padding: 0.5em 2em;
     margin-top: 3rem;
     border-radius: 3px;
-    border: 1px solid #d73f2e;
-    background-color: #d73f2e;
+    border: 1px solid $primary-color;
+    background-color: $primary-color;
     color: #fff;
     cursor: pointer;
     font-weight: bold;
