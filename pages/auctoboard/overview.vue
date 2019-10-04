@@ -1,36 +1,58 @@
 <template>
-  <div v-if="user.userType === 'freelancer'" class="overview">
-    <div class="statistics">
-      <h2>Earnings</h2>
-      <div class="overview-cards">
-        <div class="overview-card">
-          <h3>{{ earnings.pending }}</h3>
-          <p>Pending Earnings</p>
+  <div>
+    <h3>👋 Howdy, {{ user.name }}</h3>
+    <div v-if="user.userType === 'freelancer'" class="overview">
+      <div class="statistics">
+        <h2>Earnings</h2>
+        <div class="overview-cards">
+          <div class="overview-card">
+            <h3>{{ earnings.pending }}</h3>
+            <p>Pending Earnings</p>
+          </div>
+          <div class="overview-card">
+            <h3>{{ earnings.paid }}</h3>
+            <p>Paid Earnings</p>
+          </div>
+          <div class="overview-card">
+            <h3>{{ earnings.total }}</h3>
+            <p>Total Earnings</p>
+          </div>
         </div>
-        <div class="overview-card">
-          <h3>{{ earnings.paid }}</h3>
-          <p>Paid Earnings</p>
-        </div>
-        <div class="overview-card">
-          <h3>{{ earnings.total }}</h3>
-          <p>Total Earnings</p>
+      </div>
+      <div class="statistics jobs">
+        <h2>Jobs</h2>
+        <div class="overview-cards">
+          <div class="overview-card">
+            <h3>{{ jobs.pending }}</h3>
+            <p>Jobs Pending</p>
+          </div>
+          <div class="overview-card">
+            <h3>{{ jobs.completed }}</h3>
+            <p>Jobs Completed</p>
+          </div>
+          <div class="overview-card">
+            <h3>{{ jobs.total }}</h3>
+            <p>Total Jobs</p>
+          </div>
         </div>
       </div>
     </div>
-    <div class="statistics jobs">
-      <h2>Jobs</h2>
-      <div class="overview-cards">
-        <div class="overview-card">
-          <h3>{{ jobs.pending }}</h3>
-          <p>Jobs Pending</p>
-        </div>
-        <div class="overview-card">
-          <h3>{{ jobs.completed }}</h3>
-          <p>Jobs Completed</p>
-        </div>
-        <div class="overview-card">
-          <h3>{{ jobs.total }}</h3>
-          <p>Total Jobs</p>
+    <div v-else class="overview">
+      <div class="statistics">
+        <h2>Jobs</h2>
+        <div class="overview-cards">
+          <div class="overview-card">
+            <h3>{{ client.jobsOngoing }}</h3>
+            <p>Jobs On-going</p>
+          </div>
+          <div class="overview-card">
+            <h3>{{ client.totalJobs }}</h3>
+            <p>Jobs Created</p>
+          </div>
+          <div class="overview-card">
+            <h3>{{ client.jobsInDispute }}</h3>
+            <p>Jobs in Dispute</p>
+          </div>
         </div>
       </div>
     </div>
@@ -52,6 +74,11 @@ export default {
         pending: 0,
         paid: 0,
         total: 0
+      },
+      client: {
+        totalJobs: 0,
+        jobsInDispute: 0,
+        jobsOngoing: 0
       }
     }
   },

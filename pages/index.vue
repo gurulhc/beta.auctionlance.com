@@ -206,85 +206,9 @@ export default {
   mounted() {
     this.wavy()
   },
-  created() {
-    if (!this.$store.state.loggedIn) {
-      this.performWavesKeeperAuth()
-    }
-  },
   methods: {
     wavy() {
       TweenMax.from('.squiggle-block', 2, { x: 300, delay: 2 })
-    },
-    performWavesKeeperAuth() {
-      const authData = {
-        data: 'Auctionlance Platform',
-        name: 'Auctionlance Platform',
-        icon: 'http://auctionlance.com/aucttoken.svg',
-        referrer: '/',
-        successPath: '/'
-      }
-      // eslint-disable-next-line no-undef
-      WavesKeeper.auth(authData)
-        .then((data) => {
-          console.log(data)
-          this.$store.commit('auth/GET_WAVES_KEEPER_DATA', data)
-          this.logIn(data.publicKey)
-        })
-        .catch((error) => {
-          this.$toast.info('Something went wrong. Try reloading the page')
-          console.log(error)
-        })
-    },
-    logIn(dataKey) {
-      this.$axios
-        .$get(
-          `${this.wavesNode.test}/addresses/data/${this.dAppAddress}?matches=.*?${dataKey}(_Freelancer|_Client)$`
-        )
-        .then((res) => {
-          if (res.length === 0) {
-            this.$router.push({
-              path: '/register'
-            })
-
-            this.$toast.error("You don't have an account on Auctionlance")
-
-            return
-          }
-          console.log(JSON.parse(res[0].value))
-          const user = JSON.parse(res[0].value)
-          const { name } = user
-          const { publicKey } = user
-          const { secure_url } = user.avatar
-
-          // Comet chat log in
-          window.chat_id = `AUCTIONLANCER${publicKey}`
-          window.chat_name = name
-          window.chat_avatar = secure_url
-          window.chat_link = 'USER_PROFILELINK'
-          window.jqcc.cometchat.init()
-
-          this.$toast.success(`👋 Welcome back ${name}`)
-          this.$store.commit('auth/LOG_IN', JSON.parse(res[0].value))
-          this.$store.commit('UPDATE_LOGGED_IN_STATUS')
-          this.$store.commit(
-            'UPDATE_CURRENT_USER_KEY',
-            res[0].key.split('_')[0]
-          )
-        })
-        .catch((error) => {
-          if (error.response && error.response.data.error === 304) {
-            console.log("You don't have an account on Auctionlance")
-
-            this.$router.push({
-              path: '/register'
-            })
-
-            this.$toast.error("You don't have an account on Auctionlance")
-
-            return
-          }
-          console.log(error.response && error.response.data.message)
-        })
     }
   }
 }
