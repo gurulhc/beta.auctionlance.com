@@ -17,7 +17,7 @@
           </ul>
         </section>
       </section>
-      <footer>
+      <footer v-if="false">
         <router-link to="/edit-profile">Edit profile</router-link>
       </footer>
     </div>

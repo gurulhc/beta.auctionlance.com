@@ -551,15 +551,20 @@ body {
   text-transform: lowercase;
   border-radius: 4px;
   transition: all 300ms;
+  background-image: none;
 
   &:hover {
-    background-image: none !important;
+    background-color: lighten($primary-color, 10%);
   }
 }
 .nav-button.waves-keeper {
   background-color: #1f5af6;
   border-bottom-color: #1f5af6;
   text-transform: capitalize;
+
+  &:hover {
+    background-color: lighten(#1f5af6, 10%);
+  }
 }
 
 .create-button {
