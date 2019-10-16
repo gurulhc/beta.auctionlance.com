@@ -17,8 +17,8 @@
           </ul>
         </section>
       </section>
-      <footer v-if="false">
-        <router-link to="/edit-profile">Edit profile</router-link>
+      <footer>
+        <a href="" @click="logout">Log out</a>
       </footer>
     </div>
     <div class="auctoboard__content">
@@ -56,6 +56,11 @@ export default {
   },
   computed: {
     ...mapState('auth', ['user'])
+  },
+  methods: {
+    logout() {
+      localStorage.clear()
+    }
   }
 }
 </script>

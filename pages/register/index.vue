@@ -8,25 +8,40 @@
           </nuxt-link>
         </span>
         <form action="" @submit.prevent="register">
-          <div class="input">
+          <div class="input" :class="{ 'form-group--error': $v.name.$error }">
             <input
               id="name"
-              v-model="info.name"
+              v-model="$v.name.$model"
               placeholder="John Doe"
               type="text"
               name="name"
-              required
             />
+            <p v-if="!$v.name.required" class="error">
+              Name is required
+            </p>
+            <p v-if="!$v.name.minLength" class="error">
+              Name must not be lesser than
+              {{ $v.name.$params.minLength.min }} letters.
+            </p>
           </div>
-          <div class="input">
+          <div
+            class="input"
+            :class="{ 'form-group--error': $v.description.$error }"
+          >
             <input
               id="description"
-              v-model="info.description"
+              v-model="$v.description.$model"
               placeholder="A short description about you"
               type="text"
               name="description"
-              required
             />
+            <p v-if="!$v.description.required" class="error">
+              Description is required
+            </p>
+            <p v-if="!$v.description.minLength" class="error">
+              Description must not be lesser than
+              {{ $v.description.$params.minLength.min }} letters.
+            </p>
           </div>
           <div class="input">
             <vue-tags-input
@@ -36,28 +51,39 @@
               :avoid-adding-duplicates="true"
               :delete-on-backspace="true"
               :max-tags="5"
-              placeholder="Add a maximum of 5 tags"
+              placeholder="Add a maximum of 5 tags(hit ENTER after each tag)"
               @tags-changed="(newTags) => (tags = newTags)"
             />
           </div>
-          <div class="input">
-            <select v-model="info.userType">
+          <div
+            class="input"
+            :class="{ 'form-group--error': $v.userType.$error }"
+          >
+            <select v-model="$v.userType.$model">
               <option disabled value="" selected
                 >Purpose for using Auctionlance</option
               >
               <option value="client">Looking for freelancers</option>
               <option value="freelancer">I am a freelancer</option>
             </select>
+            <p v-if="!$v.userType.required" class="error">
+              Select a user type
+            </p>
           </div>
-          <div class="input">
+          <div
+            class="input"
+            :class="{ 'form-group--error': $v.location.$error }"
+          >
             <input
               id="country"
-              v-model="info.location"
+              v-model="$v.location.$model"
               placeholder="Location"
               type="text"
               name="location"
-              required
             />
+            <p v-if="!$v.location.required" class="error">
+              Enter a location please
+            </p>
           </div>
           <div class="input">
             <button
@@ -93,6 +119,7 @@
 <script>
 /* eslint-disable camelcase */
 import { mapState } from 'vuex'
+import { required, minLength } from 'vuelidate/lib/validators'
 import Spinner from '@/components/Spinner.vue'
 export default {
   layout: 'register',
@@ -113,17 +140,31 @@ export default {
       isRegistering: false,
       hasUploaded: false,
       tag: '',
+      name: null,
+      description: null,
+      location: null,
       tags: [],
-      info: {
-        name: null,
-        description: null,
-        location: null,
-        tags: [],
-        address: '',
-        public_key: '',
-        userType: '',
-        avatar: {}
-      }
+      address: '',
+      public_key: '',
+      userType: '',
+      avatar: ''
+    }
+  },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(3)
+    },
+    description: {
+      required,
+      minLength: minLength(10)
+    },
+    userType: {
+      required
+    },
+    location: {
+      required,
+      minLength: minLength(4)
     }
   },
   computed: {
@@ -153,10 +194,11 @@ export default {
           if (!error && result && result.event === 'success') {
             this.hasUploaded = true
             const { secure_url, url, public_id, thumbnail_url } = result.info
-            this.info.avatar.secure_url = secure_url
-            this.info.avatar.url = url
-            this.info.avatar.public_id = public_id
-            this.info.avatar.thumbnail_url = thumbnail_url
+            this.avatar = {}
+            this.avatar.secure_url = secure_url
+            this.avatar.url = url
+            this.avatar.public_id = public_id
+            this.avatar.thumbnail_url = thumbnail_url
           }
         }
       )
@@ -169,76 +211,101 @@ export default {
       widget.open()
     },
     register() {
-      this.isRegistering = true
-
-      this.info.address = this.wavesKeeperData.address
-
-      this.info.publicKey = this.wavesKeeperData.publicKey
-
-      const tags = this.tags.map((tag) => tag.text)
-
-      this.info.tags = [...tags]
-
-      const payload = JSON.stringify(this.info)
-
-      console.log(this.info)
-      const tx = {
-        type: 16,
-        data: {
-          dApp: this.dAppAddress,
-          call: {
-            function:
-              this.info.userType === 'freelancer'
-                ? 'freelancerSignUp'
-                : 'clientSignUp',
-            args: [{ type: 'string', value: payload }]
-          },
-          payment: [],
-          fee: {
-            assetId: 'WAVES',
-            amount: 500000
-          }
-        }
+      this.$v.$touch()
+      if (this.avatar === '') {
+        this.$toast.error('Upload an avatar')
+        return
       }
+      if (this.tags.length === 0) {
+        this.$toast.error('Enter at least one tag')
+        return
+      }
+      if (!this.$v.$invalid) {
+        this.isRegistering = true
 
-      // eslint-disable-next-line no-undef
-      WavesKeeper.signAndPublishTransaction(tx)
-        .then((data) => {
-          const formData = new FormData()
+        this.address = this.wavesKeeperData.address
 
-          formData.append('UID', `AUCTIONLANCER${this.info.publicKey}`)
-          formData.append('name', this.info.name)
-          formData.append('avatarURL', this.info.avatar.secure_url)
-          formData.append('role', this.info.userType)
+        this.publicKey = this.wavesKeeperData.publicKey
 
-          const config = {
-            headers: {
-              'api-key': process.env.Comet_Chat_API_Key
+        const tags = this.tags.map((tag) => tag.text)
+
+        this.tags = [...tags]
+        const info = {
+          name: this.name,
+          description: this.description,
+          location: this.location,
+          tags: this.tags,
+          address: this.address,
+          public_key: this.public_key,
+          userType: this.userType,
+          avatar: this.avatar
+        }
+        const payload = JSON.stringify(info)
+
+        console.log(this.info)
+        const tx = {
+          type: 16,
+          data: {
+            dApp: this.dAppAddress,
+            call: {
+              function:
+                this.userType === 'freelancer'
+                  ? 'freelancerSignUp'
+                  : 'clientSignUp',
+              args: [{ type: 'string', value: payload }]
+            },
+            payment: [],
+            fee: {
+              assetId: 'WAVES',
+              amount: 500000
             }
           }
+        }
 
-          this.$axios
-            .$post(
-              'https://api.cometondemand.net/api/v2/createUser',
-              formData,
-              config
-            )
-            .then((data) => {
-              console.log(data)
-            })
-            .catch((error) => {
-              console.log(error)
-            })
+        // eslint-disable-next-line no-undef
+        WavesKeeper.signAndPublishTransaction(tx)
+          .then((data) => {
+            const formData = new FormData()
 
-          console.log(tx)
-          this.isRegistering = false
-          this.$router.push({
-            path: '/auctoboard/overview'
+            formData.append('UID', `AUCTIONLANCER${this.publicKey}`)
+            formData.append('name', this.name)
+            formData.append('avatarURL', this.avatar.secure_url)
+            formData.append('role', this.userType)
+
+            const config = {
+              headers: {
+                'api-key': process.env.Comet_Chat_API_Key
+              }
+            }
+
+            this.$axios
+              .$post(
+                'https://api.cometondemand.net/api/v2/createUser',
+                formData,
+                config
+              )
+              .then((data) => {
+                console.log(data)
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+
+            console.log(tx)
+            this.isRegistering = false
+            this.$router.push({
+              path: '/auctoboard/overview'
+            })
           })
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+          .catch((error) => {
+            console.log(error)
+            this.isRegistering = false
+          })
+      } else {
+        this.$toast.error(
+          'Oops, you must have enter an invalid value. Check fields'
+        )
+      }
     }
   }
 }

@@ -37,7 +37,7 @@
                 href="#"
                 class="nav-button waves-keeper"
                 @click.prevent="performWavesKeeperAuth"
-                >🔒 Login With WavesKeeper</a
+                >🔒 Login With Keeper</a
               >
             </li>
 
@@ -249,6 +249,7 @@ export default {
         .then((data) => {
           console.log(data)
           this.$store.commit('auth/GET_WAVES_KEEPER_DATA', data)
+          localStorage.setItem('wavesKeeperData', JSON.stringify(data))
           this.logIn(data.publicKey)
         })
         .catch((error) => {
@@ -286,11 +287,17 @@ export default {
 
           this.$toast.success(`👋 Welcome back ${name}`)
           this.$store.commit('auth/LOG_IN', JSON.parse(res[0].value))
+          localStorage.setItem('user', res[0].value)
+
           this.$store.commit('UPDATE_LOGGED_IN_STATUS')
+          localStorage.setItem('loggedIn', true)
+
           this.$store.commit(
             'UPDATE_CURRENT_USER_KEY',
             res[0].key.split('_')[0]
           )
+
+          localStorage.setItem('currentUserKey', res[0].key.split('_')[0])
         })
         .catch((error) => {
           if (error.response && error.response.data.error === 304) {
@@ -564,6 +571,7 @@ body {
 
   &:hover {
     background-color: lighten(#1f5af6, 10%);
+    background-image: none;
   }
 }
 
@@ -588,5 +596,64 @@ body {
 input[type='text']:focus {
   border: 1px solid $primary-color;
   outline: transparent;
+}
+
+// Form Validation
+.error {
+  line-height: 1;
+  display: none;
+  color: #f04124;
+  font-size: 0.49em;
+  margin-top: 0.4em;
+  flex: 1 100%;
+}
+
+.form-group--error {
+  animation-name: shakeError;
+  animation-fill-mode: forward;
+  animation-duration: 0.6s;
+  animation-timing-function: ease-in-out;
+}
+
+.form-group--error input,
+.form-group--error input:hover .form-group--error input:focus,
+.form-group--error textarea,
+.form-group--error textarea:hover,
+.form-group--error textarea:focus,
+.form-group--error select,
+.form-group--error select:focus .form-group--error select:hover {
+  border-color: #f79483 !important;
+}
+
+.form-group--error > .error {
+  display: block;
+  color: #f57f6c;
+}
+
+@keyframes shakeError {
+  0% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(0.375rem);
+  }
+  30% {
+    transform: translateX(-0.375rem);
+  }
+  45% {
+    transform: translateX(0.375rem);
+  }
+  60% {
+    transform: translateX(-0.375rem);
+  }
+  75% {
+    transform: translateX(0.375rem);
+  }
+  90% {
+    transform: translateX(-0.375rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 </style>

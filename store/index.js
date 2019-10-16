@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
+const loggedIn = localStorage.getItem('loggedIn') || false
+const currentUserKey = localStorage.getItem('currentUserKey') || ''
 export const state = () => ({
-  loggedIn: false,
+  loggedIn,
   isLoading: false,
   dAppAddress: '3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2',
   acceptedAssets: [
@@ -29,7 +31,7 @@ export const state = () => ({
     test: 'https://nodes-testnet.wavesnodes.com'
   },
   jobs: [],
-  currentUserKey: '',
+  currentUserKey,
   currentAuctionData: []
 })
 

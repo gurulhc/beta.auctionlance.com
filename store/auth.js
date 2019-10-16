@@ -1,17 +1,22 @@
 /* eslint-disable no-console */
+const wavesKeeperData =
+  JSON.parse(localStorage.getItem('wavesKeeperData')) || {}
+const defaultUser = {
+  name: '',
+  description: '',
+  avatar: {},
+  tags: [],
+  location: '',
+  address: '',
+  publicKey: '',
+  userType: ''
+}
+
+const userPayload = JSON.parse(localStorage.getItem('user')) || defaultUser
 
 export const state = () => ({
-  wavesKeeperData: {},
-  user: {
-    name: '',
-    description: '',
-    avatar: {},
-    tags: [],
-    location: '',
-    address: '',
-    publicKey: '',
-    userType: ''
-  },
+  wavesKeeperData,
+  user: userPayload,
   users: []
 })
 

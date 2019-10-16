@@ -39,17 +39,12 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '~/plugins/vueTyper.js', mode: 'client' },
-    { src: '~/plugins/vueTagsInput.js', mode: 'client' },
-    { src: '~/plugins/cloudinary.js', mode: 'client' },
-    {
-      src: '~/plugins/vue-scrollmagic.js',
-      mode: 'client'
-    },
-    {
-      src: '~/plugins/cometChat.js',
-      mode: 'client'
-    }
+    { src: '~/plugins/vueTyper.client.js' },
+    { src: '~/plugins/vueTagsInput.client.js' },
+    { src: '~/plugins/cloudinary.client.js' },
+    { src: '~/plugins/vue-scrollmagic.client.js' },
+    { src: '~/plugins/cometChat.client.js' },
+    { src: '~/plugins/vuelidate.client.js' }
   ],
   /*
    ** Nuxt.js dev-modules
