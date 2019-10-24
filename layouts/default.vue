@@ -3,7 +3,11 @@
     <section class="main-wrapper">
       <header id="header" class="page-header">
         <div class="brand">
-          <h1><nuxt-link to="/">Auctionlance</nuxt-link></h1>
+          <h1>
+            <nuxt-link to="/"
+              ><img src="~/assets/Auctionlance.png" width="200"
+            /></nuxt-link>
+          </h1>
         </div>
       </header>
       <nav id="main-menu" class="menu">

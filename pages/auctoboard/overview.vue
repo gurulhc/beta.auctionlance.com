@@ -6,15 +6,15 @@
         <h2>Earnings</h2>
         <div class="overview-cards">
           <div class="overview-card">
-            <h3>{{ earnings.pending }}</h3>
+            <h3>{{ pendingEarnings }}</h3>
             <p>Pending Earnings</p>
           </div>
           <div class="overview-card">
-            <h3>{{ earnings.paid }}</h3>
+            <h3>{{ paidEarnings }}</h3>
             <p>Paid Earnings</p>
           </div>
           <div class="overview-card">
-            <h3>{{ earnings.total }}</h3>
+            <h3>{{ totalEarnings }}</h3>
             <p>Total Earnings</p>
           </div>
         </div>
@@ -23,15 +23,15 @@
         <h2>Jobs</h2>
         <div class="overview-cards">
           <div class="overview-card">
-            <h3>{{ jobs.pending }}</h3>
+            <h3>{{ jobsPending }}</h3>
             <p>Jobs Pending</p>
           </div>
           <div class="overview-card">
-            <h3>{{ jobs.completed }}</h3>
+            <h3>{{ jobsCompleted }}</h3>
             <p>Jobs Completed</p>
           </div>
           <div class="overview-card">
-            <h3>{{ jobs.total }}</h3>
+            <h3>{{ jobsTotal }}</h3>
             <p>Total Jobs</p>
           </div>
         </div>
@@ -42,15 +42,15 @@
         <h2>Jobs</h2>
         <div class="overview-cards">
           <div class="overview-card">
-            <h3>{{ client.jobsOngoing }}</h3>
+            <h3>{{ jobsOnGoing }}</h3>
             <p>Jobs On-going</p>
           </div>
           <div class="overview-card">
-            <h3>{{ client.totalJobs }}</h3>
+            <h3>{{ jobsCreated }}</h3>
             <p>Jobs Created</p>
           </div>
           <div class="overview-card">
-            <h3>{{ client.jobsInDispute }}</h3>
+            <h3>{{ jobsInDispute }}</h3>
             <p>Jobs in Dispute</p>
           </div>
         </div>
@@ -60,30 +60,60 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
-  data() {
-    return {
-      jobs: {
-        pending: 0,
-        completed: 0,
-        total: 0
-      },
-      earnings: {
-        pending: 0,
-        paid: 0,
-        total: 0
-      },
-      client: {
-        totalJobs: 0,
-        jobsInDispute: 0,
-        jobsOngoing: 0
-      }
+  methods: {
+    ...mapActions('freelancers', [
+      'getPendingEarnings',
+      'getPaidEarnings',
+      'getTotalEarnings',
+      'getPendingJobs',
+      'getCompletedJobs',
+      'getTotalJobs'
+    ]),
+    ...mapActions('client', [
+      'getCreatedJobs',
+      'getOngoingJobs',
+      'getJobsInDispute'
+    ]),
+    getAllEarningsStat(publicKey) {
+      this.getPendingEarnings(publicKey)
+      this.getPaidEarnings(publicKey)
+      this.getTotalEarnings(publicKey)
+    },
+    getFreelancerJobStat(publicKey) {
+      this.getPendingJobs(publicKey)
+      this.getCompletedJobs(publicKey)
+      this.getTotalJobs(publicKey)
+    },
+    getClientJobsStat(publicKey) {
+      this.getCreatedJobs(publicKey)
+      this.getOngoingJobs(publicKey)
+      this.getJobsInDispute(publicKey)
     }
   },
   computed: {
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
+    ...mapState(['currentUserKey']),
+    ...mapState('freelancers', [
+      'pendingEarnings',
+      'paidEarnings',
+      'totalEarnings',
+      'jobsPending',
+      'jobsCompleted',
+      'jobsTotal'
+    ]),
+    ...mapState('client', ['jobsCreated', 'jobsOnGoing', 'jobsInDispute'])
+  },
+  mounted() {
+    if (this.user.userType === 'freelancer') {
+      this.getFreelancerJobStat(this.currentUserKey)
+      this.getAllEarningsStat(this.currentUserKey)
+    } else {
+      this.getClientJobsStat(this.currentUserKey)
+    }
+    console.log(this.currentUserKey)
   }
 }
 </script>
