@@ -23,10 +23,10 @@
           placeholder="Auction title"
         />
         <p v-if="!$v.title.required" class="error">
-          😳 Provide a title for the auction
+          Provide a title for the auction
         </p>
         <p v-if="!$v.title.minLength" class="error">
-          😳 Auction title must have at least
+          Auction title must have at least
           {{ $v.title.$params.minLength.min }} letters.
         </p>
         <p class="form-suggestion">
@@ -56,7 +56,24 @@
           {{ $v.description.$params.minLength.min }} letters.
         </p>
       </section>
-
+      <section
+        class="form-group"
+        :class="{ 'form-group--error': $v.category.$error }"
+      >
+        <label class="required">Category</label>
+        <select v-model="$v.category.$model">
+          <option value="">Choose a category</option>
+          <option
+            v-for="category in categories"
+            :key="category"
+            :value="category"
+            >{{ category }}</option
+          >
+        </select>
+        <p v-if="!$v.category.required" class="error">
+          Select a category for this auction
+        </p>
+      </section>
       <section class="form-group">
         <label class="required">Skills</label>
 
@@ -77,7 +94,7 @@
         <label>₿ Select Token </label>
 
         <select v-model="$v.selectedAssetId.$model">
-          <option disabled>Choose payment token</option>
+          <option value="">Choose payment token</option>
           <option
             v-for="asset in assets"
             :key="asset.id"
@@ -87,7 +104,7 @@
           </option>
         </select>
         <p v-if="!$v.selectedAssetId.required" class="error">
-          😳 Please select a payment method
+          Please select a category
         </p>
       </section>
       <section class="form-group has-three-controls">
@@ -96,10 +113,10 @@
 
           <input v-model.trim="$v.amount.$model" type="text" />
           <p v-if="!$v.amount.required" class="error">
-            😳 Amount is required
+            Amount is required
           </p>
           <p v-if="!$v.amount.decimal" class="error">
-            😳 Only numbers can be entered as amount
+            Only numbers can be entered as amount
           </p>
           <p v-if="total > 0" class="total">{{ total }}</p>
         </div>
@@ -113,13 +130,13 @@
           <input v-model="$v.auctionDuration.$model" type="text" />
 
           <p v-if="!$v.auctionDuration.required" class="error">
-            😳 The auction duration is required is required
+            The auction duration is required is required
           </p>
           <p v-if="!$v.auctionDuration.integer" class="error">
-            😳 Only positive numbers can be entered as auction duration
+            Only positive numbers can be entered as auction duration
           </p>
           <p v-if="!$v.auctionDuration.minValue" class="error">
-            😳 Auction duration should not be less than
+            Auction duration should not be less than
             {{ $v.auctionDuration.$params.minValue.min }} day
           </p>
           <p class="form-suggestion">
@@ -199,6 +216,7 @@ export default {
       creatingAuction: false,
       title: '',
       description: '',
+      category: '',
       amount: '',
       auctionDuration: '',
       jobExecution: '',
@@ -213,6 +231,9 @@ export default {
     description: {
       required,
       minLength: minLength(50)
+    },
+    category: {
+      required
     },
     amount: {
       required,
@@ -238,7 +259,8 @@ export default {
   computed: {
     ...mapState({
       assets: 'acceptedAssets',
-      dAppAddress: 'dAppAddress'
+      dAppAddress: 'dAppAddress',
+      categories: 'categories'
     }),
     total() {
       let amount = Number(this.amount)
@@ -261,6 +283,7 @@ export default {
         const auction = {
           title: this.title,
           description: this.description,
+          category: this.category,
           amount: this.amount,
           auctionDuration: this.auctionDuration,
           jobExecution: this.jobExecution
@@ -271,6 +294,7 @@ export default {
         const payload = JSON.stringify(auction)
         const jobExecution = Number(auction.jobExecution)
         const auctionDuration = Number(auction.auctionDuration)
+        const category = this.category
         console.log(typeof this.selectedAssetId)
         const auctionAmount = Number(auction.amount) * 100000000
         const tx = {
@@ -282,7 +306,8 @@ export default {
               args: [
                 { type: 'integer', value: jobExecution },
                 { type: 'integer', value: auctionDuration },
-                { type: 'string', value: payload }
+                { type: 'string', value: payload },
+                { type: 'string', value: category }
               ]
             },
             payment: [

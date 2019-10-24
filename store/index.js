@@ -27,6 +27,14 @@ export const state = () => ({
       id: 'Gtb1WRznfchDnTh37ezoDTJ4wcoKaRsKqKjJjy7nm2zU'
     }
   ],
+  categories: [
+    'Web Design & Development',
+    'Waves RIDE & Smart Contract',
+    'Mobile App',
+    'Graphics & Design',
+    'Writing & Translation',
+    'Video & Animation'
+  ],
   wavesNode: {
     test: 'https://nodes-testnet.wavesnodes.com'
   },

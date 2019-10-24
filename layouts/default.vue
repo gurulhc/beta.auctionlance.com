@@ -229,7 +229,17 @@ export default {
       return this.user.userType === 'client'
     }
   },
-
+  mounted() {
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    ) {
+      this.$toast.info(
+        'Use a desktop computer in other to get the full functionality of Auctionlance'
+      )
+    }
+  },
   methods: {
     getFullYear() {
       const currentDate = new Date()
@@ -552,16 +562,17 @@ body {
 .nav-button {
   color: #fff !important;
   background-color: $primary-color;
-  border-bottom: none;
+  border: 0 !important;
   padding: 0.5em 1em;
   font-size: 0.6em;
   text-transform: lowercase;
   border-radius: 4px;
   transition: all 300ms;
-  background-image: none;
 
   &:hover {
     background-color: lighten($primary-color, 10%);
+    background-image: none !important;
+    padding: 0.5em 1em !important;
   }
 }
 .nav-button.waves-keeper {
@@ -571,7 +582,8 @@ body {
 
   &:hover {
     background-color: lighten(#1f5af6, 10%);
-    background-image: none;
+    background-image: none !important;
+    padding: 0.5em 1em !important;
   }
 }
 
@@ -628,6 +640,7 @@ input[type='text']:focus {
 .form-group--error > .error {
   display: block;
   color: #f57f6c;
+  margin-top: 0.5em;
 }
 
 @keyframes shakeError {
