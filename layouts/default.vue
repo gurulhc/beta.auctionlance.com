@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!isMobile">
     <section class="main-wrapper">
       <header id="header" class="page-header">
         <div class="brand">
@@ -153,10 +153,14 @@
       </div>
     </footer>
   </div>
+  <div v-else class="is-mobile">
+    <div>🥺 Please use a desktop computer</div>
+  </div>
 </template>
 
 <script>
 /* eslint-disable camelcase */
+/* eslint-disable nuxt/no-globals-in-created */
 import { mapState } from 'vuex'
 export default {
   head() {
@@ -226,25 +230,46 @@ export default {
       ]
     }
   },
+  data() {
+    return {
+      isMobileScreenSize: false
+    }
+  },
   computed: {
     ...mapState('auth', ['user']),
     ...mapState(['dAppAddress', 'wavesNode']),
     isClient() {
       return this.user.userType === 'client'
+    },
+    isMobile() {
+      return this.isMobileScreenSize
     }
   },
-  mounted() {
-    if (
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      )
-    ) {
-      this.$toast.info(
-        'Use a desktop computer in other to get the full functionality of Auctionlance'
-      )
-    }
+  created() {
+    this.getIsMobileStatus()
+    window.addEventListener('resize', () => {
+      this.getIsMobileStatus()
+    })
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', () => {
+      this.getIsMobileStatus()
+    })
   },
   methods: {
+    getIsMobileStatus() {
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        this.isMobileScreenSize = true
+        console.log('hello')
+      } else {
+        this.isMobileScreenSize = false
+        console.log('bye')
+      }
+    },
     getFullYear() {
       const currentDate = new Date()
 
@@ -671,6 +696,45 @@ input[type='text']:focus {
   }
   100% {
     transform: translateX(0);
+  }
+}
+
+.is-mobile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #0b0b0b;
+}
+
+.is-mobile div {
+  background-color: #fff;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  animation-name: seeSaw;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-direction: alternate;
+  color: #fff;
+}
+
+@keyframes seeSaw {
+  0% {
+    transform: tanslateY(1em);
+    background-color: blue;
+  }
+  40% {
+    transform: translateY(0);
+    background-color: darken(blue, 10%);
+  }
+  60% {
+    transform: translateY(0);
+    background-color: lighten(blue, 10%);
+  }
+  100% {
+    transform: translateY(0);
+    background-color: blue;
   }
 }
 </style>
