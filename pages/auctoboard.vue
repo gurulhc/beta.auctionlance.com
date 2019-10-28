@@ -2,7 +2,18 @@
   <div class="auctoboard">
     <div class="auctoboard__sidebar">
       <section class="avatar-container">
-        <img :src="user.avatar.secure_url" alt="" class="avatar" />
+        <img
+          v-if="user.avatar.secure_url"
+          :src="user.avatar.secure_url"
+          :alt="user.name"
+          class="avatar"
+        />
+        <img
+          v-else
+          src="~/assets/default-avatar.svg"
+          class="avatar"
+          :alt="user.name"
+        />
       </section>
       <section class="textual-content">
         <h3 class="name">{{ user.name }}</h3>

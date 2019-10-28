@@ -48,10 +48,18 @@
             <li>
               <nuxt-link to="/auctoboard/overview" class="user"
                 ><img
+                  v-if="user.avatar.secure_url"
                   :src="`${user.avatar.secure_url}`"
                   :alt="user.name"
                   class="avatar"
-              /></nuxt-link>
+                />
+                <img
+                  v-else
+                  src="~/assets/default-avatar.svg"
+                  class="avatar"
+                  :alt="user.name"
+                />
+              </nuxt-link>
             </li>
           </ul>
         </section>
