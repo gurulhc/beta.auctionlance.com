@@ -4,7 +4,7 @@
       <section class="form-wrapper">
         <span>
           <nuxt-link to="/">
-            <img src="http://auctionlance.com/aucttoken.svg" class="logo" />
+            <img src="~/assets/short-logo.png" class="logo" />
           </nuxt-link>
         </span>
         <form action="" @submit.prevent="register">
@@ -91,7 +91,7 @@
               ref="upload"
               type="button"
               class="form-button form-button--secondary"
-              :disabled="hasUploaded"
+              :disabled="hasUploaded || isOpeningCloudinary"
               :class="{ uploaded: hasUploaded }"
               @click="openCloudinaryWidget"
             >
@@ -101,7 +101,11 @@
             </button>
           </div>
           <div class="input">
-            <button type="submit" class="form-button form-button--primary">
+            <button
+              type="submit"
+              class="form-button form-button--primary"
+              :disabled="isRegistering"
+            >
               <spinner v-if="isRegistering" />
               <span v-else>Join Auctionlance</span>
             </button>

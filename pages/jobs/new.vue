@@ -180,7 +180,11 @@
           I agree to Auctionlance <nuxt-link to="/terms">terms</nuxt-link>
         </label>
       </section>
-      <button type="submit" class="create-button" :disabled="!hasAgreed">
+      <button
+        type="submit"
+        class="create-button"
+        :disabled="!hasAgreed || creatingAuction"
+      >
         <spinner v-if="creatingAuction"></spinner>
         <span v-else>👍 Create Auction</span>
       </button>
@@ -295,7 +299,6 @@ export default {
         const jobExecution = Number(auction.jobExecution)
         const auctionDuration = Number(auction.auctionDuration)
         const category = this.category
-        console.log(typeof this.selectedAssetId)
         const auctionAmount = Number(auction.amount) * 100000000
         const tx = {
           type: 16,
@@ -326,7 +329,6 @@ export default {
         // eslint-disable-next-line no-undef
         WavesKeeper.signAndPublishTransaction(tx)
           .then((data) => {
-            console.log(data)
             this.creatingAuction = false
             this.$toast.success('👍 Auction created successfully')
             this.loadJobs()

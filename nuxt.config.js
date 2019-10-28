@@ -44,7 +44,8 @@ export default {
     { src: '~/plugins/cloudinary.client.js' },
     { src: '~/plugins/vue-scrollmagic.client.js' },
     { src: '~/plugins/cometChat.client.js' },
-    { src: '~/plugins/vuelidate.client.js' }
+    { src: '~/plugins/vuelidate.client.js' },
+    { src: '~plugins/vue-js-modal' }
   ],
   /*
    ** Nuxt.js dev-modules

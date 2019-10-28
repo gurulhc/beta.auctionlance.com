@@ -9,23 +9,23 @@ export const state = () => ({
     {
       name: 'Waves ',
       id: 'WAVES'
-    },
-    {
-      name: 'Auct Token',
-      id: '53VHGAEfVNJnByeMbu9r4DsxXoBz3TecQfWpYXAsZmzh'
-    },
-    {
-      name: 'wBTC',
-      id: '8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS'
-    },
-    {
-      name: 'wUSD',
-      id: 'Ft8X1v1LTa1ABafufpaCWyVj8KkaxUWE6xBhW6sNFJck'
-    },
-    {
-      name: 'wEUR',
-      id: 'Gtb1WRznfchDnTh37ezoDTJ4wcoKaRsKqKjJjy7nm2zU'
     }
+    // {
+    //   name: 'Auct Token',
+    //   id: '53VHGAEfVNJnByeMbu9r4DsxXoBz3TecQfWpYXAsZmzh'
+    // },
+    // {
+    //   name: 'wBTC',
+    //   id: '8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS'
+    // },
+    // {
+    //   name: 'wUSD',
+    //   id: 'Ft8X1v1LTa1ABafufpaCWyVj8KkaxUWE6xBhW6sNFJck'
+    // },
+    // {
+    //   name: 'wEUR',
+    //   id: 'Gtb1WRznfchDnTh37ezoDTJ4wcoKaRsKqKjJjy7nm2zU'
+    // }
   ],
   categories: [
     'Web Design & Development',
@@ -66,7 +66,6 @@ export const actions = {
       )
       .then((data) => {
         const jobs = data
-        console.log(jobs)
         const filteredJobs = jobs.filter(
           (job) => job.value !== 'newAuctiondata'
         )

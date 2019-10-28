@@ -264,10 +264,8 @@ export default {
         )
       ) {
         this.isMobileScreenSize = true
-        console.log('hello')
       } else {
         this.isMobileScreenSize = false
-        console.log('bye')
       }
     },
     getFullYear() {
@@ -286,7 +284,6 @@ export default {
       // eslint-disable-next-line no-undef
       WavesKeeper.auth(authData)
         .then((data) => {
-          console.log(data)
           this.$store.commit('auth/GET_WAVES_KEEPER_DATA', data)
           localStorage.setItem('wavesKeeperData', JSON.stringify(data))
           this.logIn(data.publicKey)
@@ -311,7 +308,6 @@ export default {
 
             return
           }
-          console.log(JSON.parse(res[0].value))
           const user = JSON.parse(res[0].value)
           const { name } = user
           const { publicKey } = user
@@ -340,8 +336,6 @@ export default {
         })
         .catch((error) => {
           if (error.response && error.response.data.error === 304) {
-            console.log("You don't have an account on Auctionlance")
-
             this.$router.push({
               path: '/register'
             })

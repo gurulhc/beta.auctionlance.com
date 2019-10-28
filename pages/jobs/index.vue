@@ -9,15 +9,10 @@
         class="search"
       />
       <div class="wrapper">
-        <p>{{ jobs.length }} jobs found</p>
-        <div class="filter-section">
-          <select id="filter" name="filter">
-            <option value="newest">Newest</option>
-          </select>
-        </div>
+        <p>{{ jobs.length }} auctions found</p>
       </div>
     </section>
-    <section class="container jobs">
+    <section v-if="jobs.length" class="container jobs">
       <div v-for="job in jobs" :key="job.key" class="job">
         <div class="jobs-card">
           <h3>{{ job.info.title }}</h3>
@@ -50,6 +45,9 @@
         </div>
       </div>
     </section>
+    <section v-else class="container">
+      <p>Loading auctions...</p>
+    </section>
   </div>
 </template>
 <script>
@@ -79,10 +77,7 @@ export default {
   p {
     margin: 0;
     padding: 0;
-  }
-  select {
-    margin: 0;
-    padding: 0;
+    margin-top: 0.5rem;
   }
   input.search {
     border: 1px solid transparent;
@@ -99,11 +94,6 @@ export default {
       display: flex;
       align-self: baseline;
       justify-self: flex-end;
-
-      select {
-        width: 200px;
-        height: 20px;
-      }
 
       p {
         line-height: normal;
