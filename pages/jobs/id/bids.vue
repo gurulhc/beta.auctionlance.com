@@ -151,29 +151,34 @@ export default {
           this.$toast.success('😍 Freelancer choosen successfully')
           this.updateJob()
           // Creating chat connection
-          const formData = new FormData()
-          formData.append('UID', `AUCTIONLANCER${this.currentUserKey}`)
-          formData.append('friendsUID', `AUCTIONLANCER${this.freelancerKey}`)
+          try {
+            const formData = new FormData()
+            formData.append('UID', `AUCTIONLANCER${this.currentUserKey}`)
+            formData.append('friendsUID', `AUCTIONLANCER${this.freelancerKey}`)
 
-          const config = {
-            headers: {
-              'api-key': process.env.Comet_Chat_API_Key
+            const config = {
+              headers: {
+                'api-key': process.env.Comet_Chat_API_Key
+              }
             }
-          }
 
-          this.$axios
-            .$post(
-              'https://api.cometondemand.net/api/v2/addFriends',
-              formData,
-              config
-            )
-            .then((data) => {
-              console.log(data)
-              this.$toast.success('😍 Client can now chat with you')
-            })
-            .catch((error) => {
-              console.log(error)
-            })
+            this.$axios
+              .$post(
+                'https://api.cometondemand.net/api/v2/addFriends',
+                formData,
+                config
+              )
+              .then((data) => {
+                console.log(data)
+                this.$toast.success('😍 Client can now chat with you')
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+          } catch (error) {
+            console.log(error)
+            this.$toast.info("You can't chat with freelancer at the moment")
+          }
         })
         .catch((error) => {
           this.choosingFreelancer = false

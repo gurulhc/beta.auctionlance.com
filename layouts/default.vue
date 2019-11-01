@@ -45,7 +45,7 @@
               >
             </li>
 
-            <li>
+            <li v-else>
               <nuxt-link to="/auctoboard/overview" class="user"
                 ><img
                   v-if="user.avatar.secure_url"
@@ -322,11 +322,15 @@ export default {
           const { secure_url } = user.avatar
 
           // Comet chat log in
-          window.chat_id = `AUCTIONLANCER${publicKey}`
-          window.chat_name = name
-          window.chat_avatar = secure_url
-          window.chat_link = 'USER_PROFILELINK'
-          window.jqcc.cometchat.init()
+          try {
+            window.chat_id = `AUCTIONLANCER${publicKey}`
+            window.chat_name = name
+            window.chat_avatar = secure_url
+            window.chat_link = 'USER_PROFILELINK'
+            window.jqcc.cometchat.init()
+          } catch (error) {
+            console.log(error)
+          }
 
           this.$toast.success(`👋 Welcome back ${name}`)
           this.$store.commit('auth/LOG_IN', JSON.parse(res[0].value))
