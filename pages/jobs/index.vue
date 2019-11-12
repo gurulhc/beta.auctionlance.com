@@ -61,7 +61,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress', 'wavesNode', 'jobs']),
+    ...mapState(['dAppAddress', 'wavesBaseURL', 'jobs']),
     ...mapState('auth', ['user'])
   },
   fetch({ store }) {

@@ -47,14 +47,14 @@ export default {
     if (store.state.auth.user.userType === 'freelancer') {
       return $axios
         .$get(
-          `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_Bid_${store.state.currentUserKey}$`
+          `${store.state.wavesBaseURL}${store.state.dAppAddress}?matches=.*?_Bid_${store.state.currentUserKey}$`
         )
         .then((data) => {
           const bidsByFreelancer = []
           data.map((datum) => {
             $axios
               .$get(
-                `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
+                `${store.state.wavesBaseURL}${store.state.dAppAddress}/${
                   datum.key.split('_')[0]
                 }_Info`
               )
@@ -76,7 +76,7 @@ export default {
       // First api call is to get jobs created
       return $axios
         .$get(
-          `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_AuctionClient$`
+          `${store.state.wavesBaseURL}${store.state.dAppAddress}?matches=.*?_AuctionClient$`
         )
         .then((data) => {
           const clientAuctionBids = []
@@ -87,7 +87,7 @@ export default {
               // then for every aution belonging to a user, get the auction information (title, amount, etch)
               $axios
                 .$get(
-                  `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
+                  `${store.state.wavesBaseURL}${store.state.dAppAddress}2/${
                     auctionDatum.key.split('_')[0]
                   }_Info`
                 )
@@ -96,9 +96,9 @@ export default {
                   // TODO: Use a better algorithm that uses fewer network calls to achieve this
                   $axios
                     .$get(
-                      `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?^${
-                        infoData.key.split('_')[0]
-                      }_Bid_.*$`
+                      `${store.state.wavesBaseURL}${
+                        store.state.dAppAddress
+                      }?matches=.*?^${infoData.key.split('_')[0]}_Bid_.*$`
                     )
                     .then((data) => {
                       const auction = {

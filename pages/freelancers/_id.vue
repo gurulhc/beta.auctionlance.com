@@ -42,10 +42,10 @@ export default {
     }
   },
   data() {},
-  asyncData({ $axios, params }) {
+  asyncData({ $axios, params, store }) {
     return $axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${params.id}_Freelancer`
+        `${store.state.wavesBaseURL}${store.state.dAppAddress}/${params.id}_Freelancer`
       )
       .then((res) => {
         return { freelancer: JSON.parse(res.value) }

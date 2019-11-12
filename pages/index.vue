@@ -175,7 +175,7 @@ export default {
   },
   computed: {
     ...mapState('auth', ['wavesKeeperData, user']),
-    ...mapState(['dAppAddress', 'wavesNode'])
+    ...mapState(['dAppAddress', 'wavesBaseURL'])
   },
   fetch({ store, $axios }) {
     // eslint-disable-next-line no-undef
@@ -189,7 +189,7 @@ export default {
     }
     return $axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?(_Freelancer|_Client)$`
+        `${store.state.wavesBaseURL}${store.state.dAppAddress}?matches=.*?(_Freelancer|_Client)$`
       )
       .then((data) => {
         const users = data

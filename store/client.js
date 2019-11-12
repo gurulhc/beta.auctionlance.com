@@ -21,7 +21,7 @@ export const actions = {
     const key = `${publicKey}_JobCreated`
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${key}`
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
         context.commit('SET_CREATED_JOBS', data.value)
@@ -34,7 +34,7 @@ export const actions = {
     const key = `${publicKey}_JobOnGoing`
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${key}`
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
         context.commit('SET_JOBS_ON_GOING', data.value)
@@ -47,7 +47,7 @@ export const actions = {
     const key = `${publicKey}_JobInDispute`
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${key}`
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
         context.commit('SET_JOBS_IN_DISPUTE', data.value)

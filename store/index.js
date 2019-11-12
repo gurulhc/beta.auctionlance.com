@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
 const loggedIn = localStorage.getItem('loggedIn') || false
 const currentUserKey = localStorage.getItem('currentUserKey') || ''
+const wavesNode = {
+  test: 'https://nodes-testnet.wavesnodes.com/addresses/data/',
+  main: 'https://nodes.wavesnodes.com/addresses/data/'
+}
 export const state = () => ({
   loggedIn,
   isLoading: false,
@@ -35,9 +39,7 @@ export const state = () => ({
     'Writing & Translation',
     'Video & Animation'
   ],
-  wavesNode: {
-    test: 'https://nodes-testnet.wavesnodes.com'
-  },
+  wavesBaseURL: wavesNode.main,
   jobs: [],
   currentUserKey,
   currentAuctionData: []
@@ -62,7 +64,7 @@ export const actions = {
   loadJobs(context) {
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_Info$`
+        `${context.state.wavesBaseURL}${context.state.dAppAdress}?matches=.*?_Info$`
       )
       .then((data) => {
         const jobs = data

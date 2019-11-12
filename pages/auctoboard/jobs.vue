@@ -108,7 +108,7 @@ export default {
     store.dispatch('loadJobs')
   },
   computed: {
-    ...mapState(['jobs', 'currentUserKey']),
+    ...mapState(['jobs', 'currentUserKey', 'dAppAddress', 'wavesBaseURL']),
     ...mapState('auth', ['user']),
     freelancerAuctionSuggestions() {
       /**
@@ -142,7 +142,7 @@ export default {
       if (this.user.userType === 'freelancer') {
         this.$axios
           .$get(
-            `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_HiredFreelancer$`
+            `${this.wavesBaseURL}${this.dAppAddress}?matches=.*?_HiredFreelancer$`
           )
           .then((data) => {
             data
@@ -150,7 +150,7 @@ export default {
               .map((datum) => {
                 this.$axios
                   .$get(
-                    `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
+                    `${this.wavesBaseURL}${this.dAppAddress}/${
                       datum.key.split('_')[0]
                     }_Info`
                   )
@@ -167,7 +167,7 @@ export default {
       } else {
         this.$axios
           .$get(
-            `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=.*?_AuctionClient$`
+            `${this.wavesBaseURL}${this.dAppAddress}?matches=.*?_AuctionClient$`
           )
           .then((data) => {
             data
@@ -175,7 +175,7 @@ export default {
               .map((datum) => {
                 this.$axios
                   .$get(
-                    `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${
+                    `${this.wavesBaseURL}${this.dAppAddress}/${
                       datum.key.split('_')[0]
                     }_Info`
                   )

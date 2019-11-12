@@ -83,7 +83,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress', 'currentAuctionData', 'currentUserKey'])
+    ...mapState([
+      'dAppAddress',
+      'currentAuctionData',
+      'currentUserKey',
+      'wavesBaseURL'
+    ])
   },
   mounted() {
     this.getBids()
@@ -93,7 +98,7 @@ export default {
       const auctionId = this.job.key.split('_')[0]
       this.$axios
         .$get(
-          `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=^${auctionId}_Bid_.*$`
+          `${this.wavesBaseURL}${this.dAppAddress}?matches=^${auctionId}_Bid_.*$`
         )
         .then((res) => {
           const bids = res
@@ -102,7 +107,7 @@ export default {
             const freelancerKey = bidKeyArray[bidKeyArray.length - 1]
             this.$axios
               .$get(
-                `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${freelancerKey}_Freelancer`
+                `${this.wavesBaseURL}${this.dAppAddress}/${freelancerKey}_Freelancer`
               )
               .then((freelancer) => {
                 const bids = {

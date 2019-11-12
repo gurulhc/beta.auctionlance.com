@@ -40,7 +40,7 @@ export const actions = {
     const key = `${publicKey}_PendingEarnings`
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${key}`
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
         context.commit('SET_PENDING_EARNINGS', data.value)
@@ -53,7 +53,7 @@ export const actions = {
     const key = `${publicKey}_PaidEarnings`
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${key}`
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
         context.commit('SET_PAID_EARNINGS', data.value)
@@ -66,7 +66,7 @@ export const actions = {
     const key = `${publicKey}_TotalEarnings`
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${key}`
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
         context.commit('SET_TOTAL_EARNINGS', data.value)
@@ -79,7 +79,7 @@ export const actions = {
     const key = `${publicKey}_JobsPending`
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${key}`
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
         context.commit('SET_PENDING_JOBS', data.value)
@@ -92,7 +92,7 @@ export const actions = {
     const key = `${publicKey}_JobsCompleted`
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${key}`
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
         context.commit('SET_COMPLETED_JOBS', data.value)
@@ -105,7 +105,7 @@ export const actions = {
     const key = `${publicKey}_JobsTotal`
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2/${key}`
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
         context.commit('SET_TOTAL_JOBS', data.value)

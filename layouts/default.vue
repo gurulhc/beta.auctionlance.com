@@ -245,7 +245,7 @@ export default {
   },
   computed: {
     ...mapState('auth', ['user']),
-    ...mapState(['dAppAddress', 'wavesNode']),
+    ...mapState(['dAppAddress', 'wavesBaseURL']),
     isClient() {
       return this.user.userType === 'client'
     },
@@ -304,7 +304,7 @@ export default {
     logIn(dataKey) {
       this.$axios
         .$get(
-          `${this.wavesNode.test}/addresses/data/${this.dAppAddress}?matches=.*?${dataKey}(_Freelancer|_Client)$`
+          `${this.wavesBaseURL}${this.dAppAddress}?matches=.*?${dataKey}(_Freelancer|_Client)$`
         )
         .then((res) => {
           if (res.length === 0) {

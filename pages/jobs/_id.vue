@@ -86,7 +86,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUserKey', 'currentAuctionData', 'dAppAddress']),
+    ...mapState([
+      'currentUserKey',
+      'currentAuctionData',
+      'dAppAddress',
+      'wavesBaseURL'
+    ]),
     job() {
       console.log(this.currentAuctionData)
       const info = this.currentAuctionData.filter(
@@ -172,7 +177,7 @@ export default {
   fetch({ store, $axios, params }) {
     return $axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=^${params.id}.*$`
+        `${store.state.wavesBaseURL}${store.state.dAppAddress}?matches=^${params.id}.*$`
       )
       .then((res) => {
         store.commit('UPDATE_CURRENT_AUCTION_DATA', res)
@@ -188,7 +193,7 @@ export default {
     updateJob() {
       this.$axios
         .$get(
-          `https://nodes-testnet.wavesnodes.com/addresses/data/3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2?matches=^${this.$route.params.id}.*$`
+          `${this.wavesBaseURL}${this.dAppAddress}?matches=^${this.$route.params.id}.*$`
         )
         .then((res) => {
           this.$store.commit('UPDATE_CURRENT_AUCTION_DATA', res)

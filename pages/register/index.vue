@@ -172,7 +172,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress', 'wavesNode']),
+    ...mapState(['dAppAddress', 'wavesBaseURL']),
     ...mapState('auth', ['wavesKeeperData'])
   },
   mounted() {
