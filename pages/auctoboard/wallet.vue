@@ -63,13 +63,13 @@ export default {
       // eslint-disable-next-line no-undef
       WavesKeeper.publicState()
         .then((state) => {
-          console.log(state) // displaying the result in the console
+          // displaying the result in the console
           this.accountDetails = state.account
           this.accountDetails.balance.available =
             this.accountDetails.balance.available / 100000000
         })
-        .catch((error) => {
-          console.error(error) // displaying the result in the console
+        .catch((_) => {
+          this.$toast.error('Could not get Wallet Balances') // displaying the result in the console
           /* ...processing errors */
         })
     }

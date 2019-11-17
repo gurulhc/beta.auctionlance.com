@@ -26,9 +26,7 @@ export const actions = {
       .then((data) => {
         context.commit('SET_CREATED_JOBS', data.value)
       })
-      .catch((error) => {
-        console.log(error)
-      })
+      .catch((_) => {})
   },
   getOngoingJobs(context, publicKey) {
     const key = `${publicKey}_JobOnGoing`
@@ -39,9 +37,7 @@ export const actions = {
       .then((data) => {
         context.commit('SET_JOBS_ON_GOING', data.value)
       })
-      .catch((error) => {
-        console.log(error)
-      })
+      .catch((_) => {})
   },
   getJobsInDispute(context, publicKey) {
     const key = `${publicKey}_JobInDispute`
@@ -52,8 +48,6 @@ export const actions = {
       .then((data) => {
         context.commit('SET_JOBS_IN_DISPUTE', data.value)
       })
-      .catch((error) => {
-        console.log(error)
-      })
+      .catch((_) => {})
   }
 }

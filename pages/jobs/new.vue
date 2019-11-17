@@ -64,10 +64,10 @@
         <select v-model="$v.category.$model">
           <option value="">Choose a category</option>
           <option
-            v-for="category in categories"
-            :key="category"
-            :value="category"
-            >{{ category }}</option
+            v-for="auctionCategory in categories"
+            :key="auctionCategory"
+            :value="auctionCategory"
+            >{{ auctionCategory }}</option
           >
         </select>
         <p v-if="!$v.category.required" class="error">
@@ -336,8 +336,7 @@ export default {
               path: '/jobs'
             })
           })
-          .catch((error) => {
-            console.log(error)
+          .catch((_) => {
             this.$toast.error(
               '😰 Oops this is embarrasing something went wrong. Try again'
             )

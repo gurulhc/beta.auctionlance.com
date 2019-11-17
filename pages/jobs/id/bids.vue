@@ -65,10 +65,14 @@ export default {
       type: Boolean
     },
     auctionStatus: {
-      type: String
+      type: String,
+      default: ''
     },
     winningFreelancer: {
-      type: Object
+      type: Object,
+      default() {
+        return {}
+      }
     },
     updateJob: {
       type: Function,
@@ -151,7 +155,6 @@ export default {
       // eslint-disable-next-line no-undef
       WavesKeeper.signAndPublishTransaction(tx)
         .then((data) => {
-          console.log(tx)
           this.choosingFreelancer = false
           this.$toast.success('😍 Freelancer choosen successfully')
           this.updateJob()
@@ -174,23 +177,20 @@ export default {
                 config
               )
               .then((data) => {
-                console.log(data)
                 this.$toast.success('😍 Client can now chat with you')
               })
-              .catch((error) => {
-                console.log(error)
+              .catch((_) => {
+                this.$toast.error('Chat connection was not successful')
               })
-          } catch (error) {
-            console.log(error)
+          } catch (_) {
             this.$toast.info("You can't chat with freelancer at the moment")
           }
         })
-        .catch((error) => {
+        .catch((_) => {
           this.choosingFreelancer = false
           this.$toast.error(
             '🙁 Something went wrong in choosing this freelancer. Try again'
           )
-          console.log(error)
         })
     }
   }

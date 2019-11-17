@@ -44,7 +44,6 @@
 import { mapState } from 'vuex'
 import FemaleDeveloper from '~/components/FemaleDeveloper'
 export default {
-  middleware: 'isAuthenticated',
   components: {
     FemaleDeveloper
   },
@@ -58,8 +57,6 @@ export default {
     }
   },
   mounted() {
-    console.log('In freelancers')
-    console.log(this.users)
     this.$store.commit('freelancers/LOAD_FREELANCERS', this.users)
   }
 }

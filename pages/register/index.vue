@@ -175,10 +175,6 @@ export default {
     ...mapState(['dAppAddress', 'wavesBaseURL']),
     ...mapState('auth', ['wavesKeeperData'])
   },
-  mounted() {
-    console.log(this.dAppAddress)
-    console.log(this.wavesKeeperData)
-  },
   methods: {
     createCloudinaryWidget() {
       // eslint-disable-next-line no-undef
@@ -246,7 +242,6 @@ export default {
         }
         const payload = JSON.stringify(info)
 
-        console.log(this.info)
         const tx = {
           type: 16,
           data: {
@@ -288,21 +283,17 @@ export default {
                 formData,
                 config
               )
-              .then((data) => {
-                console.log(data)
-              })
-              .catch((error) => {
-                console.log(error)
+              .then((_) => {})
+              .catch((_) => {
+                this.toast.error('Chat not created')
               })
 
-            console.log(tx)
             this.isRegistering = false
             this.$router.push({
               path: '/auctoboard/overview'
             })
           })
-          .catch((error) => {
-            console.log(error)
+          .catch((_) => {
             this.isRegistering = false
           })
       } else {

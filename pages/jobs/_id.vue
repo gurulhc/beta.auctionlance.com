@@ -80,9 +80,10 @@ export default {
   components: {
     Spinner
   },
-  mounted() {
-    if (this.auctionStatus === 'completed') {
-      this.$toast.info('This Job has been completed')
+  data() {
+    return {
+      isDelivering: false,
+      isAcceptingWork: false
     }
   },
   computed: {
@@ -93,12 +94,10 @@ export default {
       'wavesBaseURL'
     ]),
     job() {
-      console.log(this.currentAuctionData)
       const info = this.currentAuctionData.filter(
         (info) => info.key.endsWith('_Info') && info.value !== 'newAuctiondata'
       )
       const [auction] = info
-      console.log(auction)
       return {
         key: auction.key,
         info: JSON.parse(auction.value)
@@ -183,10 +182,9 @@ export default {
         store.commit('UPDATE_CURRENT_AUCTION_DATA', res)
       })
   },
-  data() {
-    return {
-      isDelivering: false,
-      isAcceptingWork: false
+  mounted() {
+    if (this.auctionStatus === 'completed') {
+      this.$toast.info('This Job has been completed')
     }
   },
   methods: {
@@ -220,17 +218,15 @@ export default {
       // eslint-disable-next-line no-undef
       WavesKeeper.signAndPublishTransaction(tx)
         .then((data) => {
-          console.log(tx)
           this.isDelivering = false
           this.$toast.success('🔥 Successfully delivered')
           this.updateJob()
         })
-        .catch((error) => {
+        .catch((_) => {
           this.isDelivering = false
           this.$toast.error(
             '🙁 Something went wrong in delivering this project. Try again'
           )
-          console.log(error)
         })
     },
     acceptWork() {
@@ -254,17 +250,15 @@ export default {
       // eslint-disable-next-line no-undef
       WavesKeeper.signAndPublishTransaction(tx)
         .then((data) => {
-          console.log(tx)
           this.isAcceptingWork = false
           this.$toast.success('🤑 Work Accepted Successfully')
           this.updateJob()
         })
-        .catch((error) => {
+        .catch((_) => {
           this.isAcceptingWork = false
           this.$toast.error(
             '🙁 Something went wrong in accepting this project. Try again'
           )
-          console.log(error)
         })
     }
   }

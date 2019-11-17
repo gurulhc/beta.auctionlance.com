@@ -69,7 +69,7 @@ export const actions = {
   loadJobs(context) {
     return this.$axios
       .$get(
-        `${context.state.wavesBaseURL}${context.state.dAppAdress}?matches=.*?_Info$`
+        `${context.state.wavesBaseURL}${context.state.dAppAddress}?matches=.*?_Info$`
       )
       .then((data) => {
         const jobs = data

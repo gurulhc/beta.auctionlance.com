@@ -80,23 +80,33 @@ export default {
   },
   props: {
     winningFreelancer: {
-      type: Object
+      type: Object,
+      default() {
+        return {}
+      }
     },
     job: {
       type: Object,
       required: true
     },
     auctionStatus: {
-      type: String
+      type: String,
+      default: ''
     },
     isAuctionClient: {
       type: Boolean
     },
     auctionPrice: {
-      type: Object
+      type: Object,
+      default() {
+        return {}
+      }
     },
     auctionAssetName: {
-      type: Object
+      type: Object,
+      default() {
+        return {}
+      }
     },
     updateJob: {
       type: Function,
@@ -122,7 +132,6 @@ export default {
           this.makingBid = false
         } else {
           const auctionId = this.job.key.split('_')[0]
-          console.log(auctionId)
           const tx = {
             type: 16,
             data: {
@@ -144,17 +153,15 @@ export default {
           // eslint-disable-next-line no-undef
           WavesKeeper.signAndPublishTransaction(tx)
             .then((data) => {
-              console.log(tx)
               this.makingBid = false
               this.$toast.success('😍 Bid made successfully')
               this.updateJob()
             })
-            .catch((error) => {
+            .catch((_) => {
               this.makingBid = false
               this.$toast.error(
                 '🙁 Something went wrong in making your bid. Try again'
               )
-              console.log(error)
             })
         }
       } else {

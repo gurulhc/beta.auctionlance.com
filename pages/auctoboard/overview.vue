@@ -63,6 +63,27 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
+  computed: {
+    ...mapState('auth', ['user']),
+    ...mapState(['currentUserKey']),
+    ...mapState('freelancers', [
+      'pendingEarnings',
+      'paidEarnings',
+      'totalEarnings',
+      'jobsPending',
+      'jobsCompleted',
+      'jobsTotal'
+    ]),
+    ...mapState('client', ['jobsCreated', 'jobsOnGoing', 'jobsInDispute'])
+  },
+  mounted() {
+    if (this.user.userType === 'freelancer') {
+      this.getFreelancerJobStat(this.currentUserKey)
+      this.getAllEarningsStat(this.currentUserKey)
+    } else {
+      this.getClientJobsStat(this.currentUserKey)
+    }
+  },
   methods: {
     ...mapActions('freelancers', [
       'getPendingEarnings',
@@ -92,28 +113,6 @@ export default {
       this.getOngoingJobs(publicKey)
       this.getJobsInDispute(publicKey)
     }
-  },
-  computed: {
-    ...mapState('auth', ['user']),
-    ...mapState(['currentUserKey']),
-    ...mapState('freelancers', [
-      'pendingEarnings',
-      'paidEarnings',
-      'totalEarnings',
-      'jobsPending',
-      'jobsCompleted',
-      'jobsTotal'
-    ]),
-    ...mapState('client', ['jobsCreated', 'jobsOnGoing', 'jobsInDispute'])
-  },
-  mounted() {
-    if (this.user.userType === 'freelancer') {
-      this.getFreelancerJobStat(this.currentUserKey)
-      this.getAllEarningsStat(this.currentUserKey)
-    } else {
-      this.getClientJobsStat(this.currentUserKey)
-    }
-    console.log(this.currentUserKey)
   }
 }
 </script>

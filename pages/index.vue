@@ -193,15 +193,11 @@ export default {
       )
       .then((data) => {
         const users = data
-        console.log(typeof users)
         let preparedUsers = users.filter((user) => isJson(user.value))
-        console.log(preparedUsers)
         preparedUsers = preparedUsers.map((user) => JSON.parse(user.value))
         store.commit('auth/LOAD_USERS', preparedUsers)
       })
-      .catch((error) => {
-        console.log(error)
-      })
+      .catch((_) => {})
   },
   mounted() {
     this.wavy()

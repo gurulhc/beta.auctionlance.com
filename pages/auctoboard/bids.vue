@@ -43,6 +43,14 @@
 import { mapState } from 'vuex'
 
 export default {
+  filters: {
+    amount(val) {
+      return val / 100000000
+    }
+  },
+  computed: {
+    ...mapState('auth', ['user'])
+  },
   asyncData({ $axios, store }) {
     if (store.state.auth.user.userType === 'freelancer') {
       return $axios
@@ -64,10 +72,8 @@ export default {
                   auctionKey: auction.key,
                   auctionInfo: JSON.parse(auction.value)
                 }
-                console.log(bid)
                 bidsByFreelancer.push(bid)
               })
-            console.log(bidsByFreelancer)
           })
 
           return { freelancerBids: bidsByFreelancer }
@@ -112,14 +118,6 @@ export default {
             })
           return { clientBids: clientAuctionBids }
         })
-    }
-  },
-  computed: {
-    ...mapState('auth', ['user'])
-  },
-  filters: {
-    amount(val) {
-      return val / 100000000
     }
   }
 }

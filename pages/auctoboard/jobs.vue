@@ -24,8 +24,8 @@
     </div>
     <div v-if="user.userType === 'freelancer'" class="auctoboard-card">
       <div class="header">
-        <strong>{{ this.freelancerAuctionSuggestions.length }}</strong> Jobs
-        Opening available for you
+        <strong>{{ freelancerAuctionSuggestions.length }}</strong> Jobs Opening
+        available for you
       </div>
       <div
         v-for="job in freelancerAuctionSuggestions"
@@ -59,7 +59,7 @@
     <div v-else class="auctoboard-card">
       <div class="header">
         You have created
-        <strong>{{ this.clientJobs.length }}</strong> auctions
+        <strong>{{ clientJobs.length }}</strong> auctions
       </div>
       <div v-for="job in clientJobs" :key="job.key" class="body">
         <div class="jobs-card">
@@ -103,10 +103,6 @@ export default {
       clientJobs: []
     }
   },
-  fetch({ store }) {
-    // eslint-disable-next-line no-undef
-    store.dispatch('loadJobs')
-  },
   computed: {
     ...mapState(['jobs', 'currentUserKey', 'dAppAddress', 'wavesBaseURL']),
     ...mapState('auth', ['user']),
@@ -121,8 +117,11 @@ export default {
       return freelancerJobs
     }
   },
+  fetch({ store }) {
+    // eslint-disable-next-line no-undef
+    store.dispatch('loadJobs')
+  },
   mounted() {
-    console.log(this.freelancerJobs)
     this.userJobs()
   },
   methods: {

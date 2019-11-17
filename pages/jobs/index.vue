@@ -54,7 +54,6 @@
 import { mapState } from 'vuex'
 export default {
   scrollToTop: false,
-  middleware: 'isAuthenticated',
   head() {
     return {
       title: '💼 Auctions'

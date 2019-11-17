@@ -296,9 +296,8 @@ export default {
           localStorage.setItem('wavesKeeperData', JSON.stringify(data))
           this.logIn(data.publicKey)
         })
-        .catch((error) => {
+        .catch((_) => {
           this.$toast.info('Something went wrong. Try reloading the page')
-          console.log(error)
         })
     },
     logIn(dataKey) {
@@ -328,8 +327,8 @@ export default {
             window.chat_avatar = secure_url
             window.chat_link = 'USER_PROFILELINK'
             window.jqcc.cometchat.init()
-          } catch (error) {
-            console.log(error)
+          } catch (_) {
+            this.$toast.error('Coult not set chat')
           }
 
           this.$toast.success(`👋 Welcome back ${name}`)
@@ -353,10 +352,7 @@ export default {
             })
 
             this.$toast.error("You don't have an account on Auctionlance")
-
-            return
           }
-          console.log(error.response && error.response.data.message)
         })
     }
   }
