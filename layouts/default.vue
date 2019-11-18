@@ -21,9 +21,9 @@
             </li>
             <li><nuxt-link to="/jobs">Browse Jobs</nuxt-link></li>
             <li>
-              <a href="https://medium.com/@aucttoken" target="_blank">Blog</a>
+              <a href="https://medium.com/auctionlance" target="_blank">Blog</a>
             </li>
-            <li>
+            <li v-if="false">
               <a
                 href="https://forum.wavesplatform.com/t/auctionlance-platform-hire-and-pay-freelancers-with-crypto/10850"
                 target="_blank"
