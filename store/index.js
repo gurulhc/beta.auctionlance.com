@@ -1,19 +1,16 @@
 /* eslint-disable no-console */
+import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
+
+// Getting the correct environment
+const environment = setUpBlockchainEnvironment('main')
+
 const loggedIn = localStorage.getItem('loggedIn') || false
 const currentUserKey = localStorage.getItem('currentUserKey') || ''
-const wavesNode = {
-  test: 'https://nodes-testnet.wavesnodes.com/addresses/data/',
-  main: 'https://nodes.wavesnodes.com/addresses/data/'
-}
 
-const dAppAddress = {
-  mainNet: '3P7wZ8sfWmsFM5f2tdAWj21gLm4tma2RHyQ',
-  testNet: '3N2EM5HFgf6UMBnvcJX3Cegmozwdv1iDeq2'
-}
 export const state = () => ({
   loggedIn,
   isLoading: false,
-  dAppAddress: dAppAddress.mainNet,
+  dAppAddress: environment.dAppAddress,
   acceptedAssets: [
     {
       name: 'Waves ',
@@ -44,7 +41,7 @@ export const state = () => ({
     'Writing & Translation',
     'Video & Animation'
   ],
-  wavesBaseURL: wavesNode.main,
+  wavesBaseURL: environment.baseUrl,
   jobs: [],
   currentUserKey,
   currentAuctionData: []
