@@ -133,7 +133,7 @@
           </li>
           <li>
             <a
-              href="https://medium.com/@aucttoken"
+              href="https://medium.com/auctionlance"
               target="_blank"
               class="social-link"
             >
