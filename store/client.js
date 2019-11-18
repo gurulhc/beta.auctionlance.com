@@ -18,7 +18,7 @@ export const mutations = {
 
 export const actions = {
   getCreatedJobs(context, publicKey) {
-    const key = `${publicKey}_JobCreated`
+    const key = `${publicKey}_JobsCreated`
     return this.$axios
       .$get(
         `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
@@ -29,7 +29,7 @@ export const actions = {
       .catch((_) => {})
   },
   getOngoingJobs(context, publicKey) {
-    const key = `${publicKey}_JobOnGoing`
+    const key = `${publicKey}_JobsOnGoing`
     return this.$axios
       .$get(
         `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`

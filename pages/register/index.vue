@@ -151,7 +151,8 @@ export default {
       address: '',
       public_key: '',
       userType: '',
-      avatar: ''
+      avatar: '',
+      info: {}
     }
   },
   validations: {
@@ -230,17 +231,17 @@ export default {
         const tags = this.tags.map((tag) => tag.text)
 
         this.tags = [...tags]
-        const info = {
+        this.info = {
           name: this.name,
           description: this.description,
           location: this.location,
           tags: this.tags,
           address: this.address,
-          public_key: this.public_key,
+          public_key: this.publicKey,
           userType: this.userType,
           avatar: this.avatar
         }
-        const payload = JSON.stringify(info)
+        const payload = JSON.stringify(this.info)
 
         const tx = {
           type: 16,
@@ -264,6 +265,7 @@ export default {
         // eslint-disable-next-line no-undef
         WavesKeeper.signAndPublishTransaction(tx)
           .then((data) => {
+            this.toast.success('😊 Setting up Auctionlance for you')
             const formData = new FormData()
 
             formData.append('UID', `AUCTIONLANCER${this.publicKey}`)
@@ -283,15 +285,45 @@ export default {
                 formData,
                 config
               )
-              .then((_) => {})
-              .catch((_) => {
+              .then(() => {
+                this.toast.success('😋 Preparing your Auctoboard')
+                const name = this.name
+                const publicKey = this.publicKey
+                const secure_url = this.avatar.secure_url
+
+                // Comet chat log in
+                try {
+                  window.chat_id = `AUCTIONLANCER${publicKey}`
+                  window.chat_name = name
+                  window.chat_avatar = secure_url
+                  window.chat_link = 'USER_PROFILELINK'
+                  window.jqcc.cometchat.init()
+                } catch (_) {
+                  this.$toast.error('Coult not set chat')
+                }
+
+                this.$toast.success(`👋 Welcome to Auctionlance, ${name}`)
+
+                this.$store.commit('auth/LOG_IN', this.info)
+                localStorage.setItem('user', JSON.stringify(this.info))
+
+                this.$store.commit('UPDATE_LOGGED_IN_STATUS')
+                localStorage.setItem('loggedIn', true)
+
+                this.$store.commit('UPDATE_CURRENT_USER_KEY', this.publicKey)
+
+                localStorage.setItem('currentUserKey', this.publicKey)
+
+                this.isRegistering = false
+
+                this.$router.push({
+                  path: '/auctoboard/overview'
+                })
+              })
+              .catch(() => {
+                this.isRegistering = false
                 this.toast.error('Chat not created')
               })
-
-            this.isRegistering = false
-            this.$router.push({
-              path: '/auctoboard/overview'
-            })
           })
           .catch((_) => {
             this.isRegistering = false

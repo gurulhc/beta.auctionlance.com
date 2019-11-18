@@ -352,6 +352,10 @@ export default {
             })
 
             this.$toast.error("You don't have an account on Auctionlance")
+          } else {
+            this.$toast.error(
+              '🤭 Encountered an issue signing you in. Please check network connection and try again'
+            )
           }
         })
     }

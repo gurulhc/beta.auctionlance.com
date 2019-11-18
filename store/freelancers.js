@@ -82,7 +82,7 @@ export const actions = {
         `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
-        context.commit('SET_PENDING_JOBS', data.value)
+        context.commit('SET_JOBS_PENDING', data.value)
       })
       .catch((error) => {
         console.log(error)
@@ -95,7 +95,7 @@ export const actions = {
         `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
-        context.commit('SET_COMPLETED_JOBS', data.value)
+        context.commit('SET_JOBS_COMPLETED', data.value)
       })
       .catch((error) => {
         console.log(error)
@@ -108,7 +108,7 @@ export const actions = {
         `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}/${key}`
       )
       .then((data) => {
-        context.commit('SET_TOTAL_JOBS', data.value)
+        context.commit('SET_JOBS_TOTAL', data.value)
       })
       .catch((error) => {
         console.log(error)
