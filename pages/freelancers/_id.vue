@@ -18,12 +18,12 @@
     <section class="content">
       <ul class="nav">
         <li>
-          <nuxt-link :to="`/freelancers/${freelancer.publicKey}/profile`"
+          <nuxt-link :to="`/freelancers/${freelancer.public_key}/profile`"
             >Profile</nuxt-link
           >
         </li>
         <li>
-          <nuxt-link :to="`/freelancers/${freelancer.publicKey}/review`">
+          <nuxt-link :to="`/freelancers/${freelancer.public_key}/review`">
             Review</nuxt-link
           >
         </li>

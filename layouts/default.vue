@@ -169,7 +169,7 @@
 <script>
 /* eslint-disable camelcase */
 /* eslint-disable nuxt/no-globals-in-created */
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   head() {
     return {
@@ -265,6 +265,8 @@ export default {
     })
   },
   methods: {
+    ...mapActions('auth', ['setLoggedInUser']),
+    ...mapActions(['updateCurrentUserKey', 'updateLoggedInStatus']),
     getIsMobileStatus() {
       if (
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -316,6 +318,7 @@ export default {
             return
           }
           const user = JSON.parse(res[0].value)
+          user.public_key = res[0].key.split('_')[0]
           const { name } = user
           const { publicKey } = user
           const { secure_url } = user.avatar
@@ -332,18 +335,20 @@ export default {
           }
 
           this.$toast.success(`👋 Welcome back ${name}`)
-          this.$store.commit('auth/LOG_IN', JSON.parse(res[0].value))
-          localStorage.setItem('user', res[0].value)
 
-          this.$store.commit('UPDATE_LOGGED_IN_STATUS')
+          this.setLoggedInUser(user)
+
+          localStorage.setItem('user', JSON.stringify(user))
+
+          this.updateLoggedInStatus()
+
           localStorage.setItem('loggedIn', true)
 
-          this.$store.commit(
-            'UPDATE_CURRENT_USER_KEY',
-            res[0].key.split('_')[0]
-          )
+          const currentUserKey = res[0].key.split('_')[0]
 
-          localStorage.setItem('currentUserKey', res[0].key.split('_')[0])
+          this.updateCurrentUserKey(currentUserKey)
+
+          localStorage.setItem('currentUserKey', currentUserKey)
         })
         .catch((error) => {
           if (error.response && error.response.data.error === 304) {

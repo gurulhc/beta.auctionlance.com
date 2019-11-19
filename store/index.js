@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
 
-// Getting the correct environment
+// Getting the correct environment. values: main | test
 const environment = setUpBlockchainEnvironment('main')
 
 const loggedIn = localStorage.getItem('loggedIn') || false
@@ -84,5 +84,11 @@ export const actions = {
       .catch((error) => {
         console.log(error)
       })
+  },
+  updateCurrentUserKey(context, data) {
+    context.commit('UPDATE_CURRENT_USER_KEY', data)
+  },
+  updateLoggedInStatus(context) {
+    context.commit('UPDATE_LOGGED_IN_STATUS')
   }
 }

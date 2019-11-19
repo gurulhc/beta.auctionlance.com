@@ -66,5 +66,8 @@ export const actions = {
         }
       })
       .catch((_) => {})
+  },
+  setLoggedInUser(context, data) {
+    context.commit('LOG_IN', data)
   }
 }
