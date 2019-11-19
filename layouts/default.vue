@@ -33,7 +33,7 @@
 
             <li v-if="isClient">
               <nuxt-link to="/jobs/new" class="nav-button"
-                >Create Auction</nuxt-link
+                >Create A Job</nuxt-link
               >
             </li>
             <li v-if="!$store.state.loggedIn">

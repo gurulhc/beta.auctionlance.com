@@ -2,7 +2,7 @@
 import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
 
 // Getting the correct environment. values: main | test
-const environment = setUpBlockchainEnvironment('main')
+const environment = setUpBlockchainEnvironment('test')
 
 const loggedIn = localStorage.getItem('loggedIn') || false
 const currentUserKey = localStorage.getItem('currentUserKey') || ''

@@ -14,14 +14,14 @@
           <div class="earnings">
             <h4 class="caption">Total Earnings</h4>
             <div class="balance">
-              <p>340</p>
+              <p>0</p>
               <a href="" class="earning">Earn more</a>
             </div>
           </div>
           <div class="aucttoken">
             <h4 class="caption">Auct Token Balance</h4>
             <div class="balance">
-              <p>340,282,000</p>
+              <p>0</p>
               <a href="" class="auct">Top up</a>
             </div>
           </div>

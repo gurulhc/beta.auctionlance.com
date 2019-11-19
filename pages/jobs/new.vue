@@ -1,38 +1,33 @@
 <template>
   <main class="create-new">
     <section class="subhead">
-      <h2 class="subhead--heading">Create a new auction</h2>
+      <h2 class="subhead--heading">Create a new job</h2>
 
       <p class="subhead--description">
-        An auction is how you get freelancers to bid your project. You can also
+        A job is how you get freelancers to bid your project. You can also
         <nuxt-link to="/freelancers">hire</nuxt-link> featured freelancers
         directly
       </p>
     </section>
 
-    <form @submit.prevent="createAuction">
+    <form @submit.prevent="createJob">
       <section
         class="form-group"
         :class="{ 'form-group--error': $v.title.$error }"
       >
-        <label class="secret">Auction title</label>
+        <label class="secret">Job title</label>
 
-        <input
-          v-model="$v.title.$model"
-          type="text"
-          placeholder="Auction title"
-        />
+        <input v-model="$v.title.$model" type="text" placeholder="Job title" />
         <p v-if="!$v.title.required" class="error">
-          Provide a title for the auction
+          Provide a title for the job
         </p>
         <p v-if="!$v.title.minLength" class="error">
-          Auction title must have at least
+          job title must have at least
           {{ $v.title.$params.minLength.min }} letters.
         </p>
         <p class="form-suggestion">
-          Great auction name are short and memorable. Need inspiration? How
-          about
-          <span class="auction-title-suggestion"
+          Great job name are short and memorable. Need inspiration? How about
+          <span class="job-title-suggestion"
             >I need a Smart Contract Developer</span
           >?
         </p>
@@ -46,13 +41,13 @@
         <textarea
           v-model="$v.description.$model"
           rows="5"
-          placeholder="Details about the project"
+          placeholder="Details about the job"
         ></textarea>
         <p v-if="!$v.description.required" class="error">
-          😳 Provide a description for the auction
+          😳 Provide a description for the job
         </p>
         <p v-if="!$v.description.minLength" class="error">
-          😳 Description of an auction should not be less than
+          😳 Description of an job should not be less than
           {{ $v.description.$params.minLength.min }} letters.
         </p>
       </section>
@@ -64,14 +59,14 @@
         <select v-model="$v.category.$model">
           <option value="">Choose a category</option>
           <option
-            v-for="auctionCategory in categories"
-            :key="auctionCategory"
-            :value="auctionCategory"
-            >{{ auctionCategory }}</option
+            v-for="jobCategory in categories"
+            :key="jobCategory"
+            :value="jobCategory"
+            >{{ jobCategory }}</option
           >
         </select>
         <p v-if="!$v.category.required" class="error">
-          Select a category for this auction
+          Select a category for this job
         </p>
       </section>
       <section class="form-group">
@@ -118,29 +113,37 @@
           <p v-if="!$v.amount.decimal" class="error">
             Only numbers can be entered as amount
           </p>
+          <p v-if="!$v.amount.minValue" class="error">
+            Job amount should be a minimum of
+            {{ $v.amount.$params.minValue.min }} Waves
+          </p>
           <p v-if="total > 0" class="total">{{ total }}</p>
         </div>
 
         <div
           class="div"
-          :class="{ 'form-group--error': $v.auctionDuration.$error }"
+          :class="{ 'form-group--error': $v.jobDuration.$error }"
         >
-          <label>⏳ Auction duration<span class="tagline">(days)</span></label>
+          <label>⏳ job duration<span class="tagline">(days)</span></label>
 
-          <input v-model="$v.auctionDuration.$model" type="text" />
+          <input v-model="$v.jobDuration.$model" type="text" />
 
-          <p v-if="!$v.auctionDuration.required" class="error">
-            The auction duration is required is required
+          <p v-if="!$v.jobDuration.required" class="error">
+            The job duration is required is required
           </p>
-          <p v-if="!$v.auctionDuration.integer" class="error">
-            Only positive numbers can be entered as auction duration
+          <p v-if="!$v.jobDuration.integer" class="error">
+            Only positive numbers can be entered as job duration
           </p>
-          <p v-if="!$v.auctionDuration.minValue" class="error">
-            Auction duration should not be less than
-            {{ $v.auctionDuration.$params.minValue.min }} day
+          <p v-if="!$v.jobDuration.minValue" class="error">
+            job duration should not be less than
+            {{ $v.jobDuration.$params.minValue.min }} day
+          </p>
+          <p v-if="!$v.jobDuration.maxValue" class="error">
+            Job duration should not exceed
+            {{ $v.jobDuration.$params.maxValue.max }} days
           </p>
           <p class="form-suggestion">
-            This is how long you want the auction to be open
+            This is how long you want the job to be open
           </p>
         </div>
 
@@ -160,7 +163,7 @@
           />
 
           <p v-if="!$v.jobExecution.required" class="error">
-            The auction duration is required is required
+            The job duration is required is required
           </p>
           <p v-if="!$v.jobExecution.integer" class="error">
             😳 Only positive numbers can be entered as job execution duration
@@ -168,6 +171,10 @@
           <p v-if="!$v.jobExecution.minValue" class="error">
             😳 Job execution should not be less than
             {{ $v.jobExecution.$params.minValue.min }} day
+          </p>
+          <p v-if="!$v.jobExecution.maxValue" class="error">
+            😳 Job execution should exceed
+            {{ $v.jobExecution.$params.maxValue.max }} days
           </p>
           <p class="total">
             This is the deadline for the job when it's awarded
@@ -177,16 +184,16 @@
       <section class="terms">
         <input v-model="$v.hasAgreed.$model" type="checkbox" />
         <label for="agree" class="agree">
-          I agree to Auctionlance <nuxt-link to="/terms">terms</nuxt-link>
+          I agree to joblance <nuxt-link to="/terms">terms</nuxt-link>
         </label>
       </section>
       <button
         type="submit"
         class="create-button"
-        :disabled="!hasAgreed || creatingAuction"
+        :disabled="!hasAgreed || creatingJob"
       >
-        <spinner v-if="creatingAuction"></spinner>
-        <span v-else>👍 Create Auction</span>
+        <spinner v-if="creatingJob"></spinner>
+        <span v-else>👍 Create Job</span>
       </button>
     </form>
   </main>
@@ -201,12 +208,13 @@ import {
   integer,
   minValue
 } from 'vuelidate/lib/validators'
+import maxValue from 'vuelidate/lib/validators/maxValue'
 import Spinner from '@/components/Spinner.vue'
 export default {
   middleware: ['isAuthenticated', 'isClient'],
   head() {
     return {
-      title: '📌 Create a New Auction'
+      title: '📌 Create a New job'
     }
   },
   components: {
@@ -217,12 +225,12 @@ export default {
       tag: '',
       selectedAssetId: '',
       hasAgreed: false,
-      creatingAuction: false,
+      creatingJob: false,
       title: '',
       description: '',
       category: '',
       amount: '',
-      auctionDuration: '',
+      jobDuration: '',
       jobExecution: '',
       tags: []
     }
@@ -241,17 +249,20 @@ export default {
     },
     amount: {
       required,
-      decimal
+      decimal,
+      minValue: minValue(1)
     },
-    auctionDuration: {
+    jobDuration: {
       required,
       integer,
-      minValue: minValue(1)
+      minValue: minValue(1),
+      maxValue: maxValue(30)
     },
     jobExecution: {
       required,
       integer,
-      minValue: minValue(1)
+      minValue: minValue(1),
+      maxValue: maxValue(60)
     },
     hasAgreed: {
       required
@@ -273,33 +284,33 @@ export default {
   },
   methods: {
     ...mapActions(['loadJobs']),
-    createAuction() {
+    createJob() {
       this.$v.$touch()
       if (this.tags.length === 0) {
-        this.$toast.error('😳 Provide at least one skill this auction requires')
+        this.$toast.error('😳 Provide at least one skill this job requires')
         return
       }
       if (!this.$v.$invalid) {
-        this.creatingAuction = true
+        this.creatingJob = true
 
         const tags = this.tags.map((tag) => tag.text)
 
-        const auction = {
+        const job = {
           title: this.title,
           description: this.description,
           category: this.category,
           amount: this.amount,
-          auctionDuration: this.auctionDuration,
+          jobDuration: this.jobDuration,
           jobExecution: this.jobExecution
         }
 
-        auction.tags = [...tags]
-        print(auction)
-        const payload = JSON.stringify(auction)
-        const jobExecution = Number(auction.jobExecution)
-        const auctionDuration = Number(auction.auctionDuration)
+        job.tags = [...tags]
+        print(job)
+        const payload = JSON.stringify(job)
+        const jobExecution = Number(job.jobExecution)
+        const jobDuration = Number(job.jobDuration)
         const category = this.category
-        const auctionAmount = Number(auction.amount) * 100000000
+        const jobAmount = Number(job.amount) * 100000000
         const tx = {
           type: 16,
           data: {
@@ -308,7 +319,7 @@ export default {
               function: 'createAuction',
               args: [
                 { type: 'integer', value: jobExecution },
-                { type: 'integer', value: auctionDuration },
+                { type: 'integer', value: jobDuration },
                 { type: 'string', value: payload },
                 { type: 'string', value: category }
               ]
@@ -316,7 +327,7 @@ export default {
             payment: [
               {
                 assetId: this.selectedAssetId,
-                amount: auctionAmount
+                amount: jobAmount
               }
             ],
             fee: {
@@ -329,18 +340,18 @@ export default {
         // eslint-disable-next-line no-undef
         WavesKeeper.signAndPublishTransaction(tx)
           .then((data) => {
-            this.creatingAuction = false
-            this.$toast.success('👍 Auction created successfully')
+            this.creatingJob = false
+            this.$toast.success('👍 job created successfully')
             this.loadJobs()
             this.$router.push({
-              path: '/jobs'
+              path: '/auctoboard/jobs'
             })
           })
           .catch((_) => {
             this.$toast.error(
               '😰 Oops this is embarrasing something went wrong. Try again'
             )
-            this.creatingAuction = false
+            this.creatingJob = false
           })
       } else {
         this.$toast.error(
