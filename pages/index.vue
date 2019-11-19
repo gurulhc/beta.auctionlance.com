@@ -194,7 +194,11 @@ export default {
       .then((data) => {
         const users = data
         let preparedUsers = users.filter((user) => isJson(user.value))
-        preparedUsers = preparedUsers.map((user) => JSON.parse(user.value))
+        preparedUsers = preparedUsers.map((user) => {
+          const auctionlanceUser = JSON.parse(user.value)
+          auctionlanceUser.public_key = user.key.split('_')[0]
+          return auctionlanceUser
+        })
         store.commit('auth/LOAD_USERS', preparedUsers)
       })
       .catch((_) => {})

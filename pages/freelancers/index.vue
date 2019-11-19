@@ -30,7 +30,7 @@
             </ul>
           </div>
           <nuxt-link
-            :to="`/freelancers/${freelancer.publicKey}/profile`"
+            :to="`/freelancers/${freelancer.public_key}/profile`"
             class="freelancer-btn"
             >See profile</nuxt-link
           >
