@@ -55,9 +55,7 @@ export default {
     if (store.state.auth.users.length) {
       store.commit('freelancers/LOAD_FREELANCERS', store.state.auth.users)
     } else {
-      store.dispatch('auth/getUsers').then(() => {
-        store.commit('freelancers/LOAD_FREELANCERS', store.state.auth.users)
-      })
+      store.dispatch('auth/getUsers')
     }
   },
   head() {
