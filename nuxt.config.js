@@ -4,14 +4,40 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Auctionlance Platform',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: 'Hire and Pay freelancers in Waves'
+      },
+      {
+        hid: 'keywords',
+        name: 'keywords',
+        content:
+          'Freelancer market place based on Blockchain, Nigeria Freelance Market Place, Waves Freelance Market Place'
+      },
+      {
+        hid: 'theme-color',
+        name: 'theme-color',
+        content: '#e4432d'
+      },
+      {
+        hid: 'og:site_name',
+        name: 'og:site_name',
+        content: 'Auctionlance Platform'
+      },
+      {
+        hid: 'og:type',
+        name: 'og:type',
+        content: 'website'
+      },
+      {
+        hid: 'twitter:card',
+        name: 'twitter:card',
+        content: 'summary_large_image'
       }
     ],
     link: [
