@@ -2,7 +2,7 @@
 import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
 
 // Getting the correct environment. values: main | test
-const environment = setUpBlockchainEnvironment('test')
+const environment = setUpBlockchainEnvironment('main')
 
 const loggedIn = localStorage.getItem('loggedIn') || false
 const currentUserKey = localStorage.getItem('currentUserKey') || ''
@@ -43,6 +43,7 @@ export const state = () => ({
   ],
   wavesBaseURL: environment.baseUrl,
   jobs: [],
+  fetchingJobsStatus: 'IDLE',
   currentUserKey,
   currentAuctionData: []
 })
@@ -52,7 +53,17 @@ export const mutations = {
     state.loggedIn = true
   },
   LOAD_JOBS(state, data) {
-    state.jobs = data
+    const blacklistedJobs = ['T8JVu2XnhpshsiERX6VPdHjgQ8jQwrQC5dnBjqYK5Hm']
+    const preparedJobs = data.filter(
+      (job) => !blacklistedJobs.includes(job.key.split('_')[0])
+    )
+    state.jobs = preparedJobs
+  },
+  UPDATE_FETCHING_JOBS_STATUS(state, data) {
+    state.fetchingJobsStatus = data
+  },
+  RESET_FETCHING_JOBS_STATUS(state, data) {
+    state.fetchingJobsStatus = 'IDLE'
   },
   UPDATE_CURRENT_USER_KEY(state, data) {
     state.currentUserKey = data
@@ -64,6 +75,8 @@ export const mutations = {
 
 export const actions = {
   loadJobs(context) {
+    context.commit('RESET_FETCHING_JOBS_STATUS', 'IDLE')
+    context.commit('UPDATE_FETCHING_JOBS_STATUS', 'FETCHING')
     return this.$axios
       .$get(
         `${context.state.wavesBaseURL}${context.state.dAppAddress}?matches=.*?_Info$`
@@ -80,9 +93,10 @@ export const actions = {
           }
         })
         context.commit('LOAD_JOBS', preparedJobs)
+        context.commit('UPDATE_FETCHING_JOBS_STATUS', 'SUCCESSFUL')
       })
-      .catch((error) => {
-        console.log(error)
+      .catch((_) => {
+        context.commit('UPDATE_FETCHING_JOBS_STATUS', 'ERROR')
       })
   },
   updateCurrentUserKey(context, data) {
