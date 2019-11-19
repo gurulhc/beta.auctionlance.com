@@ -51,13 +51,19 @@ export default {
     ...mapState('freelancers', ['freelancers']),
     ...mapState('auth', ['users'])
   },
+  fetch({ store }) {
+    if (store.state.auth.users.length) {
+      store.commit('freelancers/LOAD_FREELANCERS', store.state.auth.users)
+    } else {
+      store.dispatch('auth/getUsers').then(() => {
+        store.commit('freelancers/LOAD_FREELANCERS', store.state.auth.users)
+      })
+    }
+  },
   head() {
     return {
       title: '😎 Top Notch Freelancers'
     }
-  },
-  mounted() {
-    this.$store.commit('freelancers/LOAD_FREELANCERS', this.users)
   }
 }
 </script>

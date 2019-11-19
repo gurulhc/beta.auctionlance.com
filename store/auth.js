@@ -35,3 +35,31 @@ export const mutations = {
     state.users = data
   }
 }
+
+export const actions = {
+  getUsers(context) {
+    function isJson(str) {
+      try {
+        JSON.parse(str)
+      } catch (e) {
+        return false
+      }
+      return true
+    }
+    this.$axios
+      .$get(
+        `${context.rootState.wavesBaseURL}${context.rootState.dAppAddress}?matches=.*?(_Freelancer|_Client)$`
+      )
+      .then((data) => {
+        const users = data
+        let preparedUsers = users.filter((user) => isJson(user.value))
+        preparedUsers = preparedUsers.map((user) => {
+          const auctionlanceUser = JSON.parse(user.value)
+          auctionlanceUser.public_key = user.key.split('_')[0]
+          return auctionlanceUser
+        })
+        context.commit('LOAD_USERS', preparedUsers)
+      })
+      .catch((_) => {})
+  }
+}

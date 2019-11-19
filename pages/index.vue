@@ -177,31 +177,9 @@ export default {
     ...mapState('auth', ['wavesKeeperData, user']),
     ...mapState(['dAppAddress', 'wavesBaseURL'])
   },
-  fetch({ store, $axios }) {
+  fetch({ store }) {
     // eslint-disable-next-line no-undef
-    function isJson(str) {
-      try {
-        JSON.parse(str)
-      } catch (e) {
-        return false
-      }
-      return true
-    }
-    return $axios
-      .$get(
-        `${store.state.wavesBaseURL}${store.state.dAppAddress}?matches=.*?(_Freelancer|_Client)$`
-      )
-      .then((data) => {
-        const users = data
-        let preparedUsers = users.filter((user) => isJson(user.value))
-        preparedUsers = preparedUsers.map((user) => {
-          const auctionlanceUser = JSON.parse(user.value)
-          auctionlanceUser.public_key = user.key.split('_')[0]
-          return auctionlanceUser
-        })
-        store.commit('auth/LOAD_USERS', preparedUsers)
-      })
-      .catch((_) => {})
+    store.dispatch('auth/getUsers')
   },
   mounted() {
     this.wavy()
