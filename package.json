@@ -1,8 +1,8 @@
 {
-  "name": "auctionlance.com",
+  "name": "Auctionlance",
   "version": "1.0.0",
   "description": "Freelancer marketplace based off the Waves Blockchain",
-  "author": "Kelvin Omereshone",
+  "author": "Auctionlance Platform",
   "private": true,
   "scripts": {
     "dev": "nuxt",

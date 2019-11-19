@@ -9,10 +9,14 @@
         class="search"
       />
       <div class="wrapper">
-        <p>{{ jobs.length }} auctions found</p>
+        <p v-if="jobs.length">{{ jobs.length }} jobs found</p>
+        <p v-else>Seems there are no jobs right now</p>
       </div>
     </section>
-    <section v-if="jobs.length" class="container jobs">
+    <section
+      v-if="jobs.length && fetchingJobsStatus === 'SUCCESSFUL'"
+      class="container jobs"
+    >
       <div v-for="job in jobs" :key="job.key" class="job">
         <div class="jobs-card">
           <h3>{{ job.info.title }}</h3>
@@ -45,8 +49,14 @@
         </div>
       </div>
     </section>
-    <section v-else class="container">
-      <p>Loading auctions...</p>
+    <section
+      v-else-if="fetchingJobsStatus === 'FETCHING'"
+      class="container empty-state"
+    >
+      <p>🙂 Loading auctions...</p>
+    </section>
+    <section v-else class="container empty-state">
+      <p>😊 Jobs will display here</p>
     </section>
   </div>
 </template>
@@ -60,7 +70,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['dAppAddress', 'wavesBaseURL', 'jobs']),
+    ...mapState(['dAppAddress', 'wavesBaseURL', 'jobs', 'fetchingJobsStatus']),
     ...mapState('auth', ['user'])
   },
   fetch({ store }) {
@@ -89,6 +99,7 @@ export default {
     display: flex;
     color: #fff;
     justify-content: space-between;
+    font-size: 0.6em;
     .filter-section {
       display: flex;
       align-self: baseline;
@@ -96,7 +107,7 @@ export default {
 
       p {
         line-height: normal;
-        font-size: 0.8em;
+        font-size: 0.4em;
       }
     }
   }
@@ -113,5 +124,11 @@ export default {
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
     padding: 1em 2em;
   }
+}
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
 }
 </style>
