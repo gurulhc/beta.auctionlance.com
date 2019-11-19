@@ -1,4 +1,4 @@
-import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
+import setUpBlockchainEnvironment from '../getBlockchainEnv'
 
 describe('getBlockchainEnv', () => {
   it("Returns main base url and dAppAddress when passed the string 'main'", () => {
