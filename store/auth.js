@@ -69,5 +69,10 @@ export const actions = {
   },
   setLoggedInUser(context, data) {
     context.commit('LOG_IN', data)
+  },
+  logOut(context) {
+    context.commit('LOG_OUT')
+    context.commit('RESET_LOGGED_IN_STATE', { root: true })
+    localStorage.clear()
   }
 }

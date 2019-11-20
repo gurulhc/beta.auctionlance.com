@@ -2,7 +2,7 @@
 import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
 
 // Getting the correct environment. values: main | test
-const environment = setUpBlockchainEnvironment('main')
+const environment = setUpBlockchainEnvironment('test')
 
 const loggedIn = localStorage.getItem('loggedIn') || false
 const currentUserKey = localStorage.getItem('currentUserKey') || ''
@@ -45,12 +45,16 @@ export const state = () => ({
   jobs: [],
   fetchingJobsStatus: 'IDLE',
   currentUserKey,
-  currentAuctionData: []
+  currentAuctionData: [],
+  showSignInSnackbar: false
 })
 
 export const mutations = {
   UPDATE_LOGGED_IN_STATUS(state) {
     state.loggedIn = true
+  },
+  RESET_LOGGED_IN_STATE(state) {
+    state.loggedIn = false
   },
   LOAD_JOBS(state, data) {
     const blacklistedJobs = ['T8JVu2XnhpshsiERX6VPdHjgQ8jQwrQC5dnBjqYK5Hm']
@@ -70,6 +74,12 @@ export const mutations = {
   },
   UPDATE_CURRENT_AUCTION_DATA(state, data) {
     state.currentAuctionData = data
+  },
+  SET_SHOW_SIGNIN_SNACKBAR(state) {
+    state.showSignInSnackbar = true
+  },
+  RESET_SHOW_SIGNIN_SNACKBAR(state) {
+    state.showSignInSnackbar = false
   }
 }
 
@@ -104,5 +114,11 @@ export const actions = {
   },
   updateLoggedInStatus(context) {
     context.commit('UPDATE_LOGGED_IN_STATUS')
+  },
+  showSignInSnackbar(context) {
+    context.commit('SET_SHOW_SIGNIN_SNACKBAR')
+  },
+  resetSignInSnackbar(context) {
+    context.commit('RESET_SHOW_SIGNIN_SNACKBAR')
   }
 }

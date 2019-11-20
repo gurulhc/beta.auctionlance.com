@@ -29,7 +29,7 @@
         </section>
       </section>
       <footer>
-        <a href="" @click="logout">Log out</a>
+        <a href="" @click="logOut">Log out</a>
       </footer>
     </div>
     <div class="auctoboard__content">
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   middleware: 'isAuthenticated',
   head() {
@@ -72,9 +72,7 @@ export default {
     ...mapState('auth', ['user'])
   },
   methods: {
-    logout() {
-      localStorage.clear()
-    }
+    ...mapActions('auth', ['logOut'])
   }
 }
 </script>

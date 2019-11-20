@@ -245,12 +245,30 @@ export default {
   },
   computed: {
     ...mapState('auth', ['user']),
-    ...mapState(['dAppAddress', 'wavesBaseURL']),
+    ...mapState([
+      'dAppAddress',
+      'wavesBaseURL',
+      'loggedIn',
+      'showSignInSnackbar'
+    ]),
     isClient() {
       return this.user.userType === 'client'
     },
     isMobile() {
       return this.isMobileScreenSize
+    }
+  },
+  watch: {
+    loggedIn(state) {
+      if (state === false) {
+        this.$router.push({ path: '/' })
+      }
+    },
+    showSignInSnackbar(shouldShow) {
+      if (shouldShow === true) {
+        this.$toast.info('Sign in with Keeper')
+        this.$store.dispatch('resetSignInSnackbar')
+      }
     }
   },
   created() {
