@@ -1,3 +1,4 @@
+import axios from 'axios'
 export default {
   mode: 'universal',
   /*
@@ -56,6 +57,19 @@ export default {
     Comet_Chat_App_ID: '53684',
     Comet_Chat_Auth_Key: 'c5e3036bbdfbbf99e2a67c2a5d2c4665',
     Comet_Chat_API_Key: '53684x29556d78acd3953ee8f214e5fd444832'
+  },
+  generate: {
+    routes() {
+      return axios
+        .get(
+          'https://nodes.wavesnodes.com/addresses/data/3P7wZ8sfWmsFM5f2tdAWj21gLm4tma2RHyQ?matches=.*?(_Freelancer)$'
+        )
+        .then((res) => {
+          return res.map((freelancer) => {
+            return '/freelancers/' + freelancer.key.split('_')[0] + '/profile'
+          })
+        })
+    }
   },
   /*
    ** Global CSS
