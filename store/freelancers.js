@@ -10,11 +10,12 @@ export const state = () => ({
   jobsTotal: 0
 })
 
+export const getters = {
+  freelancers(state, getters, rootState) {
+    return rootState.auth.users.filter((user) => user.userType === 'freelancer')
+  }
+}
 export const mutations = {
-  LOAD_FREELANCERS(state, data) {
-    const freelancers = data.filter((datum) => datum.userType === 'freelancer')
-    state.freelancers = freelancers
-  },
   SET_PENDING_EARNINGS(state, data) {
     state.pendingEarnings = data
   },

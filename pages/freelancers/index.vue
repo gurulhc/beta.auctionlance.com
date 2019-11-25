@@ -41,20 +41,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import FemaleDeveloper from '~/components/FemaleDeveloper'
 export default {
   components: {
     FemaleDeveloper
   },
   computed: {
-    ...mapState('freelancers', ['freelancers']),
-    ...mapState('auth', ['users'])
+    ...mapGetters('freelancers', ['freelancers'])
   },
   fetch({ store }) {
-    if (store.state.auth.users.length) {
-      store.commit('freelancers/LOAD_FREELANCERS', store.state.auth.users)
-    } else {
+    if (!store.state.auth.users.length) {
       store.dispatch('auth/getUsers')
     }
   },
