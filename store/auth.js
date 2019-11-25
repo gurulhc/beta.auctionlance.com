@@ -59,11 +59,6 @@ export const actions = {
           return auctionlanceUser
         })
         context.commit('LOAD_USERS', preparedUsers)
-        if (context.state.users.length) {
-          context.commit('freelancers/LOAD_FREELANCERS', preparedUsers, {
-            root: true
-          })
-        }
       })
       .catch((_) => {})
   },

@@ -74,12 +74,6 @@ export const mutations = {
   },
   UPDATE_CURRENT_AUCTION_DATA(state, data) {
     state.currentAuctionData = data
-  },
-  SET_SHOW_SIGNIN_SNACKBAR(state) {
-    state.showSignInSnackbar = true
-  },
-  RESET_SHOW_SIGNIN_SNACKBAR(state) {
-    state.showSignInSnackbar = false
   }
 }
 
@@ -114,11 +108,5 @@ export const actions = {
   },
   updateLoggedInStatus(context) {
     context.commit('UPDATE_LOGGED_IN_STATUS')
-  },
-  showSignInSnackbar(context) {
-    context.commit('SET_SHOW_SIGNIN_SNACKBAR')
-  },
-  resetSignInSnackbar(context) {
-    context.commit('RESET_SHOW_SIGNIN_SNACKBAR')
   }
 }

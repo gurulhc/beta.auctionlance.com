@@ -263,12 +263,6 @@ export default {
       if (state === false) {
         this.$router.push({ path: '/' })
       }
-    },
-    showSignInSnackbar(shouldShow) {
-      if (shouldShow === true) {
-        this.$toast.info('Sign in with Keeper')
-        this.$store.dispatch('resetSignInSnackbar')
-      }
     }
   },
   created() {

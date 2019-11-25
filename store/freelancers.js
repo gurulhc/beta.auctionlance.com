@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 
 export const state = () => ({
-  freelancers: [],
   pendingEarnings: 0,
   paidEarnings: 0,
   totalEarnings: 0,
@@ -13,6 +12,11 @@ export const state = () => ({
 export const getters = {
   freelancers(state, getters, rootState) {
     return rootState.auth.users.filter((user) => user.userType === 'freelancer')
+  },
+  getFreelancerByPublicKey: (state, getters) => (publicKey) => {
+    return getters.freelancers.filter(
+      (freelancer) => freelancer.public_key === publicKey
+    )
   }
 }
 export const mutations = {

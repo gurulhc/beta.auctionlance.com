@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main v-if="freelancer" class="container">
     <section class="heading">
       <div class="textual">
         <h1 class="title">{{ freelancer.name }}</h1>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+// import { mapGetters } from 'vuex'
 export default {
   scrollToTop: true,
   head() {
@@ -41,15 +42,21 @@ export default {
       title: this.freelancer.name
     }
   },
-  data() {},
-  asyncData({ $axios, params, store }) {
-    return $axios
-      .$get(
-        `${store.state.wavesBaseURL}${store.state.dAppAddress}/${params.id}_Freelancer`
-      )
-      .then((res) => {
-        return { freelancer: JSON.parse(res.value) }
-      })
+  asyncData({ $axios, store, params }) {
+    if (store.state.auth.users.length) {
+      const freelancer = store.getters['freelancers/getFreelancerByPublicKey'](
+        params.id
+      )[0]
+      return { freelancer }
+    } else {
+      return $axios
+        .$get(
+          `${store.state.wavesBaseURL}${store.state.dAppAddress}/${params.id}_Freelancer`
+        )
+        .then((res) => {
+          return { freelancer: JSON.parse(res.value) }
+        })
+    }
   }
 }
 </script>
