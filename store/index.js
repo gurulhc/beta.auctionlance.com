@@ -4,8 +4,12 @@ import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
 // Getting the correct environment. values: main | test
 const environment = setUpBlockchainEnvironment('main')
 
-const loggedIn = localStorage.getItem('loggedIn') || false
-const currentUserKey = localStorage.getItem('currentUserKey') || ''
+let loggedIn = false
+let currentUserKey = ''
+if (process.browser) {
+  loggedIn = localStorage.getItem('loggedIn') || false
+  currentUserKey = localStorage.getItem('currentUserKey') || ''
+}
 
 export const state = () => ({
   loggedIn,

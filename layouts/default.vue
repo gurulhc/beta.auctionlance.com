@@ -267,27 +267,33 @@ export default {
   },
   created() {
     this.getIsMobileStatus()
-    window.addEventListener('resize', () => {
-      this.getIsMobileStatus()
-    })
+    if (process.browser) {
+      window.addEventListener('resize', () => {
+        this.getIsMobileStatus()
+      })
+    }
   },
   beforeDestroy() {
-    window.removeEventListener('resize', () => {
-      this.getIsMobileStatus()
-    })
+    if (process.browser) {
+      window.removeEventListener('resize', () => {
+        this.getIsMobileStatus()
+      })
+    }
   },
   methods: {
     ...mapActions('auth', ['setLoggedInUser']),
     ...mapActions(['updateCurrentUserKey', 'updateLoggedInStatus']),
     getIsMobileStatus() {
-      if (
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        )
-      ) {
-        this.isMobileScreenSize = true
-      } else {
-        this.isMobileScreenSize = false
+      if (process.browser) {
+        if (
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          )
+        ) {
+          this.isMobileScreenSize = true
+        } else {
+          this.isMobileScreenSize = false
+        }
       }
     },
     getFullYear() {
@@ -296,85 +302,90 @@ export default {
       return currentDate.getFullYear() // 83945cf299dfa3
     },
     performWavesKeeperAuth() {
-      const authData = {
-        data: 'Auctionlance Platform',
-        name: 'Auctionlance Platform',
-        icon: 'http://auctionlance.com/aucttoken.svg',
-        referrer: '/',
-        successPath: '/'
+      if (process.browser) {
+        const authData = {
+          data: 'Auctionlance Platform',
+          name: 'Auctionlance Platform',
+          icon: 'http://auctionlance.com/aucttoken.svg',
+          referrer: '/',
+          successPath: '/'
+        }
+        // eslint-disable-next-line no-undef
+        WavesKeeper.auth(authData)
+          .then((data) => {
+            this.$store.commit('auth/GET_WAVES_KEEPER_DATA', data)
+            localStorage.setItem('wavesKeeperData', JSON.stringify(data))
+            this.logIn(data.publicKey)
+          })
+          .catch((_) => {
+            this.$toast.info('Something went wrong. Try reloading the page')
+          })
       }
-      // eslint-disable-next-line no-undef
-      WavesKeeper.auth(authData)
-        .then((data) => {
-          this.$store.commit('auth/GET_WAVES_KEEPER_DATA', data)
-          localStorage.setItem('wavesKeeperData', JSON.stringify(data))
-          this.logIn(data.publicKey)
-        })
-        .catch((_) => {
-          this.$toast.info('Something went wrong. Try reloading the page')
-        })
     },
     logIn(dataKey) {
-      this.$axios
-        .$get(
-          `${this.wavesBaseURL}${this.dAppAddress}?matches=.*?${dataKey}(_Freelancer|_Client)$`
-        )
-        .then((res) => {
-          if (res.length === 0) {
-            this.$router.push({
-              path: '/register'
-            })
+      if (process.browser) {
+        this.$axios
+          .$get(
+            `${this.wavesBaseURL}${this.dAppAddress}?matches=.*?${dataKey}(_Freelancer|_Client)$`
+          )
+          .then((res) => {
+            if (res.length === 0) {
+              this.$router.push({
+                path: '/register'
+              })
 
-            this.$toast.error("You don't have an account on Auctionlance")
+              this.$toast.error("You don't have an account on Auctionlance")
 
-            return
-          }
-          const user = JSON.parse(res[0].value)
-          user.public_key = res[0].key.split('_')[0]
-          const { name } = user
-          const { publicKey } = user
-          const { secure_url } = user.avatar
+              return
+            }
+            const user = JSON.parse(res[0].value)
+            user.public_key = res[0].key.split('_')[0]
+            const { name } = user
+            const { publicKey } = user
+            const { secure_url } = user.avatar
 
-          // Comet chat log in
-          try {
-            window.chat_id = `AUCTIONLANCER${publicKey}`
-            window.chat_name = name
-            window.chat_avatar = secure_url
-            window.chat_link = 'USER_PROFILELINK'
-            window.jqcc.cometchat.init()
-          } catch (_) {
-            this.$toast.error('Coult not set chat')
-          }
+            // Comet chat log in
 
-          this.$toast.success(`👋 Welcome back ${name}`)
+            try {
+              window.chat_id = `AUCTIONLANCER${publicKey}`
+              window.chat_name = name
+              window.chat_avatar = secure_url
+              window.chat_link = 'USER_PROFILELINK'
+              window.jqcc.cometchat.init()
+            } catch (_) {
+              this.$toast.error('Coult not set chat')
+            }
 
-          this.setLoggedInUser(user)
+            this.$toast.success(`👋 Welcome back ${name}`)
 
-          localStorage.setItem('user', JSON.stringify(user))
+            this.setLoggedInUser(user)
 
-          this.updateLoggedInStatus()
+            localStorage.setItem('user', JSON.stringify(user))
 
-          localStorage.setItem('loggedIn', true)
+            this.updateLoggedInStatus()
 
-          const currentUserKey = res[0].key.split('_')[0]
+            localStorage.setItem('loggedIn', true)
 
-          this.updateCurrentUserKey(currentUserKey)
+            const currentUserKey = res[0].key.split('_')[0]
 
-          localStorage.setItem('currentUserKey', currentUserKey)
-        })
-        .catch((error) => {
-          if (error.response && error.response.data.error === 304) {
-            this.$router.push({
-              path: '/register'
-            })
+            this.updateCurrentUserKey(currentUserKey)
 
-            this.$toast.error("You don't have an account on Auctionlance")
-          } else {
-            this.$toast.error(
-              '🤭 Encountered an issue signing you in. Please check network connection and try again'
-            )
-          }
-        })
+            localStorage.setItem('currentUserKey', currentUserKey)
+          })
+          .catch((error) => {
+            if (error.response && error.response.data.error === 304) {
+              this.$router.push({
+                path: '/register'
+              })
+
+              this.$toast.error("You don't have an account on Auctionlance")
+            } else {
+              this.$toast.error(
+                '🤭 Encountered an issue signing you in. Please check network connection and try again'
+              )
+            }
+          })
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 export default {
-  mode: 'spa',
+  mode: 'universal',
   /*
    ** Headers of the page
    */
@@ -71,7 +71,7 @@ export default {
     { src: '~/plugins/vue-scrollmagic.client.js' },
     { src: '~/plugins/cometChat.client.js' },
     { src: '~/plugins/vuelidate.client.js' },
-    { src: '~plugins/vue-js-modal' }
+    { src: '~plugins/vue-js-modal.client.js' }
   ],
   /*
    ** Nuxt.js dev-modules

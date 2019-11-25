@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
-const wavesKeeperData =
-  JSON.parse(localStorage.getItem('wavesKeeperData')) || {}
+let wavesKeeperData = {}
+
+if (process.browser) {
+  wavesKeeperData = JSON.parse(localStorage.getItem('wavesKeeperData')) || {}
+}
 const defaultUser = {
   name: '',
   description: '',
@@ -12,7 +15,11 @@ const defaultUser = {
   userType: ''
 }
 
-const userPayload = JSON.parse(localStorage.getItem('user')) || defaultUser
+let userPayload = defaultUser
+
+if (process.browser) {
+  userPayload = JSON.parse(localStorage.getItem('user')) || defaultUser
+}
 
 export const state = () => ({
   wavesKeeperData,
@@ -68,6 +75,8 @@ export const actions = {
   logOut(context) {
     context.commit('LOG_OUT')
     context.commit('RESET_LOGGED_IN_STATE', { root: true })
-    localStorage.clear()
+    if (process.brower) {
+      localStorage.clear()
+    }
   }
 }
