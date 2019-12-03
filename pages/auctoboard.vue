@@ -47,6 +47,9 @@
           <li>
             <nuxt-link to="/auctoboard/wallet">Wallet</nuxt-link>
           </li>
+          <li v-if="isArbiter">
+            <nuxt-link to="/auctoboard/disputes">Disputes</nuxt-link>
+          </li>
         </ul>
       </nav>
       <main>
@@ -60,7 +63,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   middleware: 'isAuthenticated',
   head() {
@@ -69,10 +72,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
+    ...mapGetters('disputes', ['isArbiter'])
   },
   methods: {
-    ...mapActions('auth', ['logOut'])
+    ...mapActions('auth', ['logOut']),
+    ...mapActions('disputes', [''])
   }
 }
 </script>
