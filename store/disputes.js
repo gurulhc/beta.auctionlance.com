@@ -127,7 +127,7 @@ export const actions = {
           .$get(
             `${context.rootState.wavesBaseURL}${
               context.rootState.dAppAddress
-            }/${job.key.split('_')[0]}_DiputeVote_${
+            }/${job.key.split('_')[0]}_DisputeVote_${
               context.rootState.auth.user.public_key
             }`
           )
