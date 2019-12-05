@@ -11,7 +11,7 @@ const defaultUser = {
   tags: [],
   location: '',
   address: '',
-  publicKey: '',
+  public_key: '',
   userType: ''
 }
 
@@ -73,10 +73,10 @@ export const actions = {
     context.commit('LOG_IN', data)
   },
   logOut(context) {
-    context.commit('LOG_OUT')
-    context.commit('RESET_LOGGED_IN_STATE', { root: true })
     if (process.brower) {
       localStorage.clear()
+      context.commit('LOG_OUT')
+      context.commit('RESET_LOGGED_IN_STATE', { root: true })
     }
   }
 }
