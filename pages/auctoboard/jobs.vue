@@ -111,7 +111,9 @@ export default {
        * Using the some higher order function of Array.prototype, I get all tags belonging to a user then use them as input for the includes function to test if at least some of the usesr tags are in the job tags thereby updating the jobs feed. Pretty smart eh, I know
        */
       const freelancerJobs = this.jobs.filter((job) => {
-        return this.user.tags.some((tag) => job.info.tags.includes(tag))
+        return job.info.tags
+          ? this.user.tags.some((tag) => job.info.tags.includes(tag))
+          : []
       })
 
       return freelancerJobs
