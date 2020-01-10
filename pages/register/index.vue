@@ -7,8 +7,8 @@
             <img src="~/assets/short-logo.png" class="logo" />
           </nuxt-link>
         </span>
-        <form action="" @submit.prevent="register">
-          <div class="input" :class="{ 'form-group--error': $v.name.$error }">
+        <form @submit.prevent="register" action="">
+          <div :class="{ 'form-group--error': $v.name.$error }" class="input">
             <input
               id="name"
               v-model="$v.name.$model"
@@ -25,8 +25,8 @@
             </p>
           </div>
           <div
-            class="input"
             :class="{ 'form-group--error': $v.description.$error }"
+            class="input"
           >
             <input
               id="description"
@@ -51,13 +51,13 @@
               :avoid-adding-duplicates="true"
               :delete-on-backspace="true"
               :max-tags="5"
-              placeholder="Add a maximum of 5 tags(hit ENTER after each tag)"
               @tags-changed="(newTags) => (tags = newTags)"
+              placeholder="Add a maximum of 5 tags(hit ENTER after each tag)"
             />
           </div>
           <div
-            class="input"
             :class="{ 'form-group--error': $v.userType.$error }"
+            class="input"
           >
             <select v-model="$v.userType.$model">
               <option disabled value="" selected
@@ -71,8 +71,8 @@
             </p>
           </div>
           <div
-            class="input"
             :class="{ 'form-group--error': $v.location.$error }"
+            class="input"
           >
             <input
               id="country"
@@ -89,11 +89,11 @@
             <button
               id="upload_widget"
               ref="upload"
-              type="button"
-              class="form-button form-button--secondary"
               :disabled="hasUploaded || isOpeningCloudinary"
               :class="{ uploaded: hasUploaded }"
               @click="openCloudinaryWidget"
+              type="button"
+              class="form-button form-button--secondary"
             >
               <spinner v-if="isOpeningCloudinary" />
               <span v-else-if="hasUploaded">Avatar Uploaded Successfully</span>
@@ -102,9 +102,9 @@
           </div>
           <div class="input">
             <button
+              :disabled="isRegistering"
               type="submit"
               class="form-button form-button--primary"
-              :disabled="isRegistering"
             >
               <spinner v-if="isRegistering" />
               <span v-else>Join Auctionlance</span>

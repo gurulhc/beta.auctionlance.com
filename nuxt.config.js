@@ -1,3 +1,35 @@
+import axios from 'axios'
+
+// const dynamicFreelancersRoutes = () => {
+//   return axios
+//     .get(
+//       'https://nodes.wavesnodes.com/addresses/data/3P7wZ8sfWmsFM5f2tdAWj21gLm4tma2RHyQ?matches=.*?_Freelancer$'
+//     )
+//     .then((res) => {
+//       return res.data.map((freelancer) => {
+//         return {
+//           route: `/freelancers/${freelancer.key.split('_')[0]}/profile`,
+//           payload: freelancer
+//         }
+//       })
+//     })
+// }
+
+const dynamicJobsRoutes = () => {
+  return axios
+    .get(
+      'https://nodes.wavesnodes.com/addresses/data/3P7wZ8sfWmsFM5f2tdAWj21gLm4tma2RHyQ?matches=.*?_Info$'
+    )
+    .then((res) => {
+      return res.data.map((job) => {
+        return {
+          route: `/jobs/${job.key.split('_')[0]}/detail`,
+          payload: job
+        }
+      })
+    })
+}
+
 export default {
   mode: 'spa',
   /*
@@ -73,6 +105,9 @@ export default {
     { src: '~/plugins/vuelidate.client.js' },
     { src: '~plugins/vue-js-modal.client.js' }
   ],
+  generate: {
+    routes: dynamicJobsRoutes
+  },
   /*
    ** Nuxt.js dev-modules
    */

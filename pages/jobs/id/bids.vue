@@ -1,43 +1,47 @@
 <template>
-  <div v-if="bids.length > 0" class="bids">
-    <div v-for="bid in bids" :key="bid.bidDetails.key" class="bid">
-      <div class="freelancer-section">
-        <img
-          :src="bid.freelancer.avatar.secure_url"
-          :alt="bid.freelancer.name"
-        />
-        <h3>
-          <nuxt-link :to="`/freelancers/${bid.freelancerKey}/profile`">{{
-            bid.freelancer.name
-          }}</nuxt-link>
-        </h3>
-      </div>
-      <div class="bid-section">
-        💰 {{ bid.bidDetails.value | amount }} Waves
-        <button
-          v-if="isAuctionClient && auctionStatus === 'open'"
-          class="hire-button"
-          :disabled="!isAuctionClient"
-          @click="chooseFreelancer(bid.bidKey, bid.freelancerKey)"
-        >
-          <spinner
-            v-if="choosingFreelancer && bid.freelancerKey === chosenFreelancer"
-            color="#000"
+  <div>
+    <div v-if="bids.length > 0" class="bids">
+      <div v-for="bid in bids" :key="bid.bidDetails.key" class="bid">
+        <div class="freelancer-section">
+          <img
+            :src="bid.freelancer.avatar.secure_url"
+            :alt="bid.freelancer.name"
           />
-          <span v-else>Hire</span>
-        </button>
-        <span
-          v-if="
-            isAuctionClient && bid.freelancerKey === winningFreelancer.value
-          "
-          class="winner"
-          >🥇Winner</span
-        >
+          <h3>
+            <nuxt-link :to="`/freelancers/${bid.freelancerKey}/profile`">{{
+              bid.freelancer.name
+            }}</nuxt-link>
+          </h3>
+        </div>
+        <div class="bid-section">
+          💰 {{ bid.bidDetails.value | amount }} Waves
+          <button
+            v-if="isAuctionClient && auctionStatus === 'open'"
+            :disabled="!isAuctionClient"
+            @click="chooseFreelancer(bid.bidKey, bid.freelancerKey)"
+            class="hire-button"
+          >
+            <spinner
+              v-if="
+                choosingFreelancer && bid.freelancerKey === chosenFreelancer
+              "
+              color="#000"
+            />
+            <span v-else>Hire</span>
+          </button>
+          <span
+            v-if="
+              isAuctionClient && bid.freelancerKey === winningFreelancer.value
+            "
+            class="winner"
+            >🥇Winner</span
+          >
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else class="no-bids">
-    <p class="subtitle">😴 Bids will show here</p>
+    <div v-else class="no-bids">
+      <p class="subtitle">😴 Bids will show here</p>
+    </div>
   </div>
 </template>
 

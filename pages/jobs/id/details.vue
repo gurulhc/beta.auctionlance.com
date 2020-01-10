@@ -45,7 +45,7 @@
               placeholder="Enter bid amount"
             />
           </div>
-          <button type="submit" class="create-button" :disabled="!amount">
+          <button :disabled="!amount" type="submit" class="create-button">
             <spinner v-if="makingBid"></spinner>
             <span v-else>🤓 Make Bid</span>
           </button>

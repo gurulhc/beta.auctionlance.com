@@ -31,8 +31,8 @@
         </button>
         <button
           v-else-if="auctionStatus === 'delivered' && isAuctionClient"
-          class="accept"
           @click="acceptWork"
+          class="accept"
         >
           <spinner v-if="isAcceptingWork" />
           <span v-else>👍 Accept and Pay</span>

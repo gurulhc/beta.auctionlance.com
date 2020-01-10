@@ -2,7 +2,7 @@
 import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
 
 // Getting the correct environment. values: main | test
-const environment = setUpBlockchainEnvironment('test')
+const environment = setUpBlockchainEnvironment('main')
 
 let loggedIn = false
 let currentUserKey = ''

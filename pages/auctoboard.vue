@@ -10,9 +10,9 @@
         />
         <img
           v-else
+          :alt="user.name"
           src="~/assets/default-avatar.svg"
           class="avatar"
-          :alt="user.name"
         />
       </section>
       <section class="textual-content">
@@ -29,7 +29,7 @@
         </section>
       </section>
       <footer>
-        <a href="" @click="logOut">Log out</a>
+        <a @click="logOut" href="">Log out</a>
       </footer>
     </div>
     <div class="auctoboard__content">

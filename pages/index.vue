@@ -5,12 +5,12 @@
         Hire
         <span class="mobile">easily</span>
         <vue-typer
-          class="typed"
           :text="typerList"
-          initial-action="erasing"
           :repeat="Infinity"
           :shuffle="true"
           :erase-delay="250"
+          class="typed"
+          initial-action="erasing"
           erase-style="select-all"
           caret-animation="smooth"
         />

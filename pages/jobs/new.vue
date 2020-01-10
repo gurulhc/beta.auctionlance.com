@@ -12,8 +12,8 @@
 
     <form @submit.prevent="createJob">
       <section
-        class="form-group"
         :class="{ 'form-group--error': $v.title.$error }"
+        class="form-group"
       >
         <label class="secret">Job title</label>
 
@@ -34,8 +34,8 @@
       </section>
 
       <section
-        class="form-group"
         :class="{ 'form-group--error': $v.description.$error }"
+        class="form-group"
       >
         <label class="required">Description</label>
         <textarea
@@ -52,8 +52,8 @@
         </p>
       </section>
       <section
-        class="form-group"
         :class="{ 'form-group--error': $v.category.$error }"
+        class="form-group"
       >
         <label class="required">Category</label>
         <select v-model="$v.category.$model">
@@ -78,13 +78,13 @@
           :tags="tags"
           :avoid-adding-duplicates="true"
           :delete-on-backspace="true"
-          placeholder="List skills needed"
           @tags-changed="(newTags) => (tags = newTags)"
+          placeholder="List skills needed"
         />
       </section>
       <section
-        class="form-group"
         :class="{ 'form-group--error': $v.selectedAssetId.$error }"
+        class="form-group"
       >
         <label>₿ Select Token </label>
 
@@ -103,7 +103,7 @@
         </p>
       </section>
       <section class="form-group has-three-controls">
-        <div class="div" :class="{ 'form-group--error': $v.amount.$error }">
+        <div :class="{ 'form-group--error': $v.amount.$error }" class="div">
           <label>💰 Amount </label>
 
           <input v-model.trim="$v.amount.$model" type="text" />
@@ -121,8 +121,8 @@
         </div>
 
         <div
-          class="div"
           :class="{ 'form-group--error': $v.jobDuration.$error }"
+          class="div"
         >
           <label>⏳ job duration<span class="tagline">(days)</span></label>
 
@@ -148,8 +148,8 @@
         </div>
 
         <div
-          class="div"
           :class="{ 'form-group--error': $v.jobExecution.$error }"
+          class="div"
         >
           <label for="amount"
             >⌛ Job Execution<span class="tagline">(days)</span></label
@@ -188,9 +188,9 @@
         </label>
       </section>
       <button
+        :disabled="!hasAgreed || creatingJob"
         type="submit"
         class="create-button"
-        :disabled="!hasAgreed || creatingJob"
       >
         <spinner v-if="creatingJob"></spinner>
         <span v-else>👍 Create Job</span>

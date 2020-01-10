@@ -21,16 +21,16 @@
               </p>
               <div v-if="!job.currentAmbassadorVote" class="vote">
                 <button
-                  class="bid-btn"
                   :disabled="voting"
                   @click="vote(job.key, 'CL')"
+                  class="bid-btn"
                 >
                   Client
                 </button>
                 <button
-                  class="bid-btn"
                   :disabled="voting"
                   @click="vote(job.key, 'FL')"
+                  class="bid-btn"
                 >
                   Freelancer
                 </button>
