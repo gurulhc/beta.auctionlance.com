@@ -96,9 +96,9 @@ export default {
           this.voting = false
           this.$toast.success('👍 Voting successful')
         })
-        .catch((_) => {
+        .catch((error) => {
           this.$toast.error(
-            '😰 Oops this is embarrasing something went wrong. Try again'
+            `😰 Oops this is embarrasing something went wrong - ${error.message}. Try again`
           )
           this.voting = false
         })

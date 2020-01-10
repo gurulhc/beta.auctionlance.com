@@ -220,12 +220,14 @@ export default {
         .then((data) => {
           this.isDelivering = false
           this.$toast.success('🔥 Successfully delivered')
-          this.updateJob()
+          this.$nextTick(function updateJob() {
+            this.updateJob()
+          })
         })
-        .catch((_) => {
+        .catch((error) => {
           this.isDelivering = false
           this.$toast.error(
-            '🙁 Something went wrong in delivering this project. Try again'
+            `🙁 Something went wrong. (${error.message}). Try again`
           )
         })
     },
@@ -252,13 +254,13 @@ export default {
         .then((data) => {
           this.isAcceptingWork = false
           this.$toast.success('🤑 Work Accepted Successfully')
-          this.updateJob()
+          this.$nextTick(function updateJob() {
+            this.updateJob()
+          })
         })
-        .catch((_) => {
+        .catch((error) => {
           this.isAcceptingWork = false
-          this.$toast.error(
-            '🙁 Something went wrong in accepting this project. Try again'
-          )
+          this.$toast.error(`🙁 ${error.message}. Try again`)
         })
     }
   }

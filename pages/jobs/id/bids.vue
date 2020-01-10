@@ -182,14 +182,16 @@ export default {
               .catch((_) => {
                 this.$toast.error('Chat connection was not successful')
               })
-          } catch (_) {
-            this.$toast.info("You can't chat with freelancer at the moment")
+          } catch (error) {
+            this.$toast.info(
+              `You can't chat with freelancer at the moment - ${error.message}`
+            )
           }
         })
-        .catch((_) => {
+        .catch((error) => {
           this.choosingFreelancer = false
           this.$toast.error(
-            '🙁 Something went wrong in choosing this freelancer. Try again'
+            `🙁 Something went wrong in choosing this freelancer - ${error.message}. Try again`
           )
         })
     }

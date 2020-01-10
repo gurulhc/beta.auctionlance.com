@@ -298,8 +298,8 @@ export default {
                   window.chat_avatar = secure_url
                   window.chat_link = 'USER_PROFILELINK'
                   window.jqcc.cometchat.init()
-                } catch (_) {
-                  this.$toast.error('Coult not set chat')
+                } catch (error) {
+                  this.$toast.error(`Coult not set chat -  ${error.message}`)
                 }
 
                 this.$toast.success(`👋 Welcome to Auctionlance, ${name}`)
@@ -320,13 +320,16 @@ export default {
                   path: '/auctoboard/overview'
                 })
               })
-              .catch(() => {
+              .catch((error) => {
                 this.isRegistering = false
-                this.toast.error('Chat not created')
+                this.$toast.error(
+                  `${error.message}. Chat not created at the moment`
+                )
               })
           })
-          .catch((_) => {
+          .catch((error) => {
             this.isRegistering = false
+            this.$toast.error(`🙁. Something went wrong(${error.message})`)
           })
       } else {
         this.$toast.error(

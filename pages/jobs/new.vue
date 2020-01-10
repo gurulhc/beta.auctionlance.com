@@ -347,11 +347,9 @@ export default {
               path: '/auctoboard/jobs'
             })
           })
-          .catch((_) => {
-            this.$toast.error(
-              '😰 Oops this is embarrasing something went wrong. Try again'
-            )
+          .catch((error) => {
             this.creatingJob = false
+            this.$toast.error(`😰 ${error.message}`)
           })
       } else {
         this.$toast.error(

@@ -68,8 +68,8 @@ export default {
           this.accountDetails.balance.available =
             this.accountDetails.balance.available / 100000000
         })
-        .catch((_) => {
-          this.$toast.error('Could not get Wallet Balances') // displaying the result in the console
+        .catch((error) => {
+          this.$toast.error(`Could not get Wallet Balances - ${error.message}`) // displaying the result in the console
           /* ...processing errors */
         })
     }

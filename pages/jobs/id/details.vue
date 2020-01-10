@@ -157,10 +157,10 @@ export default {
               this.$toast.success('😍 Bid made successfully')
               this.updateJob()
             })
-            .catch((_) => {
+            .catch((error) => {
               this.makingBid = false
               this.$toast.error(
-                '🙁 Something went wrong in making your bid. Try again'
+                `🙁 Something went wrong in making your bid - ${error.message}. Try again`
               )
             })
         }

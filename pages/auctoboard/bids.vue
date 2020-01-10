@@ -45,7 +45,7 @@ import { mapState } from 'vuex'
 export default {
   filters: {
     amount(val) {
-      return val / 100000000
+      return val / 1e8
     }
   },
   computed: {
