@@ -15,19 +15,47 @@ import axios from 'axios'
 //     })
 // }
 
-const dynamicJobsRoutes = () => {
-  return axios
-    .get(
-      'https://nodes.wavesnodes.com/addresses/data/3P7wZ8sfWmsFM5f2tdAWj21gLm4tma2RHyQ?matches=.*?_Info$'
-    )
-    .then((res) => {
-      return res.data.map((job) => {
-        return {
-          route: `/jobs/${job.key.split('_')[0]}/detail`,
-          payload: job
-        }
-      })
-    })
+// const dynamicJobsRoutes = () => {
+//   return axios
+//     .get(
+//       'https://nodes.wavesnodes.com/addresses/data/3P7wZ8sfWmsFM5f2tdAWj21gLm4tma2RHyQ?matches=.*?_Info$'
+//     )
+//     .then((res) => {
+//       return res.data.map((job) => {
+//         return {
+//           route: `/jobs/${job.key.split('_')[0]}/detail`,
+//           payload: job
+//         }
+//       })
+//     })
+// }
+
+const dynamicRoutes = async () => {
+  const resForJobs = await axios.get(
+    'https://nodes.wavesnodes.com/addresses/data/3P7wZ8sfWmsFM5f2tdAWj21gLm4tma2RHyQ?matches=.*?_Info$'
+  )
+
+  const resForFreelancers = await axios.get(
+    'https://nodes.wavesnodes.com/addresses/data/3P7wZ8sfWmsFM5f2tdAWj21gLm4tma2RHyQ?matches=.*?_Freelancer$'
+  )
+
+  const routesForJobs = resForJobs.data.map((job) => {
+    return {
+      route: `/jobs/${job.key.split('_')[0]}/detail`,
+      payload: job
+    }
+  })
+
+  const routesForFreelancers = resForFreelancers.data.map((freelancer) => {
+    return {
+      route: `/freelancers/${freelancer.key.split('_')[0]}/profile`,
+      payload: freelancer
+    }
+  })
+
+  const routes = routesForJobs.concat(routesForFreelancers)
+
+  return routes
 }
 
 export default {
@@ -106,7 +134,7 @@ export default {
     { src: '~plugins/vue-js-modal.client.js' }
   ],
   generate: {
-    routes: dynamicJobsRoutes
+    routes: dynamicRoutes
   },
   /*
    ** Nuxt.js dev-modules
